@@ -48,3 +48,17 @@
   - A mutação também mostrou mais duas mensagens do zod **em inglês** (norma fora do enum e tipo errado). Traduzidas.
   - A validação de URL compara o domínio (`planalto.gov.br` ou subdomínio), não o texto: `https://planalto.gov.br.site-falso.com` é rejeitado, e há teste para isso.
 - **Tempo real:** [A PREENCHER]
+
+### 14/10/2026 — Rascunho da base de conhecimento (H04)
+
+- **Fase:** construção da base de conhecimento.
+- **O que a IA fez:** baixou a LC 214/2025 e a EC 132/2023 do Planalto e escreveu dois scripts (`scripts/planalto/`): um extrai os artigos vigentes e outro copia **literalmente** os dispositivos escolhidos para `knowledge/rascunho.json`. Selecionou 29 dispositivos para os cinco temas do recorte. Nenhum texto legal foi redigido ou resumido pela IA.
+- **O que a verificação pegou antes de chegar ao autor:**
+  - **Texto revogado misturado ao vigente.** A primeira extração descartava só `<strike>`, mas o Planalto marca a maior parte das redações revogadas com `text-decoration: line-through` (1.953 ocorrências na LC 214). Sinal: artigos 233 e 365 apareciam duas vezes. Corrigido; as duplicatas sumiram.
+  - **Artigos de outras leis contados como da LC 214.** A LC 214 altera outras leis, citando os artigos delas entre aspas; isso gerava 37 números de artigo duplicados. O extrator passou a marcar artigos citados — o que, de quebra, permitiu usar os artigos 124 a 137 do ADCT, inseridos pela EC 132.
+  - **Títulos de seção grudados no texto** do artigo anterior (ex.: "Dos Serviços de Educação" no fim do art. 128). Separados.
+  - **Inciso a mais no recorte.** O trecho do art. 348, incisos I e II, saiu com o inciso III junto, porque o seletor "com subitens" não distinguia inciso de alínea. Corrigido e conferido que só esse trecho mudou.
+  - O rascunho passa no esquema da H03 (29/29).
+- **Limitação descoberta:** a EC 132 chama os novos tributos de "imposto previsto no art. 156-A" e "contribuição prevista no art. 195, V", sem os nomes IBS e CBS — a busca por palavra não os encontrará a partir de perguntas com os nomes. Vai para a H05 (sinônimos) e para as limitações do README.
+- **Decisão que fica com o humano:** a conferência de cada trecho no texto oficial (`docs/conferencia-base.md`).
+- **Tempo real:** [A PREENCHER]
