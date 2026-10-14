@@ -95,6 +95,46 @@ describe("search", () => {
     const [primeiro] = search(indice, "CBS 2026");
     expect(primeiro?.trecho).toEqual(exemplo[0]);
   });
+
+  // H06: "advogado" precisa achar "advogados".
+  it("acha a palavra no plural quando a pergunta está no singular, e vice-versa", () => {
+    const plurais = buildIndex([trecho("fx-plural", "Serviços prestados por advogados.")]);
+    expect(ids(search(plurais, "advogado"))).toEqual(["fx-plural"]);
+    expect(ids(search(plurais, "serviço"))).toEqual(["fx-plural"]);
+  });
+});
+
+// Cobertura (H06): quanto da pergunta o trecho cobre, ponderado pelo IDF de cada termo.
+// Separa "O que é o IBS?" (cobertura total, escore baixo) de "Qual o valor do IPVA?"
+// (escore alto por "valor", mas o termo principal nem existe na base).
+describe("cobertura", () => {
+  const indice = buildIndex(exemplo);
+
+  it("vale 1 quando o trecho contém todos os termos da pergunta", () => {
+    const [primeiro] = search(indice, "CBS 2026");
+    expect(primeiro?.trecho.id).toBe("fx-cbs");
+    expect(primeiro?.cobertura).toBeCloseTo(1);
+  });
+
+  it("fica entre 0 e 1 quando o trecho contém só parte dos termos", () => {
+    for (const r of search(indice, "imposto seletivo CBS 2026", 5)) {
+      expect(r.cobertura).toBeGreaterThan(0);
+      expect(r.cobertura).toBeLessThan(1);
+    }
+  });
+
+  it("pesa mais o termo raro: cobrir 'seletivo' vale mais do que cobrir 'cbs'", () => {
+    const resultados = search(indice, "seletivo cbs", 5);
+    const cobertura = (id: string) => resultados.find((r) => r.trecho.id === id)?.cobertura ?? 0;
+
+    expect(cobertura("fx-seletivo")).toBeGreaterThan(cobertura("fx-cbs"));
+  });
+
+  it("conta termo que não existe na base como não coberto, com peso alto", () => {
+    const [primeiro] = search(indice, "IPVA CBS");
+    expect(primeiro?.trecho.id).toBe("fx-cbs");
+    expect(primeiro?.cobertura).toBeLessThan(0.5);
+  });
 });
 
 describe("sinônimos", () => {
@@ -142,6 +182,9 @@ describe("base real", () => {
     ["Quem tem direito ao cashback?", "lc214-art112"],
     ["Quando o ICMS e o ISS deixam de existir?", "ec132-adct129"],
     ["Como fica o MEI na reforma?", "lc214-art41-p1-p3"],
+    // H06: plural e sinônimos de uso comum.
+    ["Remédios terão redução?", "lc214-art128"],
+    ["Advogado paga menos imposto na reforma?", "lc214-art127"],
   ])("“%s” traz %s entre os 3 primeiros", (pergunta, esperado) => {
     expect(ids(search(indice, pergunta))).toContain(esperado);
   });

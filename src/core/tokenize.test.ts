@@ -25,6 +25,14 @@ describe("tokenize", () => {
     ]);
   });
 
+  // H06: sem isto, "Qual a previsão do tempo?" casava com "segundo o qual" da lei.
+  it("remove palavras de pergunta, pronomes e verbos auxiliares comuns", () => {
+    expect(
+      tokenize("Qual o valor? Quem paga? Como fica? Quando começa? Onde? Quanto custa?"),
+    ).toEqual(["valor", "paga", "fica", "comeca", "custa"]);
+    expect(tokenize("Meu carro vai ter mais isso")).toEqual(["carro"]);
+  });
+
   it("mantém números, separando os de uma referência legal", () => {
     expect(tokenize("LC 214/2025, art. 5º")).toEqual(["lc", "214", "2025", "art", "5"]);
   });
