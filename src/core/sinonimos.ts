@@ -29,4 +29,9 @@ export const SINONIMOS: Sinonimos = {
   ipi: ["153, IV"],
   // [A CONFERIR] CF, art. 195, I, "b" (contribuição sobre a receita ou o faturamento).
   cofins: ['195, I, "b"', "art. 195, inciso I, alínea “b”"],
+
+  // Sinônimos de linguagem (não jurídicos): a palavra do dia a dia → a palavra da lei.
+  remedio: ["medicamentos"],
+  reducao: ["reduzidas", "reduzida", "reduzidos", "reduzido"],
+  acaba: ["extintos", "extintas", "extinta", "extinto"],
 };
