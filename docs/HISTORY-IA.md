@@ -35,3 +35,16 @@
   - Decisão deliberada: usar `NFD` e não `NFKD`. Com `NFKD`, o "º" de "5º" viraria a letra "o" e o token seria "5o"; com `NFD`, o "º" vira separador e o token é "5", o que o teste exige.
   - "nao" ficou fora da lista de palavras vazias: a negação muda o sentido da pergunta.
 - **Tempo real:** [A PREENCHER]
+
+### 14/10/2026 — Esquema da base de conhecimento (H03)
+
+- **Fase:** implementação, em TDD.
+- **Red:** a IA propôs o contrato (`parseKnowledgeBase(dados)`, que valida e devolve trechos tipados ou lança erro legível) e escreveu 18 casos de teste antes do código. O autor aprovou as três escolhas embutidas: só fonte do Planalto, só as duas normas do recorte e base vazia válida.
+- **Green:** esquema com `zod` (objeto estrito, enum de normas, validação de URL por domínio e de data real) e checagem de `id` duplicado. 25/25 testes, lint, tipos e build sem erro. Ajuste técnico necessário: `resolveJsonModule` no `tsconfig.json` para importar `knowledge/base.json`.
+- **O que a revisão pegou:**
+  - Ao imprimir as mensagens de erro reais, duas vinham do zod **em inglês** ("Required", "Unrecognized key(s)"). Traduzidas para quem vai editar a base, sem mudar os testes.
+  - **Fraqueza no próprio teste aprovado:** as asserções `toThrow("id")` procuram o texto "id" na mensagem, mas o cabeçalho "Base de conhecimento inválida" já contém "id" (em "inválida"). O teste garantia que o erro acontece, mas não que ele aponta o campo `id`. Levado ao autor, que **aprovou** reescrever as checagens para exigir `campo "id"` (e, na mesma linha parametrizada, `campo "<nome>"` para os seis campos obrigatórios).
+  - **Prova de que a correção funciona (teste de mutação manual):** a implementação foi quebrada de propósito para omitir o nome do campo na mensagem — **8 testes falharam**, contra nenhum antes da correção. O código foi restaurado e a suíte voltou a 25/25.
+  - A mutação também mostrou mais duas mensagens do zod **em inglês** (norma fora do enum e tipo errado). Traduzidas.
+  - A validação de URL compara o domínio (`planalto.gov.br` ou subdomínio), não o texto: `https://planalto.gov.br.site-falso.com` é rejeitado, e há teste para isso.
+- **Tempo real:** [A PREENCHER]

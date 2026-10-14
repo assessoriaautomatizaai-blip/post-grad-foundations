@@ -30,11 +30,12 @@
 
 ## v0.2.0 — Núcleo (sem LLM)
 
-**H03 ⬜ Formato da base de conhecimento**
+**H03 ✅ Formato da base de conhecimento**
 Como mantenedor, quero cada dispositivo legal como um trecho com metadados, para citar a fonte exata.
-- [ ] Cada trecho tem: `id` estável, `norma`, `dispositivo`, `texto`, `url_fonte`, `data_referencia`
-- [ ] Esquema validado com `zod`; trecho sem fonte ou sem data **falha** a validação
-- [ ] Teste: carregar a base inteira sem erro; `id` duplicado é rejeitado
+- [x] Cada trecho tem: `id` estável, `norma`, `dispositivo`, `texto`, `url_fonte`, `data_referencia`
+- [x] Esquema validado com `zod`; trecho sem fonte ou sem data **falha** a validação
+- [x] Teste: carregar a base inteira sem erro; `id` duplicado é rejeitado
+- [x] Além do pedido: fonte só `https` em `planalto.gov.br`, data inexistente rejeitada, campo desconhecido rejeitado, erro aponta trecho e campo (18 casos)
 
 **H04 ⬜ Base inicial**
 - [ ] 30 a 50 trechos do recorte "tira-dúvidas básico" definido em `docs/escopo.md`
