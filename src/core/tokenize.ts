@@ -8,6 +8,10 @@ const STOPWORDS = new Set(
     "em na nas no nos",
     "ao aos pela pelas pelo pelos por para com",
     "e ou que se",
+    // Palavras de pergunta, pronomes e auxiliares: "qual" casava com "segundo o qual".
+    "qual quais quem como quando onde quanto quanta quantos quantas",
+    "eu voce voces meu minha meus minhas seu sua seus suas",
+    "tem ter ser sao sera vai vao mais isso esse essa este esta",
   ]
     .join(" ")
     .split(" "),
