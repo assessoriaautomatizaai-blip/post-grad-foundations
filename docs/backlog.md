@@ -18,13 +18,13 @@
 
 ## v0.1.0 — Base
 
-**H01 🟨 Documentos de base** — escopo, backlog, decisões, `CLAUDE.md`, `.gitignore` com `.env`, `.env.example`.
-- [ ] `.env` e `.env.*` ignorados; `.env.example` versionado
-- [ ] Documentos aprovados pelo autor
+**H01 ✅ Documentos de base** — escopo, backlog, decisões, `CLAUDE.md`, `.gitignore` com `.env`, `.env.example`.
+- [x] `.env` e `.env.*` ignorados; `.env.example` versionado
+- [x] Documentos aprovados pelo autor
 
-**H02 ⬜ Estrutura de pastas e primeiro teste**
-- [ ] Pastas `src/core/`, `src/adapters/`, `knowledge/`, `eval/`, `prompts/`
-- [ ] `npm test` roda e passa com ao menos um teste real
+**H02 ✅ Estrutura de pastas e primeiro teste**
+- [x] Pastas `src/core/`, `src/adapters/`, `knowledge/`, `eval/`, `prompts/`
+- [x] `npm test` roda e passa com ao menos um teste real (`tokenize`, 6 casos — adianta a normalização da H05)
 
 ---
 
