@@ -75,3 +75,14 @@ Trechos conferidos passam de `knowledge/rascunho.json` para `knowledge/base.json
 
 - O **Anexo I** da LC 214 (lista de produtos da Cesta Básica) não entrou: é uma tabela de códigos NCM, ruim para recorte em trechos. O agente responde que a lista existe e cita o art. 125.
 - Regras detalhadas de cada redução de alíquota (arts. 129 em diante) e dos regimes específicos ficaram de fora, de propósito: o recorte é **tira-dúvidas básico**.
+
+## Sinônimos a conferir (H05)
+
+O mapa de [`src/core/sinonimos.ts`](../src/core/sinonimos.ts) liga o nome do tributo à forma como a lei o cita. Cinco ligações já têm fonte dentro da base conferida (IBS, CBS, Imposto Seletivo, cashback, PIS). Estas quatro dependem da Constituição Federal, que **não está na base**. O texto abaixo foi extraído da página do Planalto em 14/10/2026, sem as redações revogadas; a Constituição não usa as siglas, que são o nome corrente desses tributos.
+
+| Conferido | Nome   | Expressão na lei | Texto vigente na CF                                                                                                                                                                | Fonte                                                                                                |
+| --------- | ------ | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [ ]       | ICMS   | `155, II`        | Art. 155 (Estados e DF): "II - operações relativas à circulação de mercadorias e sobre prestações de serviços de transporte interestadual e intermunicipal e de comunicação [...]" | [CF, art. 155, II](https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art155ii)     |
+| [ ]       | ISS    | `156, III`       | Art. 156 (Municípios): "III - serviços de qualquer natureza, não compreendidos no art. 155, II, definidos em lei complementar."                                                    | [CF, art. 156, III](https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art156iii)   |
+| [ ]       | IPI    | `153, IV`        | Art. 153 (União): "IV - produtos industrializados;"                                                                                                                                | [CF, art. 153, IV](https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art153iv)     |
+| [ ]       | Cofins | `195, I, "b"`    | Art. 195, I (empregador, empresa e entidade equiparada): "b) a receita ou o faturamento;"                                                                                          | [CF, art. 195, I, "b"](https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art195ib) |

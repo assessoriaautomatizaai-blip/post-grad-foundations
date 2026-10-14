@@ -69,3 +69,16 @@
 - **Obstáculo de processo:** a marcação pelo editor do GitHub foi tentada duas vezes e não chegou ao repositório (nenhum commit, pull request ou branch nova, conferido pela API do GitHub). A IA **não marcou nada sem confirmação** e pediu que a conferência fosse informada no chat; o checklist registra essa origem.
 - **Resultado:** `knowledge/rascunho.json` passou a `knowledge/base.json` sem alteração de conteúdo (comparado byte a byte com a versão enviada para conferência). A suíte carrega a base real e valida o formato: 25/25.
 - **Tempo real:** [A PREENCHER — inclui o tempo de conferência do autor]
+
+### 14/10/2026 — Busca BM25 e sinônimos (H05)
+
+- **Fase:** implementação, em TDD.
+- **Red:** 18 casos escritos antes do código e aprovados pelo autor — 13 com uma base fictícia (relevância, IDF, determinismo, sinônimos, artigos parecidos) e 5 perguntas reais contra a base conferida.
+- **Green:** BM25 implementado sem biblioteca externa, mais o mapa de sinônimos com fonte para cada ligação. 43/43 testes, lint, tipos e build sem erro (44/44 depois do teste de borda).
+- **Teste que passa de primeira merece desconfiança — teste de mutação:** quatro defeitos inseridos de propósito no código.
+  - Sem sinônimos: **4 testes falharam**. Sem IDF: **1 falhou**. ✅
+  - Sem desempate pela ordem da base: nenhum falhou — mutação **equivalente** (o `sort` do JavaScript já é estável), não é lacuna.
+  - Sem borda de palavra no casamento de sinônimos: **nenhum falhou — lacuna real.** "155, II" (ICMS) casaria com "155, III". Na base atual isso não acontece (conferido trecho a trecho), mas uma lei nova na base poderia trazer o erro. Proposto ao autor um teste novo; **não foi adicionado sem aprovação**. Aprovado, o teste foi escrito, e a mesma mutação, reaplicada, passou a derrubá-lo (1 falha); com o código restaurado, 44/44.
+- **O que a conferência dos sinônimos na base pegou:** o "IBS" só achava 1 trecho, porque a EC 132 escreve "arts. 156-A e 195, V" (plural) e a expressão era "art. 156-A". Trocada por "156-A"; agora acha 2 (e a CBS, 3).
+- **Incidente de ambiente:** a suíte passou a travar sem mensagem. Causa: o projeto fica em `~/Documents`, sincronizado com o iCloud, que tinha tirado do disco 11.793 arquivos do `node_modules` e 93 do projeto (inclusive do `.git`); o vitest esperava indefinidamente o download. Correção, por decisão do autor: download forçado dos arquivos do projeto (`brctl download`), verificação do Git (`git fsck`) e `node_modules` reinstalado fora do iCloud, ligado ao projeto por link simbólico. A pasta precisa terminar em `/node_modules/`, porque o Vite reconhece dependências por esse trecho do caminho — por isso não se usou o sufixo `.nosync`.
+- **Tempo real:** [A PREENCHER]

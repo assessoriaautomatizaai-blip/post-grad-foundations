@@ -42,12 +42,15 @@ Como mantenedor, quero cada dispositivo legal como um trecho com metadados, para
 - [x] Cada trecho conferido no texto oficial pelo autor — checklist em `docs/conferencia-base.md`
 - [x] Trechos conferidos movidos para `knowledge/base.json` (29 trechos; abaixo da meta de 30–50, acima do mínimo de 20 do plano de corte)
 
-**H05 ⬜ Recuperação BM25**
+**H05 ✅ Recuperação BM25**
 Como usuário, quero que minha pergunta encontre o artigo certo, mesmo com acentos e caixa diferentes.
-- [ ] Normalização: minúsculas, sem acento, sem pontuação, remoção de *stopwords* em português
-- [ ] Devolve os `k` trechos mais relevantes com escore, em ordem decrescente
-- [ ] Determinístico: mesma pergunta → mesmo resultado
-- [ ] Testes com base-fixture pequena (não depende da base real)
+- [x] Normalização: minúsculas, sem acento, sem pontuação, remoção de *stopwords* em português
+- [x] Devolve os `k` trechos mais relevantes com escore, em ordem decrescente
+- [x] Determinístico: mesma pergunta → mesmo resultado
+- [x] Testes com base-fixture pequena (não depende da base real)
+- [x] Além do pedido: sinônimos (nome do tributo → artigo da Constituição) e 5 perguntas reais contra a base conferida
+- [ ] 4 sinônimos [A CONFERIR] na Constituição (ICMS, ISS, IPI, Cofins) — `docs/conferencia-base.md`
+- [x] Lacuna de teste achada por mutação: borda de palavra nos sinônimos ("155, II" × "155, III") — teste novo aprovado e adicionado
 
 **H06 ⬜ Decisão responder × recusar**
 Como usuário, quero que o agente admita quando não sabe, em vez de inventar.

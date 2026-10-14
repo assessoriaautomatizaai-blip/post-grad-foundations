@@ -69,7 +69,8 @@
 
 **Consequências.**
 - ✅ Determinístico, roda offline, testável; a recusa não depende do modelo "obedecer" ao prompt.
-- ⚠️ Perde sinônimos e paráfrases ("imposto novo" × "IBS"). Mitigação no MVP: lista de sinônimos no núcleo. Busca híbrida (BM25 + embeddings) fica para v2.
+- ⚠️ Perde sinônimos e paráfrases ("imposto novo" × "IBS"). Mitigação no MVP: mapa de sinônimos em `src/core/sinonimos.ts`, que liga o nome do tributo às expressões da lei (ex.: `ibs → "156-A"`). Um trecho que contém a expressão passa a ser encontrado também pelo nome; o texto do trecho não é alterado. Cada ligação tem fonte. Busca híbrida (BM25 + embeddings) fica para v2.
+- Implementação (14/10/2026): BM25 clássico (k1 = 1,2; b = 0,75), sem dependência externa; casamento de expressões por palavra inteira.
 - Limiar calibrado: [A PREENCHER após H11]
 
 ---
