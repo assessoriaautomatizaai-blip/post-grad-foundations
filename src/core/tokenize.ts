@@ -14,17 +14,29 @@ const STOPWORDS = new Set(
 );
 
 /**
- * Normaliza um texto em tokens para a recuperação BM25.
- *
- * Pergunta do usuário e trecho da lei passam pela mesma função: minúsculas,
- * sem acento nem cedilha, qualquer caractere fora de [a-z0-9] vira separador
- * (pontuação, hífen, barra, "º") e palavras vazias são descartadas.
+ * Normaliza um texto para comparação: minúsculas, sem acento nem cedilha, e
+ * qualquer caractere fora de [a-z0-9] vira um único espaço ("art. 156-A" → "art 156 a").
+ * Mantém as palavras vazias, para que expressões possam ser casadas como estão na lei.
  */
-export function tokenize(text: string): string[] {
+export function normalizeText(text: string): string {
   return text
     .normalize("NFD")
     .replace(/\p{M}/gu, "")
     .toLowerCase()
     .split(/[^a-z0-9]+/)
-    .filter((token) => token !== "" && !STOPWORDS.has(token));
+    .filter((palavra) => palavra !== "")
+    .join(" ");
+}
+
+/**
+ * Normaliza um texto em tokens para a recuperação BM25.
+ *
+ * Pergunta do usuário e trecho da lei passam pela mesma função: a normalização de
+ * `normalizeText` (pontuação, hífen, barra e "º" viram separador) e o descarte
+ * das palavras vazias.
+ */
+export function tokenize(text: string): string[] {
+  const normalizado = normalizeText(text);
+  if (normalizado === "") return [];
+  return normalizado.split(" ").filter((token) => !STOPWORDS.has(token));
 }
