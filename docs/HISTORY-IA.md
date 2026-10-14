@@ -93,3 +93,15 @@
 - **Teste de mutação:** 7 defeitos inseridos de propósito (decisão sem cobertura, sem escore, mínimos exclusivos, saudação com `some`, busca sem plural, cobertura sem peso IDF, cobertura sempre 1). **Todos derrubaram ao menos um teste** (de 1 a 7 falhas cada).
 - **Risco registrado:** a margem da cobertura é estreita (0,28 fora × 0,30 mínimo). Vai para a calibração da H11.
 - **Tempo real:** [A PREENCHER]
+
+### 14/10/2026 — Geração da resposta com o Gemini (H07)
+
+- **Fase:** implementação, em TDD — primeira vez que o **produto** usa IA (até aqui, a IA só era usada no processo de desenvolvimento).
+- **Decisão de desenho proposta pela IA e aprovada:** o modelo cita os trechos pelo `id` (`[lc214-art31]`), e não por texto livre, porque o `id` é verificável com exatidão — citação a `id` não recuperado é invenção e vira recusa.
+- **Red:** 27 casos escritos antes do código e aprovados — 19 da geração (prompt, validação de citação, fluxo completo com modelo falso) e 8 do adaptador (com cliente falso do SDK). Nenhum chama o Gemini de verdade.
+- **Fato volátil conferido na fonte:** forma de chamada do SDK (`ai.models.generateContent` → `response.text`) e nomes dos campos (`systemInstruction`, `maxOutputTokens`, `abortSignal`) conferidos na documentação do pacote no npm e nos tipos instalados. A IA tinha previsto que o `bun` instalaria uma versão anterior à 2.29.1 por causa da regra de 24 h; **a previsão estava errada** — a versão tinha 29 h. Conferido pelo horário de publicação.
+- **O que a própria IA corrigiu na implementação:** a primeira versão do fluxo engolia o erro do modelo num `catch` vazio — exatamente o defeito que o material do curso critica na U3. Passou a repassar o erro para uma função de registro fornecida pelo servidor (o núcleo não faz I/O). Essa função ainda não tem teste próprio (registrado no backlog).
+- **Green:** 137/137 na primeira execução; lint, tipos e build sem erro. A checagem de tipos também confirmou que o cliente real do SDK é compatível com a interface usada no adaptador.
+- **Teste de mutação:** 8 defeitos inseridos (aceitar `id` não recuperado, não neutralizar a pergunta, tirar o aviso, expor o erro técnico ao usuário, tirar o tempo limite, aceitar resposta sem citação, aceitar resposta vazia do Gemini, vazar a chave na mensagem de erro) — **todos derrubaram ao menos um teste**. Uma mudança inócua de controle não derrubou nenhum, como esperado.
+- **Ainda não verificado:** a chamada real ao Gemini (sem chave neste ambiente). Suíte verde não prova que o produto montado funciona.
+- **Tempo real:** [A PREENCHER]

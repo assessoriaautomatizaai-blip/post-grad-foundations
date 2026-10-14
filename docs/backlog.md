@@ -64,12 +64,16 @@ Como usuário, quero que o agente admita quando não sabe, em vez de inventar.
 
 ## v0.3.0 — Geração e simulador
 
-**H07 ⬜ Geração restrita aos trechos (Gemini)**
-- [ ] Prompt de sistema versionado em `src/core/prompts/`, exigindo resposta só com base nos trechos e citação no formato `(Norma, dispositivo)`
-- [ ] Adaptador de LLM atrás de interface; *mock* nos testes
-- [ ] Saída validada: resposta sem nenhuma citação de trecho recuperado → substituída por recusa
-- [ ] Timeout e erro do provedor → mensagem de fallback, nunca erro para o usuário
-- [ ] Aviso fixo "informativo, não substitui orientação profissional" ao fim de toda resposta
+**H07 ✅ Geração restrita aos trechos (Gemini)**
+- [x] Prompt de sistema versionado em `src/core/prompts/sistema.ts`, exigindo resposta só com base nos trechos
+- [x] Citação pelo `id` do trecho (`[lc214-art31]`), verificável com exatidão; o núcleo troca pelo formato `(Norma, dispositivo)` e lista as fontes com link
+- [x] Adaptador de LLM atrás de interface (`LlmAdapter`); modelo e cliente falsos nos testes
+- [x] Saída validada: sem citação, com `id` não recuperado ou vazia → recusa, sem mostrar o texto do modelo
+- [x] Timeout (15 s) e erro do provedor → mensagem de fallback, nunca erro para o usuário; o erro vai para o log do servidor
+- [x] Aviso fixo "informativo, não substitui orientação profissional" ao fim de toda resposta
+- [x] Pergunta isolada entre delimitadores e neutralizada (proteção contra instrução escondida na pergunta)
+- [ ] **Execução real com o Gemini:** pendente — sem chave configurada neste ambiente; feita junto com a H08 ou a H12
+- [ ] Teste para `registrarErro` (acrescentado na implementação, ainda sem teste próprio)
 
 **H08 ⬜ Simulador web**
 Como avaliador, quero testar o agente no navegador, sem WhatsApp.

@@ -50,6 +50,8 @@
 
 **Decisão.** Gemini **3.8 Flash** (`gemini-3.8-flash`, configurável por `GEMINI_MODEL`), via SDK oficial **`@google/genai`** (conferido no npm em 14/10/2026), **no plano pago**. Chave em `GEMINI_API_KEY`, só no `.env` e nos segredos do Lovable.
 
+**Implementação (14/10/2026, H07).** `@google/genai` 2.29.1 (instalada pelo `bun`, que exige versão publicada há mais de 24 h; esta tinha 29 h). Forma de chamada e nomes de campo conferidos na documentação do pacote e nos tipos instalados, não na memória do modelo. Parâmetros: `maxOutputTokens` 1024 (no Gemini 3.x o raciocínio interno conta neste limite), `temperature` 0,2 e tempo limite de 15 s com cancelamento da requisição. O modelo cita cada trecho pelo `id` entre colchetes; o núcleo recusa a resposta se houver `id` fora dos trechos recuperados.
+
 **Por que o plano pago, mesmo existindo plano gratuito.** Segundo os termos da Google, no plano gratuito o conteúdo enviado **é usado para melhorar os produtos** da Google; no pago, não. As perguntas chegam de pessoas reais pelo WhatsApp, então o plano gratuito é usado no máximo em desenvolvimento, com perguntas sintéticas, nunca com mensagens reais.
 
 **Consequências.**
