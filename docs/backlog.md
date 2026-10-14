@@ -52,11 +52,13 @@ Como usuário, quero que minha pergunta encontre o artigo certo, mesmo com acent
 - [ ] 4 sinônimos [A CONFERIR] na Constituição (ICMS, ISS, IPI, Cofins) — `docs/conferencia-base.md`
 - [x] Lacuna de teste achada por mutação: borda de palavra nos sinônimos ("155, II" × "155, III") — teste novo aprovado e adicionado
 
-**H06 ⬜ Decisão responder × recusar**
+**H06 ✅ Decisão responder × recusar**
 Como usuário, quero que o agente admita quando não sabe, em vez de inventar.
-- [ ] Escore máximo < `RETRIEVAL_MIN_SCORE` → resposta de recusa padrão, **sem chamar o LLM**
-- [ ] Pergunta vazia ou só saudação → mensagem de boas-vindas com exemplos de pergunta
-- [ ] Limiar calibrado com o conjunto-ouro (H11), valor e justificativa registrados em ADR-004
+- [x] Abaixo dos mínimos → resposta de recusa padrão, **sem chamar o LLM** (`decide` nem recebe o modelo)
+- [x] Pergunta vazia ou só saudação → mensagem de boas-vindas com exemplos de pergunta
+- [x] Mudança de desenho: só o escore não separava dentro × fora do escopo; a decisão usa **escore mínimo e cobertura mínima** (ADR-004). Para isso, a busca ganhou palavras de pergunta como vazias, redução de plural e sinônimos de linguagem
+- [ ] Limiar calibrado com o conjunto-ouro (H11) — valores atuais (0,5 e 0,3) são provisórios; margem estreita registrada no ADR-004
+- [ ] Recusas indevidas conhecidas, para a H11: "Advogado paga menos imposto?" (cobertura 0,18) e "Quem fixa a alíquota do IBS?" (0,23)
 
 ---
 

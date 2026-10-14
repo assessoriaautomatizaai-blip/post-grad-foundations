@@ -71,6 +71,12 @@
 - ✅ Determinístico, roda offline, testável; a recusa não depende do modelo "obedecer" ao prompt.
 - ⚠️ Perde sinônimos e paráfrases ("imposto novo" × "IBS"). Mitigação no MVP: mapa de sinônimos em `src/core/sinonimos.ts`, que liga o nome do tributo às expressões da lei (ex.: `ibs → "156-A"`). Um trecho que contém a expressão passa a ser encontrado também pelo nome; o texto do trecho não é alterado. Cada ligação tem fonte. Busca híbrida (BM25 + embeddings) fica para v2.
 - Implementação (14/10/2026): BM25 clássico (k1 = 1,2; b = 0,75), sem dependência externa; casamento de expressões por palavra inteira.
+- **Revisão em 14/10/2026 (H06): só o escore não basta.** Medido na base real, nenhum limiar de escore separava as perguntas: "O que é o IBS?" (dentro) teve 0,67 e "Qual o valor do IPVA do meu carro?" (fora) teve 3,39. A decisão passou a exigir dois mínimos:
+  - **escore mínimo** (BM25) — descarta casamentos fracos;
+  - **cobertura mínima** — fração da pergunta, ponderada pelo IDF, que o trecho contém. Termo da pergunta que não existe na base pesa o máximo contra a cobertura: é isso que recusa o IPVA.
+  - Ajustes na busca que tornaram a cobertura útil: palavras de pergunta como vazias ("qual" casava com "segundo o qual"), redução de plural ("advogado" × "advogados") e sinônimos de linguagem ("remédio" → "medicamentos").
+- **Limites provisórios:** escore ≥ 0,5 e cobertura ≥ 0,3 (`DECISAO_PADRAO`). Em 20 perguntas de teste: 8/8 fora do escopo recusadas; 10/12 dentro respondidas; os 2 erros são recusas indevidas (lado seguro).
+- ⚠️ **Margem estreita:** a pergunta fora do escopo com maior cobertura ("Como declarar o imposto de renda?") ficou em 0,28, contra o mínimo de 0,30. Calibração definitiva na H11, com o conjunto-ouro.
 - Limiar calibrado: [A PREENCHER após H11]
 
 ---

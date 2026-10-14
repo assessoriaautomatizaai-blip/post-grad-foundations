@@ -82,3 +82,14 @@
 - **O que a conferência dos sinônimos na base pegou:** o "IBS" só achava 1 trecho, porque a EC 132 escreve "arts. 156-A e 195, V" (plural) e a expressão era "art. 156-A". Trocada por "156-A"; agora acha 2 (e a CBS, 3).
 - **Incidente de ambiente:** a suíte passou a travar sem mensagem. Causa: o projeto fica em `~/Documents`, sincronizado com o iCloud, que tinha tirado do disco 11.793 arquivos do `node_modules` e 93 do projeto (inclusive do `.git`); o vitest esperava indefinidamente o download. Correção, por decisão do autor: download forçado dos arquivos do projeto (`brctl download`), verificação do Git (`git fsck`) e `node_modules` reinstalado fora do iCloud, ligado ao projeto por link simbólico. A pasta precisa terminar em `/node_modules/`, porque o Vite reconhece dependências por esse trecho do caminho — por isso não se usou o sufixo `.nosync`.
 - **Tempo real:** [A PREENCHER]
+
+### 14/10/2026 — Decisão responder × recusar (H06)
+
+- **A medição antes dos testes mudou o desenho.** Antes de escrever a especificação, a IA mediu os escores da busca em 12 perguntas dentro e 10 fora do escopo, para não escrever um teste impossível de cumprir. Resultado: **nenhum limiar de escore separava os dois grupos** — "O que é o IBS?" teve 0,67 e "Qual o valor do IPVA do meu carro?" teve 3,39. A H05, com seus 5 testes reais verdes, escondia três defeitos da busca: palavras de pergunta contando como termo ("qual" casava com "segundo o qual"), falta de plural ("advogado" não achava "advogados") e falta de sinônimos de uso comum ("remédios" × "medicamentos").
+- **Decisão do autor:** entre seguir o backlog (só limiar, com erros declarados) e corrigir a busca acrescentando a **cobertura** como segundo sinal (+2 h estimadas), escolheu corrigir.
+- **Protótipo antes do teste:** a IA prototipou a correção fora do repositório e mediu: 8/8 recusas corretas e 10/12 respostas corretas; os 2 erros são recusas indevidas. Só então escreveu os testes.
+- **Red:** 1 caso novo no `tokenize`, 19 no `stem` (arquivo novo), 5 na busca (plural e cobertura) mais 2 perguntas reais, e 39 na decisão (arquivo novo, com 18 perguntas reais) — 66 casos novos. Aprovados pelo autor. Os 44 testes anteriores seguiram verdes.
+- **Green:** 110/110 na primeira execução. Lint, tipos e build sem erro.
+- **Teste de mutação:** 7 defeitos inseridos de propósito (decisão sem cobertura, sem escore, mínimos exclusivos, saudação com `some`, busca sem plural, cobertura sem peso IDF, cobertura sempre 1). **Todos derrubaram ao menos um teste** (de 1 a 7 falhas cada).
+- **Risco registrado:** a margem da cobertura é estreita (0,28 fora × 0,30 mínimo). Vai para a calibração da H11.
+- **Tempo real:** [A PREENCHER]
