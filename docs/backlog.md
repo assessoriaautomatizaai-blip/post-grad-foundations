@@ -37,10 +37,10 @@ Como mantenedor, quero cada dispositivo legal como um trecho com metadados, para
 - [x] Teste: carregar a base inteira sem erro; `id` duplicado é rejeitado
 - [x] Além do pedido: fonte só `https` em `planalto.gov.br`, data inexistente rejeitada, campo desconhecido rejeitado, erro aponta trecho e campo (18 casos)
 
-**H04 🟨 Base inicial**
-- [x] Rascunho com 29 trechos extraídos do Planalto (`knowledge/rascunho.json`, gerado por `scripts/planalto/`)
-- [ ] Cada trecho conferido no texto oficial pelo autor — checklist em `docs/conferencia-base.md`
-- [ ] Trechos conferidos movidos para `knowledge/base.json`
+**H04 ✅ Base inicial**
+- [x] Rascunho com 29 trechos extraídos do Planalto (gerado por `scripts/planalto/`)
+- [x] Cada trecho conferido no texto oficial pelo autor — checklist em `docs/conferencia-base.md`
+- [x] Trechos conferidos movidos para `knowledge/base.json` (29 trechos; abaixo da meta de 30–50, acima do mínimo de 20 do plano de corte)
 
 **H05 ⬜ Recuperação BM25**
 Como usuário, quero que minha pergunta encontre o artigo certo, mesmo com acentos e caixa diferentes.

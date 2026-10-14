@@ -62,3 +62,10 @@
 - **Limitação descoberta:** a EC 132 chama os novos tributos de "imposto previsto no art. 156-A" e "contribuição prevista no art. 195, V", sem os nomes IBS e CBS — a busca por palavra não os encontrará a partir de perguntas com os nomes. Vai para a H05 (sinônimos) e para as limitações do README.
 - **Decisão que fica com o humano:** a conferência de cada trecho no texto oficial (`docs/conferencia-base.md`).
 - **Tempo real:** [A PREENCHER]
+
+### 14/10/2026 — Conferência humana e base preenchida (H04)
+
+- **Conferência:** o autor conferiu os 29 trechos no texto oficial do Planalto e aprovou todos, **sem correções**.
+- **Obstáculo de processo:** a marcação pelo editor do GitHub foi tentada duas vezes e não chegou ao repositório (nenhum commit, pull request ou branch nova, conferido pela API do GitHub). A IA **não marcou nada sem confirmação** e pediu que a conferência fosse informada no chat; o checklist registra essa origem.
+- **Resultado:** `knowledge/rascunho.json` passou a `knowledge/base.json` sem alteração de conteúdo (comparado byte a byte com a versão enviada para conferência). A suíte carrega a base real e valida o formato: 25/25.
+- **Tempo real:** [A PREENCHER — inclui o tempo de conferência do autor]
