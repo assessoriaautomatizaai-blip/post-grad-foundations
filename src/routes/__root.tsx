@@ -78,14 +78,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Tira-dúvidas da reforma tributária" },
+      {
+        name: "description",
+        content:
+          "Agente de WhatsApp que responde dúvidas básicas sobre a reforma tributária, citando a lei.",
+      },
+      { property: "og:title", content: "Tira-dúvidas da reforma tributária" },
+      {
+        property: "og:description",
+        content:
+          "Agente de WhatsApp que responde dúvidas básicas sobre a reforma tributária, citando a lei.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary" },
     ],
     links: [
       {
