@@ -105,3 +105,19 @@
 - **Teste de mutação:** 8 defeitos inseridos (aceitar `id` não recuperado, não neutralizar a pergunta, tirar o aviso, expor o erro técnico ao usuário, tirar o tempo limite, aceitar resposta sem citação, aceitar resposta vazia do Gemini, vazar a chave na mensagem de erro) — **todos derrubaram ao menos um teste**. Uma mudança inócua de controle não derrubou nenhum, como esperado.
 - **Ainda não verificado:** a chamada real ao Gemini (sem chave neste ambiente). Suíte verde não prova que o produto montado funciona.
 - **Tempo real:** [A PREENCHER]
+
+### 15/10/2026 — Simulador web (H08)
+
+- **Fase:** implementação, em TDD, e primeira execução do produto montado.
+- **Red:** 20 casos aprovados antes do código — 8 do serviço do agente (base real, modelo falso), 11 do componente (histórico, espera, fontes como links, formatação do WhatsApp, HTML tratado como texto, falha de rede, acessibilidade) e 1 da rota.
+- **Antes de rodar:** o iCloud tinha tirado do disco 369 arquivos do projeto durante a noite (o risco previsto no incidente da H05). Baixados de novo e o Git conferido antes de qualquer teste.
+- **O que o framework pegou:** o build falhou com `Import denied in client environment` — o TanStack Start bloqueia no navegador qualquer arquivo em `src/server/`. A definição da função de servidor (a ponte RPC) foi para `src/lib/simulador.functions.ts`; a implementação ficou em `src/server/`, carregada só dentro do handler, que o framework remove do código do cliente.
+- **Verificação da afirmação "a chave não vai para o navegador":** a IA procurou no código gerado para o cliente o texto de um trecho da lei, o prompt de sistema, `generateContent` e `GEMINI_API_KEY` — **nenhum aparece no cliente**; todos aparecem só no servidor.
+- **O que a revisão da IA corrigiu além dos testes:**
+  - O limite de 500 caracteres estava duplicado no componente; centralizado em `src/core/pergunta.ts` (importar do servidor levaria a base para o navegador).
+  - O agente de produção criava o cliente do Gemini na primeira pergunta: **sem chave, até "oi" e as recusas falhariam**, embora não precisem do modelo. Passou a criar o cliente só quando o modelo é necessário.
+  - O Prettier reformatou dois arquivos do template do Lovable; a mudança foi desfeita, por não fazer parte do escopo.
+- **Green:** 157/157; lint, tipos e build sem erro. **Teste de mutação:** 8 defeitos (HTML interpretado/XSS, sem `trim`, erro técnico na tela, link sem `noopener`, envio vazio, sem `aria-live`, indicador de espera que nunca some, `registrarErro` ignorado) — **todos derrubados**.
+- **Execução real (produto montado, servidor local):** "oi" → boas-vindas; "Qual o valor do IPVA do meu carro?" → recusa, sem chamar o modelo; "O que é o split payment?" → mensagem de falha amigável, porque não há chave neste ambiente. O log do servidor registrou `GEMINI_API_KEY não configurada`, **sem o texto da pergunta**.
+- **Ainda não verificado:** a resposta real do Gemini. Observação: o servidor de desenvolvimento da configuração do Lovable também escuta na rede local (Network: 192.168.x.x) — aceitável só para desenvolvimento.
+- **Tempo real:** [A PREENCHER]

@@ -10,7 +10,7 @@ Prazo: 14/10 a 19/10/2026 às 12h. A carga horária do C4 é de 30 h práticas.
 |---|---|---|---|
 | `v0.1.0` Base | Leitura do material, escopo, backlog, ADRs, `CLAUDE.md`, `.gitignore` | 2 h | — |
 | `v0.2.0` Núcleo | Esquema da base, **30–50 trechos conferidos no Planalto**, BM25, decisão responder × recusar, testes | 6 h | **Conferência humana dos trechos (~3 h)** — não dá para delegar à IA sem perder a garantia de fonte |
-| `v0.3.0` Geração + simulador | Adaptador Claude, prompt de sistema, validação da citação, fallback, página `/simulador` | 4 h | Ajuste do prompt até a resposta citar sempre a fonte |
+| `v0.3.0` Geração + simulador | Adaptador Gemini, prompt de sistema, validação da citação, fallback, página `/simulador` | 4 h | Ajuste do prompt até a resposta citar sempre a fonte |
 | `v0.4.0` WhatsApp + avaliação | Evolution API na Cloudfy (instância, QR Code, webhook), rota do webhook, deduplicação, envio, conjunto-ouro, calibração do limiar | 6 h | **Configuração da Evolution e alcance do webhook (~2 h)**; a resposta precisa chegar a tempo ao WhatsApp |
 | `v1.0.0` Entrega | README, varredura de segredos, clone limpo, licença, tag, repositório público | 3 h | README conferido contra o código |
 | Fórum | Postagem com os 5 itens + réplica a um colega | 1,5 h | — |

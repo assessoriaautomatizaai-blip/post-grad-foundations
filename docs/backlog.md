@@ -73,13 +73,16 @@ Como usuário, quero que o agente admita quando não sabe, em vez de inventar.
 - [x] Aviso fixo "informativo, não substitui orientação profissional" ao fim de toda resposta
 - [x] Pergunta isolada entre delimitadores e neutralizada (proteção contra instrução escondida na pergunta)
 - [ ] **Execução real com o Gemini:** pendente — sem chave configurada neste ambiente; feita junto com a H08 ou a H12
-- [ ] Teste para `registrarErro` (acrescentado na implementação, ainda sem teste próprio)
+- [x] Teste para `registrarErro` — coberto na H08 (`src/server/agente.test.ts`)
 
-**H08 ⬜ Simulador web**
+**H08 ✅ Simulador web**
 Como avaliador, quero testar o agente no navegador, sem WhatsApp.
-- [ ] Página `/simulador` com campo de pergunta e histórico da sessão
-- [ ] Usa exatamente a mesma função do núcleo que o webhook usa
-- [ ] Mostra as fontes citadas em destaque
+- [x] Página `/simulador` com campo de pergunta e histórico da sessão
+- [x] Usa exatamente a mesma função do núcleo que o webhook usa (`createAgente().perguntar`, em `src/server/agente.ts`)
+- [x] Mostra as fontes citadas em destaque, como links para o Planalto
+- [x] Chave do Gemini, base e prompt só no servidor — conferido no código gerado para o navegador
+- [x] Execução real no app montado: boas-vindas, recusa e falha amigável (sem chave) funcionando
+- [ ] Resposta real do Gemini no simulador — depende da `GEMINI_API_KEY` nos segredos do Lovable
 
 ---
 
