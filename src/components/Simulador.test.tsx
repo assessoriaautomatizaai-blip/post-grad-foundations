@@ -301,3 +301,48 @@ describe("Simulador — estado vazio, contador e nova conversa", () => {
     expect(screen.getAllByRole("button", { name: /\?$/ }).length).toBeGreaterThanOrEqual(3);
   });
 });
+
+// Visual de conversa de mensageiro (pedido do autor): hora, tiques de leitura e status.
+describe("Simulador — estilo de conversa de mensageiro", () => {
+  it("mostra a hora de cada mensagem", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date(2026, 9, 15, 14, 7));
+    try {
+      const { enviar, conversa } = montar();
+      enviar("O que é o split payment?");
+      await screen.findByText(/separação do tributo/);
+
+      for (const mensagem of within(conversa()).getAllByRole("article")) {
+        expect(within(mensagem).getByText("14:07").tagName).toBe("TIME");
+      }
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("a pergunta fica como enviada e vira lida quando a resposta chega", async () => {
+    let responder: (resposta: Resposta) => void = () => {};
+    const { enviar, conversa } = montar(
+      vi.fn(() => new Promise<Resposta>((resolve) => (responder = resolve))),
+    );
+    enviar("O que é o split payment?");
+
+    const pergunta = within(conversa()).getAllByRole("article")[0] as HTMLElement;
+    expect(within(pergunta).getByLabelText("Enviada")).toBeInTheDocument();
+    responder(respostaComFonte);
+    expect(await within(pergunta).findByLabelText("Lida")).toBeInTheDocument();
+  });
+
+  it("o cabeçalho mostra 'online' e 'digitando…' enquanto o agente responde", async () => {
+    let responder: (resposta: Resposta) => void = () => {};
+    const { enviar } = montar(
+      vi.fn(() => new Promise<Resposta>((resolve) => (responder = resolve))),
+    );
+    expect(screen.getByText("online")).toBeInTheDocument();
+
+    enviar("O que é o split payment?");
+    expect(await screen.findByText("digitando…")).toBeInTheDocument();
+    responder(respostaComFonte);
+    expect(await screen.findByText("online")).toBeInTheDocument();
+  });
+});
