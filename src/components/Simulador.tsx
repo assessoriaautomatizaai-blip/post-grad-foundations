@@ -1,11 +1,11 @@
-import { AlertTriangle, BookOpenCheck, Info, RotateCcw, SendHorizontal } from "lucide-react";
+import { AlertTriangle, BookOpenCheck, Globe, Info, RotateCcw, SendHorizontal } from "lucide-react";
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 
 import { LogoSimbolo } from "@/components/marca/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { MENSAGEM_FALHA, type Resposta } from "@/core/answer";
+import { MENSAGEM_FALHA, type FonteWeb, type Resposta } from "@/core/answer";
 import type { Trecho } from "@/core/knowledge";
 import { MAX_PERGUNTA } from "@/core/pergunta";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,7 @@ interface Mensagem {
   tipo?: Resposta["tipo"];
   texto: string;
   fontes: Trecho[];
+  fontesWeb: FonteWeb[];
 }
 
 // Perguntas que a base responde (as mesmas das boas-vindas do WhatsApp).
@@ -51,16 +52,17 @@ function formatar(texto: string): ReactNode[] {
 const ESTILO_AGENTE: Record<Resposta["tipo"], string> = {
   resposta: "bg-card border",
   boas_vindas: "bg-card border",
-  recusa: "bg-secondary border border-dashed",
+  fora_do_tema: "bg-secondary border border-dashed",
+  sem_fonte: "bg-secondary border border-dashed",
   falha: "bg-destructive/5 border border-destructive/30",
 };
 
 function Selo({ tipo }: { tipo?: Resposta["tipo"] | undefined }) {
-  if (tipo === "recusa") {
+  if (tipo === "fora_do_tema" || tipo === "sem_fonte") {
     return (
       <span className="mb-2 inline-flex items-center gap-1.5 font-sans text-xs font-medium text-muted-foreground">
         <Info className="size-3.5" aria-hidden="true" />
-        Fora da base
+        {tipo === "fora_do_tema" ? "Fora do tema" : "Sem fonte"}
       </span>
     );
   }
@@ -105,7 +107,7 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
   async function enviarPergunta(conteudo: string) {
     setTexto("");
     setAguardando(true);
-    adicionar({ autor: "usuario", texto: conteudo, fontes: [] });
+    adicionar({ autor: "usuario", texto: conteudo, fontes: [], fontesWeb: [] });
     try {
       const resposta = await perguntar(conteudo);
       adicionar({
@@ -113,11 +115,18 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
         tipo: resposta.tipo,
         texto: resposta.texto,
         fontes: resposta.fontes,
+        fontesWeb: resposta.fontesWeb,
       });
     } catch {
       // A falha de rede ou do servidor fica no console do navegador; o usuário vê a
       // mesma mensagem de falha do WhatsApp, sem detalhe técnico.
-      adicionar({ autor: "agente", tipo: "falha", texto: MENSAGEM_FALHA, fontes: [] });
+      adicionar({
+        autor: "agente",
+        tipo: "falha",
+        texto: MENSAGEM_FALHA,
+        fontes: [],
+        fontesWeb: [],
+      });
     } finally {
       setAguardando(false);
       campoRef.current?.focus();
@@ -164,7 +173,8 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
               Pergunte sobre a reforma tributária
             </p>
             <p className="text-sm text-muted-foreground">
-              Cada resposta cita o artigo de lei de onde veio. Comece por um destes exemplos:
+              As respostas citam a lei e, quando preciso, completam com fontes da web. Comece por um
+              destes exemplos:
             </p>
             <div className="flex flex-wrap justify-center gap-2">
               {EXEMPLOS.map((exemplo) => (
@@ -199,7 +209,7 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
               {m.autor === "agente" && <Selo tipo={m.tipo} />}
               {formatar(m.texto)}
               {m.fontes.length > 0 && (
-                <ul className="mt-3 flex flex-wrap gap-2 border-t pt-3" aria-label="Fontes citadas">
+                <ul className="mt-3 flex flex-wrap gap-2 border-t pt-3" aria-label="Fontes da lei">
                   {m.fontes.map((t) => (
                     <li key={t.id}>
                       <a
@@ -210,6 +220,29 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
                       >
                         <BookOpenCheck className="size-3.5" aria-hidden="true" />
                         {`${t.norma}, ${t.dispositivo}`}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {m.fontesWeb.length > 0 && (
+                <ul
+                  className="mt-3 flex flex-wrap gap-2 border-t pt-3"
+                  aria-label="Fontes da web, não conferidas"
+                >
+                  <li className="w-full font-sans text-xs text-muted-foreground">
+                    Da web · não conferidas
+                  </li>
+                  {m.fontesWeb.map((f) => (
+                    <li key={f.url} className="max-w-full">
+                      <a
+                        href={f.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex max-w-full items-center gap-1.5 rounded-md border border-dashed bg-background px-2.5 py-1 font-sans text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+                      >
+                        <Globe className="size-3.5 shrink-0" aria-hidden="true" />
+                        <span className="truncate">{f.titulo}</span>
                       </a>
                     </li>
                   ))}

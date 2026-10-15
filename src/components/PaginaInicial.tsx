@@ -4,6 +4,7 @@ import {
   BookOpenCheck,
   Check,
   FileSearch,
+  Globe,
   MessageCircle,
   ShieldCheck,
   X,
@@ -20,21 +21,21 @@ const PASSOS = [
   },
   {
     icone: FileSearch,
-    titulo: "Busca na lei",
+    titulo: "O Gemini lê a lei",
     texto:
-      "O código procura os dispositivos da EC 132/2023 e da LC 214/2025 que tratam do assunto, numa base conferida no texto oficial do Planalto.",
+      "O modelo recebe a base inteira: 96 trechos copiados literalmente do texto oficial da EC 132/2023 e da LC 214/2025, no Planalto.",
+  },
+  {
+    icone: Globe,
+    titulo: "Completa com a web",
+    texto:
+      "O que a lei não cobre — prazos, notas fiscais, comunicados — vem de busca no Google, sempre com o link da fonte.",
   },
   {
     icone: ShieldCheck,
-    titulo: "Decide antes da IA",
+    titulo: "O código confere",
     texto:
-      "Se a base não sustenta a resposta, o agente recusa — sem chamar o modelo e sem inventar.",
-  },
-  {
-    icone: BookOpenCheck,
-    titulo: "Responde citando",
-    texto:
-      "O Gemini redige só a partir dos trechos escolhidos, e o código confere cada citação antes de enviar.",
+      "Artigo que não existe na base bloqueia a resposta; complemento sem link é removido. Lei e web aparecem separadas.",
   },
 ] as const;
 
@@ -42,29 +43,33 @@ const RESPONDE = [
   "O que são o IBS, a CBS e o Imposto Seletivo",
   "O cronograma de transição até 2033",
   "Split payment, créditos e cashback",
-  "Cesta básica e reduções de alíquota",
-  "Como ficam o Simples Nacional e o MEI",
+  "Cesta básica, imóveis, combustíveis e reduções de alíquota",
+  "Simples Nacional, MEI e produtor rural",
+  "Prazos e obrigações operacionais, com fonte da web",
 ];
 
 const NAO_RESPONDE = [
-  "Cálculo de imposto para um caso concreto",
+  "Cálculo de imposto para o seu caso concreto — explica a regra e indica um contador",
   "Planejamento tributário ou recomendação",
-  "Imposto de renda, IPVA, ITBI e outros fora da base",
-  "Leis estaduais, municipais e regulamentos ainda não publicados",
+  "Assuntos fora de tributos — explica o foco e sugere perguntas",
 ];
 
-// Resultados da avaliação de 15/10/2026 (eval/relatorio.md). Ao atualizar, mudar a data.
+// Garantias conferidas por testes automatizados (ADR-007) e conferência da base em 15/10/2026.
 const RESULTADOS = [
-  { valor: "100%", rotulo: "das perguntas fora do escopo recusadas", detalhe: "10 de 10" },
   {
-    valor: "73–86%",
-    rotulo: "com o trecho certo entre os 3 primeiros",
-    detalhe: "calibração e teste",
+    valor: "96",
+    rotulo: "trechos de lei na base",
+    detalhe: "texto literal, conferido contra o Planalto",
   },
   {
-    valor: "60–71%",
-    rotulo: "das perguntas válidas respondidas",
-    detalhe: "calibração e teste; o resto é recusado",
+    valor: "0",
+    rotulo: "artigos inventados entregues",
+    detalhe: "citação fora da base bloqueia a resposta",
+  },
+  {
+    valor: "100%",
+    rotulo: "dos complementos da web com link",
+    detalhe: "sem fonte, o complemento é removido",
   },
 ] as const;
 
@@ -91,7 +96,8 @@ export function PaginaInicial() {
             </h1>
             <p className="mt-5 max-w-xl font-serif text-lg text-muted-foreground">
               O Inciso é um agente de WhatsApp que responde em português claro e cita o artigo de
-              lei de onde tirou cada informação. Fora da base, ele diz que não tem a informação.
+              lei de onde tirou cada informação. Quando a lei não basta, completa com fontes da web,
+              sempre com o link e separadas do que é lei.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" className="group">
@@ -142,7 +148,7 @@ export function PaginaInicial() {
           Como funciona
         </h2>
         <p className="mt-3 max-w-2xl text-muted-foreground">
-          Quem decide responder ou recusar é o código, não o modelo de linguagem.
+          O modelo raciocina; o código confere as fontes antes de a resposta sair.
         </p>
         <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PASSOS.map(({ icone: Icone, titulo, texto }, i) => (
@@ -191,11 +197,12 @@ export function PaginaInicial() {
 
       <section aria-labelledby="transparencia" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <h2 id="transparencia" className="text-3xl font-semibold text-foreground">
-          Medido, não prometido
+          Fonte em toda resposta
         </h2>
         <p className="mt-3 max-w-2xl text-muted-foreground">
-          Avaliação de 15/10/2026 com 32 perguntas e gabarito, sem o modelo de linguagem. O agente
-          erra do lado seguro: recusa mais do que deveria, mas não responde o que está fora da base.
+          Garantias conferidas no código e em testes automatizados; base conferida em 15/10/2026. A
+          avaliação com o Gemini sobre o conjunto-ouro está sendo refeita para o método atual; o
+          relatório publicado é o do método anterior (busca por palavras).
         </p>
         <dl className="mt-10 grid gap-4 sm:grid-cols-3">
           {RESULTADOS.map(({ valor, rotulo, detalhe }) => (
@@ -215,7 +222,7 @@ export function PaginaInicial() {
             rel="noopener noreferrer"
             className="font-medium text-primary underline underline-offset-4 hover:no-underline"
           >
-            Ler o relatório completo da avaliação
+            Ler o relatório da avaliação anterior
           </a>
         </p>
       </section>
