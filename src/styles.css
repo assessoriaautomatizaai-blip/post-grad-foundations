@@ -1,6 +1,10 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "@fontsource-variable/schibsted-grotesk";
+@import "@fontsource-variable/source-serif-4";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -26,11 +30,16 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  /* Fontes da marca Inciso (docs/marca), hospedadas no próprio app. */
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-serif:
-    "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Charter, Georgia, ui-serif, serif;
+    "Schibsted Grotesk Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Source Serif 4 Variable", Georgia, ui-serif, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --color-selo: var(--selo);
+  --color-citacao: var(--citacao);
+  --color-citacao-foreground: var(--citacao-foreground);
+  --color-citacao-borda: var(--citacao-borda);
+  --color-realce: var(--realce);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -66,79 +75,98 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/*
+ * Paleta Inciso (docs/marca/cores-e-fontes.md), organizada por função — 60-30-10:
+ * - Neutros (60%): papel no fundo; superfícies, bordas e cinzas na matiz da tinta (≈266°),
+ *   com croma baixo, para o cinza não "puxar" para outra cor ao lado do texto.
+ * - Tinta (30%): texto. Grafite: texto secundário.
+ * - Azul-caneta (10%): ações, links, foco, hover (--accent é um véu de azul) e seleção.
+ * - Marca-texto (<2%): só o que é lei citada (--citacao) e o realce do título (--realce).
+ * Contraste e harmonia conferidos por src/styles.contraste.test.ts.
+ */
 :root {
-  /* Identidade "papel e tinta": fundo de papel quente, tinta azul-petróleo, âmbar de selo.
-     Nunca #000 nem #FFF puros. Contrastes de texto conferidos (AA) no HISTORY-IA. */
-  --radius: 0.75rem;
-  --background: oklch(0.982 0.008 85);
-  --foreground: oklch(0.24 0.03 235);
-  --card: oklch(0.995 0.004 85);
-  --card-foreground: oklch(0.24 0.03 235);
-  --popover: oklch(0.995 0.004 85);
-  --popover-foreground: oklch(0.24 0.03 235);
-  --primary: oklch(0.42 0.075 215);
-  --primary-foreground: oklch(0.985 0.006 85);
-  --secondary: oklch(0.95 0.012 85);
-  --secondary-foreground: oklch(0.3 0.04 230);
-  --muted: oklch(0.95 0.012 85);
-  --muted-foreground: oklch(0.46 0.025 235);
-  --accent: oklch(0.94 0.05 82);
-  --accent-foreground: oklch(0.38 0.085 60);
-  --selo: oklch(0.72 0.135 75);
-  --destructive: oklch(0.55 0.19 27);
-  --destructive-foreground: oklch(0.985 0.006 85);
-  --border: oklch(0.9 0.014 85);
-  --input: oklch(0.88 0.016 85);
-  --ring: oklch(0.55 0.1 215);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.982 0.008 85);
-  --sidebar-foreground: oklch(0.24 0.03 235);
-  --sidebar-primary: oklch(0.42 0.075 215);
-  --sidebar-primary-foreground: oklch(0.985 0.006 85);
-  --sidebar-accent: oklch(0.95 0.012 85);
-  --sidebar-accent-foreground: oklch(0.3 0.04 230);
-  --sidebar-border: oklch(0.9 0.014 85);
-  --sidebar-ring: oklch(0.55 0.1 215);
+  --radius: 0.625rem;
+  --marca-traco: oklch(0.45 0.212 267);
+  --background: oklch(0.969 0.004 121.6);
+  --foreground: oklch(0.21 0.029 266.1);
+  --card: oklch(0.992 0.002 264);
+  --card-foreground: oklch(0.21 0.029 266.1);
+  --popover: oklch(0.992 0.002 264);
+  --popover-foreground: oklch(0.21 0.029 266.1);
+  --primary: oklch(0.45 0.212 267);
+  --primary-foreground: oklch(0.985 0.003 264);
+  --secondary: oklch(0.94 0.008 266);
+  --secondary-foreground: oklch(0.21 0.029 266.1);
+  --muted: oklch(0.94 0.008 266);
+  --muted-foreground: oklch(0.438 0.028 264.2);
+  --accent: oklch(0.937 0.03 267);
+  --accent-foreground: oklch(0.37 0.16 267);
+  --selo: oklch(0.834 0.158 89);
+  --citacao: oklch(0.955 0.055 92);
+  --citacao-foreground: oklch(0.21 0.029 266.1);
+  --citacao-borda: oklch(0.84 0.13 90);
+  --realce: oklch(0.834 0.158 89 / 0.45);
+  --destructive: oklch(0.5 0.182 29.5);
+  --destructive-foreground: oklch(0.985 0.003 264);
+  --border: oklch(0.895 0.01 266);
+  --input: oklch(0.6 0.024 266);
+  --ring: oklch(0.45 0.212 267);
+  --chart-1: oklch(0.45 0.212 267);
+  --chart-2: oklch(0.834 0.158 89);
+  --chart-3: oklch(0.438 0.028 264.2);
+  --chart-4: oklch(0.709 0.152 271.7);
+  --chart-5: oklch(0.21 0.029 266.1);
+  --sidebar: oklch(0.969 0.004 121.6);
+  --sidebar-foreground: oklch(0.21 0.029 266.1);
+  --sidebar-primary: oklch(0.45 0.212 267);
+  --sidebar-primary-foreground: oklch(0.985 0.003 264);
+  --sidebar-accent: oklch(0.937 0.03 267);
+  --sidebar-accent-foreground: oklch(0.37 0.16 267);
+  --sidebar-border: oklch(0.895 0.01 266);
+  --sidebar-ring: oklch(0.45 0.212 267);
 }
 
 .dark {
-  --background: oklch(0.185 0.016 235);
-  --foreground: oklch(0.93 0.01 85);
-  --card: oklch(0.225 0.018 235);
-  --card-foreground: oklch(0.93 0.01 85);
-  --popover: oklch(0.225 0.018 235);
-  --popover-foreground: oklch(0.93 0.01 85);
-  --primary: oklch(0.79 0.085 200);
-  --primary-foreground: oklch(0.2 0.03 235);
-  --secondary: oklch(0.27 0.02 235);
-  --secondary-foreground: oklch(0.93 0.01 85);
-  --muted: oklch(0.27 0.02 235);
-  --muted-foreground: oklch(0.74 0.02 85);
-  --accent: oklch(0.31 0.045 70);
-  --accent-foreground: oklch(0.88 0.08 82);
-  --selo: oklch(0.78 0.13 78);
-  --destructive: oklch(0.7 0.17 25);
-  --destructive-foreground: oklch(0.2 0.03 235);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.7 0.09 200);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.225 0.018 235);
-  --sidebar-foreground: oklch(0.93 0.01 85);
-  --sidebar-primary: oklch(0.79 0.085 200);
-  --sidebar-primary-foreground: oklch(0.2 0.03 235);
-  --sidebar-accent: oklch(0.27 0.02 235);
-  --sidebar-accent-foreground: oklch(0.93 0.01 85);
-  --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.7 0.09 200);
+  /* Versão negativa do manual: fundo tinta, texto papel, traço do I em #8099FF. As
+     superfícies sobem em luminosidade (não em saturação), sempre na matiz da tinta. */
+  --marca-traco: oklch(0.709 0.152 271.7);
+  --background: oklch(0.21 0.029 266.1);
+  --foreground: oklch(0.969 0.004 121.6);
+  --card: oklch(0.245 0.031 266);
+  --card-foreground: oklch(0.969 0.004 121.6);
+  --popover: oklch(0.245 0.031 266);
+  --popover-foreground: oklch(0.969 0.004 121.6);
+  --primary: oklch(0.709 0.152 271.7);
+  --primary-foreground: oklch(0.21 0.029 266.1);
+  --secondary: oklch(0.285 0.032 266);
+  --secondary-foreground: oklch(0.969 0.004 121.6);
+  --muted: oklch(0.285 0.032 266);
+  --muted-foreground: oklch(0.775 0.022 264);
+  --accent: oklch(0.31 0.06 268);
+  --accent-foreground: oklch(0.88 0.06 270);
+  --selo: oklch(0.834 0.158 89);
+  --citacao: oklch(0.834 0.158 89 / 0.14);
+  --citacao-foreground: oklch(0.9 0.1 91);
+  --citacao-borda: oklch(0.834 0.158 89 / 0.4);
+  --realce: oklch(0.834 0.158 89 / 0.3);
+  --destructive: oklch(0.709 0.17 26.5);
+  --destructive-foreground: oklch(0.21 0.029 266.1);
+  --border: oklch(0.33 0.03 266);
+  --input: oklch(0.56 0.032 266);
+  --ring: oklch(0.709 0.152 271.7);
+  --chart-1: oklch(0.709 0.152 271.7);
+  --chart-2: oklch(0.834 0.158 89);
+  --chart-3: oklch(0.775 0.022 264);
+  --chart-4: oklch(0.45 0.212 267);
+  --chart-5: oklch(0.969 0.004 121.6);
+  --sidebar: oklch(0.245 0.031 266);
+  --sidebar-foreground: oklch(0.969 0.004 121.6);
+  --sidebar-primary: oklch(0.709 0.152 271.7);
+  --sidebar-primary-foreground: oklch(0.21 0.029 266.1);
+  --sidebar-accent: oklch(0.31 0.06 268);
+  --sidebar-accent-foreground: oklch(0.88 0.06 270);
+  --sidebar-border: oklch(0.33 0.03 266);
+  --sidebar-ring: oklch(0.709 0.152 271.7);
 }
 
 @layer base {
@@ -167,9 +195,10 @@
   h1,
   h2,
   h3 {
-    font-family: var(--font-serif);
-    line-height: 1.2;
-    letter-spacing: -0.015em;
+    font-family: var(--font-sans);
+    font-weight: 650;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
 
