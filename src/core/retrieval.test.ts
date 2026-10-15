@@ -185,6 +185,9 @@ describe("base real", () => {
     // H06: plural e sinônimos de uso comum.
     ["Remédios terão redução?", "lc214-art128"],
     ["Advogado paga menos imposto na reforma?", "lc214-art127"],
+    // Pergunta de definição: o artigo que institui o tributo tem de vir.
+    ["O que é o IBS?", "lc214-art1"],
+    ["O que é a CBS?", "lc214-art1"],
   ])("“%s” traz %s entre os 3 primeiros", (pergunta, esperado) => {
     expect(ids(search(indice, pergunta))).toContain(esperado);
   });
