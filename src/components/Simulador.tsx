@@ -49,6 +49,16 @@ function formatar(texto: string): ReactNode[] {
   ));
 }
 
+/** Nome de cada link da web: o título da busca, numerado quando se repete ("senado.leg.br (2)"). */
+function nomearFontesWeb(fontes: FonteWeb[]): (FonteWeb & { nome: string })[] {
+  const vezes = new Map<string, number>();
+  return fontes.map((f) => {
+    const n = (vezes.get(f.titulo) ?? 0) + 1;
+    vezes.set(f.titulo, n);
+    return { ...f, nome: n === 1 ? f.titulo : `${f.titulo} (${n})` };
+  });
+}
+
 const ESTILO_AGENTE: Record<Resposta["tipo"], string> = {
   resposta: "bg-card border",
   boas_vindas: "bg-card border",
@@ -113,7 +123,8 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
       adicionar({
         autor: "agente",
         tipo: resposta.tipo,
-        texto: resposta.texto,
+        // Na tela, as fontes viram links com nome; o texto com endereços é o do WhatsApp.
+        texto: resposta.corpo ?? resposta.texto,
         fontes: resposta.fontes,
         fontesWeb: resposta.fontesWeb,
       });
@@ -196,7 +207,7 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
             <article
               key={m.id}
               className={cn(
-                "max-w-[88%] px-4 py-3 text-sm leading-relaxed animate-in fade-in slide-in-from-bottom-1 duration-200",
+                "max-w-[88%] px-4 py-3 text-sm leading-relaxed [overflow-wrap:anywhere] animate-in fade-in slide-in-from-bottom-1 duration-200",
                 m.autor === "usuario"
                   ? "self-end rounded-2xl rounded-br-sm bg-primary text-primary-foreground"
                   : cn(
@@ -233,7 +244,7 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
                   <li className="w-full font-sans text-xs text-muted-foreground">
                     Da web · não conferidas
                   </li>
-                  {m.fontesWeb.map((f) => (
+                  {nomearFontesWeb(m.fontesWeb).map((f) => (
                     <li key={f.url} className="max-w-full">
                       <a
                         href={f.url}
@@ -242,7 +253,7 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
                         className="inline-flex max-w-full items-center gap-1.5 rounded-md border border-dashed bg-background px-2.5 py-1 font-sans text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
                       >
                         <Globe className="size-3.5 shrink-0" aria-hidden="true" />
-                        <span className="truncate">{f.titulo}</span>
+                        <span className="truncate">{f.nome}</span>
                       </a>
                     </li>
                   ))}

@@ -26,7 +26,13 @@ export interface LlmAdapter {
 
 export interface Resposta {
   tipo: "resposta" | "boas_vindas" | "fora_do_tema" | "sem_fonte" | "falha";
+  /** Texto do WhatsApp: as fontes vão listadas com o endereço, que o WhatsApp torna clicável. */
   texto: string;
+  /**
+   * Só nas respostas: o mesmo texto sem as listas de endereços, para telas que mostram as
+   * fontes como links com nome (o simulador). Os links não são alterados (termos do Google).
+   */
+  corpo?: string;
   /** Trechos da base efetivamente citados na resposta. */
   fontes: Trecho[];
   /** Páginas da busca na web listadas na resposta (complemento não conferido). */
@@ -150,7 +156,13 @@ export function renderAnswer(geracao: Geracao, base: readonly Trecho[]): Respost
   }
   partes.push(AVISO);
 
-  return { tipo: "resposta", texto: partes.join("\n\n"), fontes, fontesWeb };
+  return {
+    tipo: "resposta",
+    texto: partes.join("\n\n"),
+    corpo: `${corpo}\n\n${AVISO}`,
+    fontes,
+    fontesWeb,
+  };
 }
 
 async function comTempoLimite<T>(
