@@ -124,6 +124,15 @@
   --sidebar-accent-foreground: oklch(0.37 0.16 267);
   --sidebar-border: oklch(0.895 0.01 266);
   --sidebar-ring: oklch(0.45 0.212 267);
+  /* Simulador no visual de conversa de mensageiro (fundo bege, saída verde, entrada clara). */
+  --chat-fundo: oklch(0.939 0.012 79.8);
+  --chat-trama: oklch(0.21 0.029 266.1 / 0.05);
+  --chat-saida: oklch(0.957 0.067 141.1);
+  --chat-entrada: oklch(0.995 0.002 90);
+  --chat-barra: oklch(0.96 0.005 258.3);
+  --chat-enviar: oklch(0.535 0.102 174.2);
+  --chat-enviar-texto: oklch(0.995 0.002 90);
+  --chat-lido: oklch(0.563 0.124 237.9);
 }
 
 .dark {
@@ -167,6 +176,14 @@
   --sidebar-accent-foreground: oklch(0.88 0.06 270);
   --sidebar-border: oklch(0.33 0.03 266);
   --sidebar-ring: oklch(0.709 0.152 271.7);
+  --chat-fundo: oklch(0.185 0.018 238.2);
+  --chat-trama: oklch(0.969 0.004 121.6 / 0.04);
+  --chat-saida: oklch(0.424 0.08 174.4);
+  --chat-entrada: oklch(0.285 0.021 234.1);
+  --chat-barra: oklch(0.285 0.021 234.1);
+  --chat-enviar: oklch(0.651 0.128 170.4);
+  --chat-enviar-texto: oklch(0.185 0.018 238.2);
+  --chat-lido: oklch(0.755 0.117 229.7);
 }
 
 @layer base {
@@ -353,4 +370,37 @@
   ::view-transition-new(*) {
     animation: none !important;
   }
+}
+
+/* Simulador: fundo com trama discreta (padrão próprio) e "rabinho" dos balões. */
+.chat-fundo {
+  background-color: var(--chat-fundo);
+  background-image: radial-gradient(var(--chat-trama) 1.2px, transparent 1.2px);
+  background-size: 18px 18px;
+}
+
+.balao-saida,
+.balao-entrada {
+  position: relative;
+}
+
+.balao-saida::after,
+.balao-entrada::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 12px;
+}
+
+.balao-saida::after {
+  right: -8px;
+  background: var(--chat-saida);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.balao-entrada::after {
+  left: -8px;
+  background: var(--chat-entrada);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
 }
