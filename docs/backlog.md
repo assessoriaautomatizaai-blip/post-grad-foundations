@@ -118,7 +118,7 @@ Como avaliador, quero testar o agente no navegador, sem WhatsApp.
 
 ## v1.0.0 — Entrega
 
-**H13 ⬜ README final** — descrição, arquitetura (Mermaid), pré-requisitos, instalação, variáveis de ambiente, uso (simulador e WhatsApp), testes, avaliação, tecnologias incluindo **modelos de IA e assistentes de código**, "Como a IA foi usada", "Limitações e próximos passos", licença.
+**H13 ✅ README final** — descrição, arquitetura (Mermaid), pré-requisitos, instalação, variáveis de ambiente, uso (simulador e WhatsApp), testes, avaliação, tecnologias incluindo **modelos de IA e assistentes de código**, "Como a IA foi usada", "Limitações e próximos passos", licença.
 
 **H14 ⬜ Revisão de entrega**
 - [ ] Varredura de segredos no histórico (`gitleaks`)
