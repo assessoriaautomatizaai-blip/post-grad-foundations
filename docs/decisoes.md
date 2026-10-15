@@ -13,6 +13,7 @@
 **Decisão.** Toda a regra de negócio fica em `src/core/`, sem I/O: normalização, recuperação, decisão responder × recusar, montagem do prompt, validação e formatação da resposta. Evolution API e LLM ficam em `src/adapters/`, atrás de interfaces injetadas no núcleo.
 
 **Consequências.**
+
 - ✅ O núcleo é testado com `vitest` sem rede e sem chave.
 - ✅ O simulador web e o webhook do WhatsApp usam a mesma função, então o que o avaliador testa é o que roda em produção.
 - ⚠️ Exige disciplina: o Lovable tende a gerar lógica dentro dos componentes React. Revisar cada mudança vinda do Lovable.
@@ -28,6 +29,7 @@
 **Decisão.** A Evolution API roda hospedada na **Cloudfy**. No MVP, o webhook da Evolution API aponta para uma **rota de servidor do próprio projeto** (`/api/whatsapp/webhook`). O n8n só entra se houver necessidade concreta (ex.: fila, reenvio, integração com outro sistema) — nesse caso, o JSON do workflow é exportado e versionado em `n8n/`.
 
 **Consequências.**
+
 - ✅ Um só repositório, uma só linguagem, tudo testável e versionado.
 - A rota processa a mensagem dentro da própria requisição. Conferido na H09 e na H10: a Evolution espera até 30 s pelo webhook (`webhook.controller.ts`), e o pior caso aqui é o tempo limite do Gemini (15 s) mais o do envio (10 s por mensagem). Se passar disso, a Evolution reenvia e a deduplicação evita resposta dupla.
 
@@ -41,12 +43,12 @@
 
 **Opções comparadas** (preços do modo Standard por 1M de tokens, entrada/saída; ver [estimativa](estimativa.md)):
 
-| Modelo | Preço | Observação |
-|---|---|---|
-| Claude Opus 5.5 | US$ 4,00 / 20,00 | Escolha inicial; ~5× mais caro que o escolhido |
-| **Gemini 3.8 Flash** | **US$ 0,75 / 3,75 até 31/12/2026; US$ 1,50 / 7,50 a partir de 01/01/2027** | **Escolhido pelo autor** |
-| Gemini 3.5 Flash-Lite | US$ 0,30 / 2,50 | Mais barato, modelo de geração anterior |
-| Claude Haiku 5.5 | US$ 0,10 / 0,50 | O mais barato por token entre os comparados |
+| Modelo                | Preço                                                                      | Observação                                     |
+| --------------------- | -------------------------------------------------------------------------- | ---------------------------------------------- |
+| Claude Opus 5.5       | US$ 4,00 / 20,00                                                           | Escolha inicial; ~5× mais caro que o escolhido |
+| **Gemini 3.8 Flash**  | **US$ 0,75 / 3,75 até 31/12/2026; US$ 1,50 / 7,50 a partir de 01/01/2027** | **Escolhido pelo autor**                       |
+| Gemini 3.5 Flash-Lite | US$ 0,30 / 2,50                                                            | Mais barato, modelo de geração anterior        |
+| Claude Haiku 5.5      | US$ 0,10 / 0,50                                                            | O mais barato por token entre os comparados    |
 
 **Decisão.** Gemini **3.8 Flash** (`gemini-3.8-flash`, configurável por `GEMINI_MODEL`), via SDK oficial **`@google/genai`** (conferido no npm em 14/10/2026), **no plano pago**. Chave em `GEMINI_API_KEY`, só no `.env` e nos segredos do Lovable.
 
@@ -55,6 +57,7 @@
 **Por que o plano pago, mesmo existindo plano gratuito.** Segundo os termos da Google, no plano gratuito o conteúdo enviado **é usado para melhorar os produtos** da Google; no pago, não. As perguntas chegam de pessoas reais pelo WhatsApp, então o plano gratuito é usado no máximo em desenvolvimento, com perguntas sintéticas, nunca com mensagens reais.
 
 **Consequências.**
+
 - ✅ O provedor fica atrás da interface `LlmAdapter` (ADR-001), com timeout e fallback; trocar de modelo não muda o núcleo, e o conjunto-ouro (H11) permite comparar modelos com a mesma régua.
 - ⚠️ O preço é promocional e **dobra em 01/01/2027** — registrado na estimativa.
 - ⚠️ Preços, IDs de modelo e termos de uso são fatos voláteis: conferidos na página oficial em 14/10/2026 e conferidos de novo antes da entrega.
@@ -63,13 +66,14 @@
 
 ## ADR-004 — Recuperação lexical (BM25) com recusa por limiar no código
 
-**Estado:** Aceita (14/10/2026) — implementada nas H05 e H06; calibrada na H11
+**Estado:** Substituída pelo [ADR-007](#adr-007--o-gemini-lê-a-base-inteira-e-complementa-com-busca-na-web) em 15/10/2026 (antes: aceita em 14/10/2026, implementada nas H05 e H06, calibrada na H11)
 
 **Contexto.** Em domínio jurídico, o vocabulário da pergunta costuma coincidir com o da lei ("CBS", "IBS", "Simples Nacional", "split payment"). Busca semântica com embeddings exige outro serviço, chave e um banco vetorial, e não é determinística entre versões do modelo.
 
 **Decisão.** No MVP, recuperação **BM25** implementada no projeto, sobre trechos de um dispositivo legal cada. Se o maior escore ficar abaixo de `RETRIEVAL_MIN_SCORE`, o agente **recusa sem chamar o LLM**. O limiar é calibrado com o conjunto-ouro (H11), e o valor escolhido é registrado aqui com a data.
 
 **Consequências.**
+
 - ✅ Determinístico, roda offline, testável; a recusa não depende do modelo "obedecer" ao prompt.
 - ⚠️ Perde sinônimos e paráfrases ("imposto novo" × "IBS"). Mitigação no MVP: mapa de sinônimos em `src/core/sinonimos.ts`, que liga o nome do tributo às expressões da lei (ex.: `ibs → "156-A"`). Um trecho que contém a expressão passa a ser encontrado também pelo nome; o texto do trecho não é alterado. Cada ligação tem fonte. Busca híbrida (BM25 + embeddings) fica para v2.
 - Implementação (14/10/2026): BM25 clássico (k1 = 1,2; b = 0,75), sem dependência externa; casamento de expressões por palavra inteira.
@@ -95,9 +99,11 @@
 **Decisão.** A base vive em `knowledge/` como JSON versionado no Git, validado por esquema `zod`. Cada trecho tem `id` estável, `norma`, `dispositivo`, `texto`, `url_fonte` (Planalto) e `data_referencia`. Nenhum trecho entra sem conferência humana no texto oficial.
 
 **Consequências.**
+
 - ✅ Toda mudança na base aparece no histórico do Git; a citação é exata.
 - ⚠️ Atualização é manual — limitação declarada no README.
 - ⚠️ Os textos das normas são públicos (Lei 9.610/1998, art. 8º, IV: não são objeto de proteção como direitos autorais "os textos de tratados ou convenções, leis, decretos, regulamentos, decisões judiciais e demais atos oficiais" — conferido no Planalto em 15/10/2026), mas resumos e comentários de terceiros não entram na base.
+- **Ampliação (15/10/2026, ADR-007):** 67 trechos citados pela base do APP 2 entraram com conferência **automática** contra o texto vigente (67/67) e conferência humana **pendente** — exceção aprovada pelo autor ao "nenhum trecho entra sem conferência humana", registrada em `docs/conferencia-base.md`. O complemento da web (ADR-007) não entra na base: é resultado de busca, mostrado à parte.
 
 ---
 
@@ -106,6 +112,7 @@
 **Estado:** Aceita (15/10/2026) — implementada nas H09 e H10
 
 **Decisão.**
+
 - O webhook exige segredo compartilhado (`WEBHOOK_SECRET`), enviado pela Evolution no cabeçalho `x-webhook-secret` (campo `headers` da configuração do webhook) e comparado em tempo constante; sem ele, 401. Sem segredo configurado no servidor, o webhook recusa tudo (503). Alternativa, se a versão da Evolution na Cloudfy não enviar cabeçalhos: o recurso `jwt_key` do próprio webhook da Evolution (token JWT HS256 de 10 minutos no cabeçalho `Authorization`).
 - Payload validado com `zod`; só mensagens de texto recebidas, fora de grupos, são processadas.
 - Deduplicação por id de mensagem.
@@ -113,6 +120,7 @@
 - Chaves só em `.env` (local) e nos segredos do Lovable (produção).
 
 **Detalhes conferidos no código-fonte da Evolution API (15/10/2026, H09).**
+
 - As mensagens **enviadas** pela instância também chegam como `messages.upsert`, com `fromMe: true` (issue #1340): ignorá-las é o que evita o agente responder a si mesmo em loop.
 - A Evolution **reenvia** o webhook quando a chamada falha ou passa de 30 s: a deduplicação por id é obrigatória, e o handler devolve 500 só quando o envio falhou (para a nova tentativa ser útil).
 - Conversa individual é `@s.whatsapp.net` ou `@lid` (endereçamento novo do WhatsApp); grupos (`@g.us`), status (`status@broadcast`) e canais são ignorados.
@@ -121,3 +129,39 @@
 **Envio (15/10/2026, H10).** `POST {EVOLUTION_API_URL}/message/sendText/{EVOLUTION_INSTANCE}`, cabeçalho `apikey`, corpo `{ number, text }` (na v1 era `textMessage`; conferido em `sendMessage.dto.ts` e `sendMessage.router.ts`). O `number` recebe o identificador como veio do webhook: a função `createJid` da Evolution aceita `@s.whatsapp.net` e `@lid` sem alteração. URL obrigatoriamente `https`. Respostas acima de 1.600 caracteres vão em várias mensagens, em ordem, uma de cada vez; se uma falhar, as seguintes não saem e o webhook devolve 500 para a Evolution tentar de novo.
 
 **Consequências.** Reduz abuso do endpoint e exposição de dados pessoais (LGPD). Não há limitação de taxa no MVP — declarada como limitação. A deduplicação é em memória: com várias instâncias do servidor, uma duplicata rara ainda pode passar — também declarada como limitação.
+
+---
+
+## ADR-007 — O Gemini lê a base inteira e complementa com busca na web
+
+**Estado:** Aceita pelo autor (15/10/2026) — implementada; avaliação com o Gemini pendente. Substitui o ADR-004.
+
+**Contexto.**
+
+- O autor testou o site publicado e quer um agente que **raciocine** e **não deixe o usuário sem resposta**. Com o ADR-004, o código só chamava o modelo quando a pergunta tinha palavras parecidas com as da lei: "Quando o ISS deixa de existir?" era recusada porque a lei diz "ficam extintos".
+- Medição de 15/10/2026: ampliar a base (63 a 67 trechos do APP 2) com a busca por palavras **quebra a abstenção** (de 100% para 50% no teste: "Qual a previsão do tempo para amanhã?" casava com "previsão expressa"). Nenhum ajuste de limiar recupera 100% sem derrubar as respostas corretas para ~30%. O limite é do método (palavra), não do limiar.
+- Fatos conferidos em 15/10/2026: o SDK `@google/genai` instalado tem a ferramenta `googleSearch` e devolve as fontes em `groundingMetadata.groundingChunks` (título e endereço). Na página oficial de preços, o `gemini-3.8-flash` custa US$ 0,75 (entrada) e US$ 3,75 (saída) por milhão de tokens até 31/12/2026, e a busca no Google tem **5.000 consultas grátis por mês** no plano pago (compartilhadas entre os modelos Gemini 3), depois US$ 14 por mil.
+
+**Decisão.**
+
+1. **O Gemini recebe a base inteira** em toda pergunta (96 trechos depois da ampliação — cerca de 42 mil caracteres) e a pergunta delimitada. Sai a busca BM25, o limiar e o mapa de sinônimos do caminho de produção.
+2. **Busca no Google ligada** (`tools: [{ googleSearch: {} }]`) para completar o que a base não cobre. As fontes da busca voltam do adaptador junto com o texto.
+3. **A resposta separa as origens:** o que vem da base cita o trecho pelo id (`[lc214-art31]`) e vira "(LC 214/2025, art. 31, caput)"; o que vem da web aparece em "_Complemento:_" e as fontes da web são listadas à parte, como **não conferidas**.
+4. **Regras conferidas no código (não delegadas ao prompt):**
+   - id citado que não existe na base **bloqueia a resposta inteira** — citação de lei inventada nunca chega ao usuário;
+   - o "_Complemento:_" só aparece se a busca devolveu ao menos uma fonte; sem fonte, a parte é removida (seria memória do modelo);
+   - resposta sem nenhuma citação da base e sem nenhuma fonte da web não é mostrada: vira mensagem fixa pedindo para reformular ou procurar um contador;
+   - assunto fora da reforma: o modelo devolve a marca `[fora-do-tema]` e o código troca por uma mensagem fixa que explica o foco do agente e dá exemplos.
+5. Saudação continua tratada no código, sem chamar o modelo.
+6. Tempo limite do modelo: **25 s** (a busca é mais lenta; a Evolution reenvia o webhook depois de 30 s — ADR-006 — e a deduplicação absorve o reenvio).
+
+**Consequências.**
+
+- ✅ Entende paráfrase ("deixa de existir", "vai acabar", "vai sumir") sem lista de sinônimos; responde perguntas operacionais (notas fiscais, prazos, comunicados) com link.
+- ✅ A garantia central muda de forma, mas continua no código: nenhuma citação de lei inventada; nenhum complemento sem fonte.
+- ⚠️ **Muda a regra 5 e a regra 6 do `CLAUDE.md`** e o critério de abstenção do escopo (100% de recusa fora da base) — ver as novas redações.
+- ⚠️ **Complemento da web não é conferido por pessoa.** Pode estar desatualizado ou ser de fonte fraca; por isso aparece separado, com link e o rótulo "não conferido". O código não julga a qualidade da página.
+- ⚠️ **A avaliação passa a chamar o Gemini** (rede, chave e custo de centavos). Deixa de ser teste unitário: vira `npm run eval` manual, com a chave do `.env`. Os testes unitários continuam sem rede, com modelo falso.
+- ⚠️ Custo por pergunta: a base inteira vai em cada chamada (96 trechos ≈ 10,4 mil tokens; com o prompt, ~11 mil de entrada) — ≈ US$ 0,011 por resposta até 31/12/2026 (ver `docs/estimativa.md`); a busca é grátis até 5.000 consultas por mês.
+- ⚠️ Os endereços devolvidos pela busca podem ser links de redirecionamento do Google, e não o endereço final da página. [A CONFERIR na primeira chamada real]
+- Alternativas descartadas: (a) Gemini respondendo de memória, sem busca — fato jurídico sem fonte, contra a proposta do projeto; (b) busca semântica com embeddings — exige outro serviço e banco vetorial, e não resolve "não ficar sem resposta"; (c) importar os textos explicativos do APP 2 — texto redigido por IA, com 11 pendências [A CONFERIR].
