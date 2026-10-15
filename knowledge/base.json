@@ -230,5 +230,541 @@
     "texto": "Art. 129. Ficam extintos, a partir de 2033, os impostos previstos nos arts. 155, II, e 156, III, da Constituição Federal.",
     "url_fonte": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc132.htm#art2",
     "data_referencia": "2026-10-14"
+  },
+  {
+    "id": "ec132-adct125",
+    "norma": "EC 132/2023",
+    "dispositivo": "art. 2º (ADCT, art. 125, caput e §§ 1º e 2º)",
+    "texto": "Art. 125. Em 2026, o imposto previsto no art. 156-A será cobrado à alíquota estadual de 0,1% (um décimo por cento), e a contribuição prevista no art. 195, V, ambos da Constituição Federal, será cobrada à alíquota de 0,9% (nove décimos por cento).\n§ 1º O montante recolhido na forma do caput será compensado com o valor devido das contribuições previstas no art. 195, I, \"b\", e IV, e da contribuição para o Programa de Integração Social a que se refere o art. 239, ambos da Constituição Federal.\n§ 2º Caso o contribuinte não possua débitos suficientes para efetuar a compensação de que trata o § 1º, o valor recolhido poderá ser compensado com qualquer outro tributo federal ou ser ressarcido em até 60 (sessenta) dias, mediante requerimento.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc132.htm#art2",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "ec132-adct125-p4",
+    "norma": "EC 132/2023",
+    "dispositivo": "art. 2º (ADCT, art. 125, § 4º)",
+    "texto": "§ 4º Durante o período de que trata o caput, os sujeitos passivos que cumprirem as obrigações acessórias relativas aos tributos referidos no caput poderão ser dispensados do seu recolhimento, nos termos de lei complementar.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc132.htm#art2",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "ec132-adct127",
+    "norma": "EC 132/2023",
+    "dispositivo": "art. 2º (ADCT, art. 127)",
+    "texto": "Art. 127. Em 2027 e 2028, o imposto previsto no art. 156-A da Constituição Federal será cobrado à alíquota estadual de 0,05% (cinco centésimos por cento) e à alíquota municipal de 0,05% (cinco centésimos por cento).\nParágrafo único. No período referido no caput, a alíquota da contribuição prevista no art. 195, V, da Constituição Federal, será reduzida em 0,1 (um décimo) ponto percentual.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc132.htm#art2",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "ec132-adct92b",
+    "norma": "EC 132/2023",
+    "dispositivo": "art. 2º (ADCT, art. 92-B, caput)",
+    "texto": "Art. 92-B. As leis instituidoras dos tributos previstos nos arts. 156-A e 195, V, da Constituição Federal estabelecerão os mecanismos necessários, com ou sem contrapartidas, para manter, em caráter geral, o diferencial competitivo assegurado à Zona Franca de Manaus pelos arts. 40 e 92-A e às áreas de livre comércio existentes em 31 de maio de 2023, nos níveis estabelecidos pela legislação relativa aos tributos extintos a que se referem os arts. 126 a 129, todos deste Ato das Disposições Constitucionais Transitórias.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc132.htm#art2",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art3",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 3º, caput",
+    "texto": "Art. 3º Para fins desta Lei Complementar, consideram-se:\nI - operações com:\na) bens todas e quaisquer que envolvam bens móveis ou imóveis, materiais ou imateriais, inclusive direitos;\nb) serviços todas as demais que não sejam enquadradas como operações com bens nos termos da alínea “a” deste inciso;\nII - fornecimento:\na) entrega ou disponibilização de bem material;\nb) instituição, transferência, cessão, concessão, licenciamento ou disponibilização de bem imaterial, inclusive direito;\nc) prestação ou disponibilização de serviço;\nIII - fornecedor: pessoa física ou jurídica que, residente ou domiciliado no País ou no exterior, realiza o fornecimento;\nIV - adquirente:\na) aquele obrigado ao pagamento ou a qualquer outra forma de contraprestação pelo fornecimento de bem ou serviço;\nb) nos casos de pagamento ou de qualquer outra forma de contraprestação por conta e ordem ou em nome de terceiros, aquele por conta de quem ou em nome de quem decorre a obrigação de pagamento ou de qualquer outra forma de contraprestação pelo fornecimento de bem ou serviço; e\nV - destinatário: aquele a quem for fornecido o bem ou serviço, podendo ser o próprio adquirente ou não.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art3",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art7a-pu",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 7º-A, parágrafo único",
+    "texto": "Parágrafo único. Caso seja possível a aplicação de mais de uma redução de alíquota à mesma operação:\nI - somente em caso de previsão expressa haverá a aplicação cumulativa das reduções; e\nII - não havendo previsão de cumulação, prevalecerá a maior redução.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art8",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 8º",
+    "texto": "Art. 8º São imunes ao IBS e à CBS as exportações de bens e de serviços, nos termos do Capítulo V deste Título.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art8",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art10",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 10, caput",
+    "texto": "Art. 10. Considera-se ocorrido o fato gerador do IBS e da CBS no momento do fornecimento nas operações com bens ou com serviços, ainda que de execução continuada ou fracionada.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art10",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art12",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 12, caput e § 2º",
+    "texto": "Art. 12. A base de cálculo do IBS e da CBS é o valor da operação, salvo disposição em contrário prevista nesta Lei Complementar.\n§ 2º Não integram a base de cálculo do IBS e da CBS:\nI - o montante do IBS e da CBS incidentes sobre a operação;\nII - o montante do Imposto sobre Produtos Industrializados (IPI);\nIII - os descontos incondicionais;\nIV - os reembolsos ou ressarcimentos recebidos por valores pagos relativos a operações por conta e ordem ou em nome de terceiros, desde que a documentação fiscal relativa a essas operações seja emitida em nome do terceiro; e\nV - o montante incidente na operação dos tributos a que se referem o inciso II do caput do art. 155, o inciso III do caput do art. 156 e a alínea “b” do inciso I e o inciso IV do caput do art. 195 da Constituição Federal, e da Contribuição para os Programas de Integração Social e de Formação do Patrimônio do Servidor Público (Contribuição para o PIS/Pasep) a que se refere o art. 239 da Constituição Federal, de 1º de janeiro de 2026 a 31 de dezembro de 2032;\nVI - a contribuição de que trata o art. 149-A da Constituição Federal.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art12",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art15",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 15",
+    "texto": "Art. 15. A alíquota do IBS incidente sobre cada operação corresponderá:\nI - à soma:\na) da alíquota do Estado de destino da operação; e\nb) da alíquota do Município de destino da operação; ou\nII - à alíquota do Distrito Federal, quando este for o destino da operação.\nParágrafo único. Para fins do disposto neste artigo, o destino da operação é o local da ocorrência da operação, definido nos termos do art. 11 desta Lei Complementar.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art15",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art16",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 16",
+    "texto": "Art. 16. A alíquota fixada por cada ente federativo na forma do art. 14 desta Lei Complementar será a mesma para todas as operações com bens ou com serviços, ressalvadas as hipóteses previstas nesta Lei Complementar.\nParágrafo único. As reduções de alíquotas estabelecidas nos regimes diferenciados e específicos de que tratam os Títulos IV e V deste Livro serão aplicadas sobre a alíquota de cada ente federativo, ressalvados os casos de aplicação de alíquota nacionalmente uniforme.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art16",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art18",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 18",
+    "texto": "Art. 18. As alíquotas de referência serão fixadas por resolução do Senado Federal:\nI - para a CBS, de 2027 a 2035, nos termos dos arts. 353 a 359, 366, 368 e 369 desta Lei Complementar;\nII - para o IBS, de 2029 a 2035, nos termos dos arts. 361 a 366 e 369 desta Lei Complementar;\nIII - para o IBS e a CBS, após 2035, as vigentes no ano anterior.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art18",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art19",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 19, caput",
+    "texto": "Art. 19. Qualquer alteração na legislação federal que reduza ou eleve a arrecadação do IBS ou da CBS:\nI - deverá ser compensada pela elevação ou redução, pelo Senado Federal, da alíquota de referência da CBS e das alíquotas de referência estadual e municipal do IBS, de modo a preservar a arrecadação das esferas federativas;\nII - somente entrará em vigor com o início da produção de efeitos do ajuste das alíquotas de referência de que trata o inciso I deste caput.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art19",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art26-iv",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 26, caput, inciso IV",
+    "texto": "Art. 26. Não são contribuintes do IBS e da CBS, ressalvado o disposto no inciso II do § 1º do art. 156-A da Constituição Federal:\nIV - nanoempreendedor, assim entendido a pessoa física que tenha auferido receita bruta inferior a 50% (cinquenta por cento) do limite estabelecido para adesão ao regime do MEI previsto no § 1º do art. 18-A observado ainda o disposto nos §§ 4º e 4º-B do referido artigo da Lei Complementar nº 123, de 14 de dezembro de 2006, e não tenha aderido a esse regime; e",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art26",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art26-vi",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 26, caput, inciso VI",
+    "texto": "Art. 26. Não são contribuintes do IBS e da CBS, ressalvado o disposto no inciso II do § 1º do art. 156-A da Constituição Federal:\nVI - produtor rural de que trata o art. 164 desta Lei Complementar;",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art26",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art26-p10",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 26, § 10",
+    "texto": "§ 10. Para fins de enquadramento como nanoempreendedor nos termos do inciso IV do caput deste artigo, será considerada como receita bruta da pessoa física prestadora de serviço de transporte privado individual de passageiros ou de entrega de bens, inclusive na hipótese em que houver intermediação por plataformas digitais, 25% (vinte e cinco por cento) do valor bruto mensal recebido.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art26",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art27",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 27, caput",
+    "texto": "Art. 27. Os débitos do IBS e da CBS decorrentes da incidência sobre operações com bens ou com serviços serão extintos mediante as seguintes modalidades:\nI - compensação com créditos, respectivamente, de IBS e de CBS apropriados pelo contribuinte, nos termos dos arts. 47 a 56 e das demais disposições desta Lei Complementar;\nII - pagamento pelo contribuinte;\nIII - recolhimento na liquidação financeira da operação (split payment), nos termos dos arts. 31 a 35 desta Lei Complementar;\nIV - recolhimento pelo adquirente, nos termos do art. 36 desta Lei Complementar; ou\nV - pagamento por aquele a quem esta Lei Complementar atribuir responsabilidade.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art27",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art35",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 35, caput e § 2º",
+    "texto": "Art. 35. O Poder Executivo da União e o Comitê Gestor do IBS deverão aprovar orçamento para desenvolvimento, implementação, operação e manutenção do sistema do split payment. Produção de efeitos\n§ 2º Ato conjunto do Comitê Gestor do IBS e da RFB:",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art35",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art39",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 39, caput",
+    "texto": "Art. 39. O contribuinte do IBS e da CBS que apurar saldo a recuperar na forma do art. 45 ao final do período de apuração poderá solicitar seu ressarcimento integral ou parcial.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art39",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art41-p4-p5",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 41, §§ 4º e 5º",
+    "texto": "§ 4º A opção a que se refere o § 3º será exercida nos termos da Lei Complementar nº 123, de 14 de dezembro de 2006.\n§ 5º É vedado ao contribuinte do Simples Nacional ou ao contribuinte que venha a fazer a opção por esse regime retirar-se do regime regular do IBS e da CBS caso tenha recebido ressarcimento de créditos desses tributos no ano-calendário corrente ou anterior, nos termos do art. 39 desta Lei Complementar.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art41",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art47-p9",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 47, § 9º",
+    "texto": "§ 9º Na hipótese de o pagamento do IBS e da CBS ser realizado por meio do Simples Nacional, quando não for exercida a opção pelo regime regular de que trata o § 3º do art. 41 desta Lei Complementar:\nI - não será permitida a apropriação de créditos do IBS e da CBS pelo optante pelo Simples Nacional; e\nII - será permitida ao contribuinte sujeito ao regime regular do IBS e da CBS a apropriação de créditos do IBS e da CBS correspondentes aos valores desses tributos pagos na aquisição de bens e de serviços de optante pelo Simples Nacional, em montante equivalente ao devido por meio desse regime.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art47",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art49",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 49, caput",
+    "texto": "Art. 49. As operações imunes, isentas ou sujeitas a alíquota zero, a diferimento ou a suspensão não permitirão a apropriação de créditos pelos adquirentes dos bens e serviços.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art49",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art51",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 51, caput e § 2º",
+    "texto": "Art. 51. A imunidade e a isenção acarretarão a anulação dos créditos relativos às operações anteriores.\n§ 2º O disposto no caput e no § 1º deste artigo não se aplica às:",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art51",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art52",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 52",
+    "texto": "Art. 52. No caso de operações sujeitas a alíquota zero, serão mantidos os créditos relativos às operações anteriores.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art52",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art53",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 53, caput e § 1º",
+    "texto": "Art. 53. Os créditos do IBS e da CBS apropriados em cada período de apuração poderão ser utilizados, na seguinte ordem, mediante:\nI - compensação com o saldo a recolher do IBS e da CBS vencido, não extinto e não inscrito em dívida ativa relativo a períodos de apuração anteriores, inclusive os acréscimos legais; e\nII - compensação com os débitos do IBS e da CBS decorrentes de fatos geradores do mesmo período de apuração, observada a ordem cronológica de que trata o inciso I do parágrafo único do art. 27 desta Lei Complementar; e\nIII - compensação, respectivamente, com os débitos do IBS e da CBS decorrentes de fatos geradores de períodos de apuração subsequentes, observada a ordem cronológica de que trata o inciso I do parágrafo único do art. 27 desta Lei Complementar.\n§ 1º Alternativamente ao disposto no inciso III, o contribuinte poderá solicitar ressarcimento, nos termos da Seção X deste Capítulo.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art53",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art54",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 54",
+    "texto": "Art. 54. O direito de utilização dos créditos extinguir-se-á após o prazo de 5 (cinco) anos, contado do primeiro dia do período subsequente ao de apuração em que tiver ocorrido a apropriação do crédito.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art54",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art57",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 57, caput",
+    "texto": "Art. 57. Consideram-se de uso ou consumo pessoal:\nI - os seguintes bens e serviços:\na) joias, pedras e metais preciosos;\nb) obras de arte e antiguidades de valor histórico ou arqueológico;\nc) bebidas alcoólicas;\nd) derivados do tabaco;\ne) armas e munições;\nf) bens e serviços recreativos, esportivos e estéticos;\ng) bens e serviços relacionados à aquisição ou à manutenção dos bens de que trata este inciso;\nII - os bens e serviços adquiridos pelo contribuinte e fornecidos de forma não onerosa ou a valor inferior ao de mercado para:\na) o próprio contribuinte, quando este for pessoa física;\nb) as pessoas físicas que sejam sócios, acionistas, administradores e membros de conselhos de administração e fiscal e comitês de assessoramento do conselho de administração do contribuinte previstos em lei;\nc) os empregados do contribuinte; e\nd) os cônjuges, companheiros ou parentes, consanguíneos ou afins, até o terceiro grau, das pessoas físicas referidas nas alíneas “a”, “b” e “c” deste inciso.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art57",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art60",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 60, caput",
+    "texto": "Art. 60. O sujeito passivo do IBS e da CBS, ao realizar operações com bens ou com serviços, inclusive exportações, e importações, deverá emitir documento fiscal eletrônico.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art60",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art63",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 63, caput",
+    "texto": "Art. 63. O IBS e a CBS incidem sobre a importação de bens ou de serviços do exterior realizada por pessoa física ou jurídica ou entidade sem personalidade jurídica, ainda que não inscrita ou obrigada a se inscrever no regime regular do IBS e da CBS, qualquer que seja a sua finalidade.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art63",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art79",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 79, caput",
+    "texto": "Art. 79. São imunes ao IBS e à CBS as exportações de bens e de serviços para o exterior, nos termos do art. 8º desta Lei Complementar, asseguradas ao exportador a apropriação e a utilização dos créditos relativos às operações nas quais seja adquirente de bem ou de serviço, observadas as vedações ao creditamento previstas nos arts. 49 e 51, as demais disposições dos arts. 47 e 52 a 57 desta Lei Complementar e o disposto neste Capítulo.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art79",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art115",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 115",
+    "texto": "Art. 115. A devolução do IBS a que se refere o inciso II do caput do art. 112 será gerida pelo Comitê Gestor do IBS, a quem competirá as atribuições previstas no art. 114 desta Lei Complementar, respeitadas as especificidades.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art115",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art116",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 116, caput",
+    "texto": "Art. 116. As devoluções dos tributos previstas neste Capítulo serão concedidas no momento definido em regulamento.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art116",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art117",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 117, caput",
+    "texto": "Art. 117. As devoluções previstas neste Capítulo serão calculadas mediante aplicação de percentual sobre o valor do tributo relativo ao consumo, formalizado por meio da emissão de documentos fiscais.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art117",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art123",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 123",
+    "texto": "Art. 123. As devoluções previstas no art. 112 desta Lei Complementar serão calculadas com base no consumo familiar realizado a partir do:\nI - mês de janeiro de 2027, para a CBS; e\nII - mês de janeiro de 2029, para o IBS.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art123",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art133",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 133, caput",
+    "texto": "Art. 133. Ficam reduzidas em 60% (sessenta por cento) as alíquotas do IBS e da CBS incidentes sobre o fornecimento dos medicamentos registrados na Anvisa ou produzidos por farmácias de manipulação, ressalvados os medicamentos sujeitos à alíquota zero de que trata o art. 146 desta Lei Complementar.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art133",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art135",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 135, caput",
+    "texto": "Art. 135. Ficam reduzidas em 60% (sessenta por cento) as alíquotas do IBS e da CBS incidentes sobre o fornecimento dos alimentos destinados ao consumo humano relacionados no Anexo VII desta Lei Complementar, com a especificação das respectivas classificações da NCM/SH.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art135",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art136",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 136, caput",
+    "texto": "Art. 136. Ficam reduzidas em 60% (sessenta por cento) as alíquotas do IBS e da CBS incidentes sobre o fornecimento dos produtos de higiene pessoal e limpeza relacionados no Anexo VIII desta Lei Complementar, com a especificação das respectivas classificações da NCM/SH.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art136",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art143",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 143, caput",
+    "texto": "Art. 143. Desde que observadas as definições e demais disposições deste Capítulo, ficam reduzidas a zero as alíquotas do IBS e da CBS incidentes sobre operações com os seguintes bens e serviços:\nI - dispositivos médicos;\nII - dispositivos de acessibilidade próprios para pessoas com deficiência;\nIII - medicamentos;\nIV - produtos de cuidados básicos à saúde menstrual;\nV - produtos hortícolas, frutas e ovos;\nVI - automóveis de passageiros adquiridos por pessoas com deficiência ou com transtorno do espectro autista;\nVII - automóveis de passageiros adquiridos por motoristas profissionais que destinem o automóvel à utilização na categoria de aluguel (táxi); e\nVIII - serviços prestados por Instituição Científica, Tecnológica e de Inovação (ICT) sem fins lucrativos.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art143",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art144",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 144, caput",
+    "texto": "Art. 144. Ficam reduzidas a zero as alíquotas do IBS e da CBS incidentes sobre o fornecimento dos dispositivos médicos relacionados:",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art144",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art145",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 145, caput",
+    "texto": "Art. 145. Ficam reduzidas a zero as alíquotas do IBS e da CBS incidentes sobre o fornecimento dos dispositivos de acessibilidade próprios para pessoas com deficiência relacionados:",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art145",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art146",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 146, caput",
+    "texto": "Art. 146. São reduzidas a zero as alíquotas do IBS e da CBS sobre o fornecimento dos medicamentos registrados na Anvisa, desde que destinados, de acordo com o registro sanitário, a:",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art146",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art147",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 147, caput",
+    "texto": "Art. 147. Ficam reduzidas a zero as alíquotas do IBS e da CBS incidentes sobre o fornecimento dos seguintes produtos de cuidados básicos à saúde menstrual:\nI - tampões higiênicos classificados no código 9619.00.00 da NCM/SH;\nII - absorventes higiênicos internos ou externos, descartáveis ou reutilizáveis, e calcinhas absorventes classificados no código 9619.00.00 da NCM/SH; e\nIII - coletores menstruais classificados no código 9619.00.00 da NCM/SH.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art147",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art148",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 148, caput",
+    "texto": "Art. 148. Ficam reduzidas a zero as alíquotas do IBS e da CBS incidentes sobre o fornecimento dos produtos hortícolas, frutas e ovos relacionados no Anexo XV desta Lei Complementar, com a especificação das respectivas classificações da NCM/SH.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art148",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art157",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 157, caput",
+    "texto": "Art. 157. Fica isento do IBS e da CBS o fornecimento de serviços de transporte público coletivo de passageiros rodoviário e metroviário de caráter urbano, semiurbano e metropolitano, sob regime de autorização, permissão ou concessão pública.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art157",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art164",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 164, caput",
+    "texto": "Art. 164. O produtor rural pessoa física ou jurídica que auferir receita inferior a R$ 3.600.000,00 (três milhões e seiscentos mil reais) no ano-calendário e o produtor rural integrado não serão considerados contribuintes do IBS e da CBS.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art164",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art165",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 165, caput",
+    "texto": "Art. 165. O produtor rural ou o produtor rural integrado poderão optar, a qualquer tempo, por se inscrever como contribuinte do IBS e da CBS no regime regular.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art165",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art167",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 167",
+    "texto": "Art. 167. O valor estabelecido no caput do art. 164 desta Lei Complementar será atualizado anualmente com base na variação do IPCA.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art167",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art172",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 172, caput",
+    "texto": "Art. 172. O IBS e a CBS incidirão uma única vez sobre as operações, ainda que iniciadas no exterior, com os seguintes combustíveis, qualquer que seja a sua finalidade:\nI - gasolina e suas correntes;\nII - etanol anidro combustível (EAC);\nIII - óleo diesel e suas correntes;\nIV - biodiesel (B100);\nV - gás liquefeito de petróleo (GLP), inclusive o gás liquefeito derivado de gás natural (GLGN);\nVI - etanol hidratado combustível (EHC);\nVII - querosene de aviação;\nVIII - óleo combustível;\nIX - gás natural processado;\nX - biometano;\nXI - gás natural veicular (GNV); e\nXII - outros combustíveis especificados e autorizados pela Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP), relacionados em ato conjunto do Comitê Gestor do IBS e do Poder Executivo da União.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art172",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art173",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 173, caput",
+    "texto": "Art. 173. A base de cálculo do IBS e da CBS será a quantidade de combustível objeto da operação.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art173",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art251",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 251, caput e § 1º",
+    "texto": "Art. 251. As operações com bens imóveis realizadas por contribuintes que apurarem o IBS e a CBS no regime regular ficam sujeitas ao regime específico previsto neste Capítulo.\n§ 1º As pessoas físicas que realizarem operações com bens imóveis serão consideradas contribuintes do regime regular do IBS e da CBS e sujeitas ao regime de que trata este Capítulo, nos casos de:\nI - locação, cessão onerosa e arrendamento de bem imóvel, desde que, no ano-calendário anterior:\na) a receita total com essas operações exceda R$ 240.000 (duzentos e quarenta mil reais); e\nb) tenham por objeto mais de 3 (três) bens imóveis distintos;\nII - alienação ou cessão de direitos de bem imóvel, desde que tenham por objeto mais de 3 (três) imóveis distintos no ano-calendário anterior;\nIII - alienação ou cessão de direitos, no ano-calendário anterior, de mais de 1 (um) bem imóvel construído pelo próprio alienante nos 5 (cinco) anos anteriores à data da alienação.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art251",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art253",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 253, caput",
+    "texto": "Art. 253. A locação, cessão onerosa ou arrendamento de bem imóvel residencial por contribuinte sujeito ao regime regular do IBS e da CBS, com período não superior a 90 (noventa) dias ininterruptos, serão tributados de acordo com as mesmas regras aplicáveis aos serviços de hotelaria, previstas na Seção II do Capítulo VII do Título V deste Livro.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art253",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art257",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 257, caput",
+    "texto": "Art. 257. A partir de 1º de janeiro de 2027, será vinculado a cada imóvel de propriedade de contribuinte sujeito ao regime regular do IBS e da CBS valor correspondente ao respectivo redutor de ajuste, nos termos do regulamento.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art257",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art259",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 259, caput",
+    "texto": "Art. 259. Na alienação de bem imóvel residencial novo ou de lote residencial realizada por contribuinte sujeito ao regime regular do IBS e da CBS, poderá ser deduzido da base de cálculo do IBS e da CBS redutor social no valor de R$ 100.000,00 (cem mil reais) por bem imóvel residencial novo e de R$ 30.000,00 (trinta mil reais) por lote residencial, até o limite do valor da base de cálculo, após a dedução do redutor de ajuste.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art259",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art260",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 260, caput",
+    "texto": "Art. 260. Na operação de locação, cessão onerosa ou arrendamento de bem imóvel para uso residencial realizada por contribuinte sujeito ao regime regular do IBS e da CBS, poderá ser deduzido da base de cálculo do IBS e da CBS redutor social no valor de R$ 600,00 (seiscentos reais), por mês, por bem imóvel, até o limite do valor da base de cálculo.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art260",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art261",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 261",
+    "texto": "Art. 261. As alíquotas do IBS e da CBS relativas às operações de que trata este Capítulo ficam reduzidas em 50% (cinquenta por cento).",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art261",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art368",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 368, caput",
+    "texto": "Art. 368. A alíquota de referência da CBS em 2030 será reduzida caso a média da Receita-Base da União em 2027 e 2028 exceda o Teto de Referência da União.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art368",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art369",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 369, caput",
+    "texto": "Art. 369. As alíquotas de referência da CBS e do IBS em 2035 serão reduzidas caso a média da Receita-Base Total entre 2029 e 2033 exceda o Teto de Referência Total.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art369",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art409-p2",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 409, § 2º",
+    "texto": "§ 2º Os bens a que se referem os incisos III e IV do § 1º estão sujeitos ao Imposto Seletivo quando acondicionados em embalagem primária, assim entendida aquela em contato direto com o produto e destinada ao consumidor final.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art411",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 411, caput",
+    "texto": "Art. 411. Compete à RFB a administração e a fiscalização do Imposto Seletivo.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art413",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 413",
+    "texto": "Art. 413. O Imposto Seletivo não incide sobre:\nII - as operações com energia elétrica e com telecomunicações; e\nIII - os bens e serviços cujas alíquotas sejam reduzidas nos termos do § 1º do art. 9º da Emenda Constitucional nº 132, de 20 de dezembro de 2023.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art419",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 419, caput",
+    "texto": "Art. 419. As alíquotas do Imposto Seletivo aplicáveis aos veículos classificados nos códigos da NCM/SH relacionados no Anexo XVII serão estabelecidas em lei ordinária.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art421",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 421, caput",
+    "texto": "Art. 421. As alíquotas do Imposto Seletivo aplicáveis às aeronaves e embarcações classificadas nos códigos da NCM/SH relacionados no Anexo XVII serão estabelecidas em lei ordinária e poderão ser graduadas conforme critérios de sustentabilidade ambiental nos termos da lei ordinária.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art422",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 422, caput",
+    "texto": "Art. 422. Observado o disposto nos arts. 419 e 420, as alíquotas do Imposto Seletivo aplicáveis nas operações com os bens e os serviços referidos no Anexo XVII são aquelas previstas em lei ordinária.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art426",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 426",
+    "texto": "Art. 426. O Imposto Seletivo não incide no fornecimento de bens com o fim específico de exportação a empresa comercial exportadora que atenda ao disposto no caput e nos §§ 1º e 2º do art. 82 desta Lei Complementar.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art439",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 439",
+    "texto": "Art. 439. Os benefícios relativos à Zona Franca de Manaus estabelecidos neste Capítulo aplicam-se até a data estabelecida pelo art. 92-A do ADCT.",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art439",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art445",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 445, caput",
+    "texto": "Art. 445. Ficam reduzidas a zero as alíquotas do IBS e da CBS incidentes sobre operação originada fora da Zona Franca de Manaus que destine bem material industrializado de origem nacional a contribuinte estabelecido na Zona Franca de Manaus que seja:",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art445",
+    "data_referencia": "2026-10-15"
+  },
+  {
+    "id": "lc214-art480",
+    "norma": "LC 214/2025",
+    "dispositivo": "art. 480, caput",
+    "texto": "Art. 480. Fica instituído, até 31 de dezembro de 2025, o Comitê Gestor do Imposto sobre Bens e Serviços (CGIBS), entidade pública com caráter técnico e operacional sob regime especial, com sede e foro no Distrito Federal, dotado de independência técnica, administrativa, orçamentária e financeira. Produção de efeitos",
+    "url_fonte": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art480",
+    "data_referencia": "2026-10-15"
   }
 ]

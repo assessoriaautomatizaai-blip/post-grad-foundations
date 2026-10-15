@@ -56,6 +56,81 @@ SPEC = [
 ]
 
 
+# Ampliação de 15/10/2026 (ADR-007): dispositivos citados pela base do APP 2, copiados
+# literalmente da versão vigente (já com a LC 227/2026).
+DATA_APP2 = "2026-10-15"
+LC, EC = "LC 214/2025", "EC 132/2023"
+SPEC_APP2 = [
+    ("ec132-adct125", EC, "125", '2', ['caput', '§ 1º ', '§ 2º '], "art. 2º (ADCT, art. 125, caput e §§ 1º e 2º)", "APP 2, pergunta 05"),
+    ("ec132-adct125-p4", EC, "125", '2', ['§ 4º '], "art. 2º (ADCT, art. 125, § 4º)", "APP 2, pergunta 06"),
+    ("ec132-adct127", EC, "127", '2', ['caput', 'Parágrafo único'], "art. 2º (ADCT, art. 127)", "APP 2, pergunta 07-08"),
+    ("ec132-adct92b", EC, "92-B", '2', ['caput'], "art. 2º (ADCT, art. 92-B, caput)", "APP 2, pergunta 57"),
+    ("lc214-art3", LC, "3", None, ['caput+'], "art. 3º, caput", "APP 2, pergunta 17"),
+    ("lc214-art7a-pu", LC, "7-A", None, ['Parágrafo único+'], "art. 7º-A, parágrafo único", "APP 2, pergunta 43"),
+    ("lc214-art8", LC, "8", None, ['caput'], "art. 8º", "APP 2, pergunta 28"),
+    ("lc214-art10", LC, "10", None, ['caput'], "art. 10, caput", "APP 2, pergunta 17"),
+    ("lc214-art12", LC, "12", None, ['caput', '§ 2º +'], "art. 12, caput e § 2º", "APP 2, pergunta 20"),
+    ("lc214-art15", LC, "15", None, ['caput+', 'Parágrafo único'], "art. 15", "APP 2, pergunta 19"),
+    ("lc214-art16", LC, "16", None, ['caput', 'Parágrafo único'], "art. 16", "APP 2, pergunta 21"),
+    ("lc214-art18", LC, "18", None, ['caput+'], "art. 18", "APP 2, pergunta 21"),
+    ("lc214-art19", LC, "19", None, ['caput+'], "art. 19, caput", "APP 2, pergunta 22"),
+    ("lc214-art26-iv", LC, "26", None, ['caput', 'IV - '], "art. 26, caput, inciso IV", "APP 2, pergunta 42"),
+    ("lc214-art26-vi", LC, "26", None, ['caput', 'VI - '], "art. 26, caput, inciso VI", "APP 2, pergunta 41"),
+    ("lc214-art26-p10", LC, "26", None, ['§ 10. '], "art. 26, § 10", "APP 2, pergunta 42"),
+    ("lc214-art27", LC, "27", None, ['caput+'], "art. 27, caput", "APP 2, pergunta 25"),
+    ("lc214-art35", LC, "35", None, ['caput', '§ 2º '], "art. 35, caput e § 2º", "APP 2, pergunta 26"),
+    ("lc214-art39", LC, "39", None, ['caput'], "art. 39, caput", "APP 2, pergunta 24"),
+    ("lc214-art41-p4-p5", LC, "41", None, ['§ 4º ', '§ 5º '], "art. 41, §§ 4º e 5º", "APP 2, pergunta 50"),
+    ("lc214-art47-p9", LC, "47", None, ['§ 9º +'], "art. 47, § 9º", "APP 2, pergunta 52"),
+    ("lc214-art49", LC, "49", None, ['caput'], "art. 49, caput", "APP 2, pergunta 23"),
+    ("lc214-art51", LC, "51", None, ['caput', '§ 2º '], "art. 51, caput e § 2º", "APP 2, pergunta 23/28"),
+    ("lc214-art52", LC, "52", None, ['caput'], "art. 52", "APP 2, pergunta 23"),
+    ("lc214-art53", LC, "53", None, ['caput+', '§ 1º '], "art. 53, caput e § 1º", "APP 2, pergunta 23/24"),
+    ("lc214-art54", LC, "54", None, ['caput'], "art. 54", "APP 2, pergunta 23"),
+    ("lc214-art57", LC, "57", None, ['caput+'], "art. 57, caput", "APP 2, pergunta 23"),
+    ("lc214-art60", LC, "60", None, ['caput'], "art. 60, caput", "APP 2, pergunta 27"),
+    ("lc214-art63", LC, "63", None, ['caput'], "art. 63, caput", "APP 2, pergunta 18"),
+    ("lc214-art79", LC, "79", None, ['caput'], "art. 79, caput", "APP 2, pergunta 28"),
+    ("lc214-art115", LC, "115", None, ['caput'], "art. 115", "APP 2, pergunta 40"),
+    ("lc214-art116", LC, "116", None, ['caput'], "art. 116, caput", "APP 2, pergunta 40"),
+    ("lc214-art117", LC, "117", None, ['caput'], "art. 117, caput", "APP 2, pergunta 39/40"),
+    ("lc214-art123", LC, "123", None, ['caput+'], "art. 123", "APP 2, pergunta 40"),
+    ("lc214-art133", LC, "133", None, ['caput'], "art. 133, caput", "APP 2, pergunta 34"),
+    ("lc214-art135", LC, "135", None, ['caput'], "art. 135, caput", "APP 2, pergunta 32"),
+    ("lc214-art136", LC, "136", None, ['caput'], "art. 136, caput", "APP 2, pergunta 33"),
+    ("lc214-art143", LC, "143", None, ['caput+'], "art. 143, caput", "APP 2, pergunta 35"),
+    ("lc214-art144", LC, "144", None, ['caput'], "art. 144, caput", "APP 2, pergunta 35"),
+    ("lc214-art145", LC, "145", None, ['caput'], "art. 145, caput", "APP 2, pergunta 35"),
+    ("lc214-art146", LC, "146", None, ['caput'], "art. 146, caput", "APP 2, pergunta 34"),
+    ("lc214-art147", LC, "147", None, ['caput+'], "art. 147, caput", "APP 2, pergunta 35"),
+    ("lc214-art148", LC, "148", None, ['caput'], "art. 148, caput", "APP 2, pergunta 31"),
+    ("lc214-art157", LC, "157", None, ['caput'], "art. 157, caput", "APP 2, pergunta 36"),
+    ("lc214-art164", LC, "164", None, ['caput'], "art. 164, caput", "APP 2, pergunta 41"),
+    ("lc214-art165", LC, "165", None, ['caput'], "art. 165, caput", "APP 2, pergunta 41"),
+    ("lc214-art167", LC, "167", None, ['caput'], "art. 167", "APP 2, pergunta 41"),
+    ("lc214-art172", LC, "172", None, ['caput+'], "art. 172, caput", "APP 2, pergunta 58"),
+    ("lc214-art173", LC, "173", None, ['caput'], "art. 173, caput", "APP 2, pergunta 58"),
+    ("lc214-art251", LC, "251", None, ['caput', '§ 1º +'], "art. 251, caput e § 1º", "APP 2, pergunta 53"),
+    ("lc214-art253", LC, "253", None, ['caput'], "art. 253, caput", "APP 2, pergunta 53"),
+    ("lc214-art257", LC, "257", None, ['caput'], "art. 257, caput", "APP 2, pergunta 55"),
+    ("lc214-art259", LC, "259", None, ['caput'], "art. 259, caput", "APP 2, pergunta 55"),
+    ("lc214-art260", LC, "260", None, ['caput'], "art. 260, caput", "APP 2, pergunta 55"),
+    ("lc214-art261", LC, "261", None, ['caput+'], "art. 261", "APP 2, pergunta 54"),
+    ("lc214-art368", LC, "368", None, ['caput'], "art. 368, caput", "APP 2, pergunta 22"),
+    ("lc214-art369", LC, "369", None, ['caput'], "art. 369, caput", "APP 2, pergunta 22"),
+    ("lc214-art409-p2", LC, "409", None, ['§ 2º +'], "art. 409, § 2º", "APP 2, pergunta 45"),
+    ("lc214-art411", LC, "411", None, ['caput'], "art. 411, caput", "APP 2, pergunta 44"),
+    ("lc214-art413", LC, "413", None, ['caput+'], "art. 413", "APP 2, pergunta 46"),
+    ("lc214-art419", LC, "419", None, ['caput'], "art. 419, caput", "APP 2, pergunta 47"),
+    ("lc214-art421", LC, "421", None, ['caput'], "art. 421, caput", "APP 2, pergunta 47"),
+    ("lc214-art422", LC, "422", None, ['caput'], "art. 422, caput", "APP 2, pergunta 47"),
+    ("lc214-art426", LC, "426", None, ['caput'], "art. 426", "APP 2, pergunta 46"),
+    ("lc214-art439", LC, "439", None, ['caput'], "art. 439", "APP 2, pergunta 57"),
+    ("lc214-art445", LC, "445", None, ['caput'], "art. 445, caput", "APP 2, pergunta 57"),
+    ("lc214-art480", LC, "480", None, ['caput'], "art. 480, caput", "APP 2, pergunta 16"),
+]
+
+
 def limpar(texto):
     # Aspas de abertura/fechamento das citações do ADCT e marca "(NR)" não fazem parte do dispositivo.
     texto = re.sub(r'^[\"“]', "", texto)
@@ -89,7 +164,8 @@ def main(lc_json, ec_json, lc_htm, ec_htm, saida, relatorio):
         "EC 132/2023": (json.load(open(ec_json))["artigos"], open(ec_htm, "rb").read().decode("windows-1252", "replace")),
     }
     trechos, info = [], []
-    for id_, norma, artigo, citado_em, seletores, dispositivo, tema in SPEC:
+    lista = [(e, DATA) for e in SPEC] + [(e, DATA_APP2) for e in SPEC_APP2]
+    for (id_, norma, artigo, citado_em, seletores, dispositivo, tema), data in lista:
         artigos, html = fontes[norma]
         art = next(a for a in artigos if a["artigo"] == artigo and a["citado_em"] == citado_em)
         texto = "\n".join(selecionar(art["paragrafos"], seletores))
@@ -97,7 +173,7 @@ def main(lc_json, ec_json, lc_htm, ec_htm, saida, relatorio):
         url = URLS[norma] + (f"#{ancora}" if f'name="{ancora}"' in html else "")
         trechos.append({
             "id": id_, "norma": norma, "dispositivo": dispositivo, "texto": texto,
-            "url_fonte": url, "data_referencia": DATA,
+            "url_fonte": url, "data_referencia": data,
         })
         info.append({"id": id_, "tema": tema, "notas": sorted(set(art["notas"])), "chars": len(texto)})
     json.dump(trechos, open(saida, "w"), ensure_ascii=False, indent=2)
