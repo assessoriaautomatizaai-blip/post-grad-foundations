@@ -35,7 +35,8 @@ Guarde o valor num gerenciador de senhas. Ele vai em dois lugares: nos segredos 
 
 1. Na Evolution da Cloudfy, crie uma instância (ex.: `tira-duvidas`) do tipo **WhatsApp Baileys**.
 2. Conecte pelo QR Code usando um **número dedicado ao agente** — não use o seu número pessoal (escopo e estimativa).
-3. Confirme a versão: abrir `https://<sua-evolution>/` no navegador mostra a mensagem de boas-vindas da Evolution com a versão. Anote-a para o registro do projeto.
+3. Foto de perfil do número: use [`docs/marca/inciso-avatar-whatsapp.png`](marca/inciso-avatar-whatsapp.png) (no app do WhatsApp do número do agente, ou pelo endpoint de perfil da Evolution) e o nome de exibição **Inciso**.
+4. Confirme a versão: abrir `https://<sua-evolution>/` no navegador mostra a mensagem de boas-vindas da Evolution com a versão. Anote-a para o registro do projeto.
 
 ## 4. Configurar o webhook da instância
 

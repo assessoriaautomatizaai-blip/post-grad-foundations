@@ -5,10 +5,10 @@
 
 ## Ferramentas
 
-| Ferramenta | Papel |
-|---|---|
+| Ferramenta                    | Papel                                                                                      |
+| ----------------------------- | ------------------------------------------------------------------------------------------ |
 | Claude Code (Claude Opus 5.5) | Leitura do material do curso, planejamento, documentação, implementação do núcleo e testes |
-| Lovable | Geração da interface (simulador) e sincronização com o GitHub |
+| Lovable                       | Geração da interface (simulador) e sincronização com o GitHub                              |
 
 ## Registro
 
@@ -179,4 +179,24 @@
   - `tsc` acusou um tipo com `exactOptionalPropertyTypes`; o primeiro "tsc ok" relatado pela IA era falso, porque o comando media o código de saída do `head`, não do `tsc` — refeito com o código de saída correto.
   - As capturas de tela da prévia saíam em branco depois de rolar a página. Antes de concluir que a página tinha defeito, a IA inspecionou o DOM (elemento visível em cada ponto, opacidade, cores): estava tudo certo — era a captura. Passou a capturar aumentando a altura da janela.
 - **Verificação real (servidor local, navegador):** temas claro e escuro, tema mantido entre páginas, exemplo clicável, recusa ("Fora da base") e falha ("Falha técnica") com tratamento visual próprio, foco voltando ao campo, e **nenhuma rolagem horizontal em 375 px**. Nada da base, da chave ou do prompt no código do navegador; sem dependências novas e sem fontes externas.
+- **Tempo real:** [A PREENCHER]
+
+### 15/10/2026 — Aplicação da marca Inciso
+
+- **Origem:** a marca foi criada em outra conversa ("Logomarca para produto"). A IA não achou o arquivo no repositório e, com a indicação do autor, localizou a conversa pelas ferramentas de sessão e os arquivos na pasta `MARCA` do curso. Lá constava que o nome mudou de _Dualis_ para _Inciso_ por conflito no INPI e que a busca do novo nome foi preliminar — registrado como [A CONFERIR], não como fato.
+- **Testes primeiro:** 5 testes do componente de logotipo (nome acessível, cores do traço e das letras, versão decorativa) e 1 no cabeçalho (marca com link para a página inicial), escritos antes da troca.
+- **Logotipo como componente, não imagem:** a geometria foi copiada dos SVGs do manual; só as cores viraram variáveis, para o traço do I seguir o tema (azul-caneta no claro, #8099FF no escuro, como na versão negativa) sem trocar as cores do traço e do travessão, que o manual proíbe.
+- **Fontes da marca sem chamada externa:** Schibsted Grotesk, Source Serif 4 e IBM Plex Mono instaladas pelo `@fontsource` (versões do `npm view`), servidas pelo próprio app — nenhuma requisição ao Google Fonts. Mono nas citações de lei e nos números; serifada nos textos longos.
+- **Contraste recalculado:** 28 pares texto/fundo nos dois temas, incluindo o traço do logotipo sobre o fundo (mínimo 3:1 para elemento gráfico) — nenhuma falha; menor razão 5,78:1.
+- **Ícones:** favicon SVG e ICO (32 e 48 px), apple-touch-icon e ícones 192/512 gerados a partir dos arquivos do manual; `theme-color` nas cores papel e tinta.
+- **Tempo real:** [A PREENCHER]
+
+### 15/10/2026 — Harmonia da paleta (prompt 02)
+
+- **Ferramenta:** o skill `frontend-prompt-optimizer` gerou o prompt `prompts/02-harmonia-de-cores.md` a partir de um diagnóstico numérico dos tokens (matiz e croma oklch), não de impressão visual.
+- **O que estava desarmônico:** neutros em duas famílias de cor (texto azulado em 264–266°, superfícies e bordas amarelo-esverdeadas em 106–128°); o amarelo marca-texto como `--accent`, deixando amarelos todos os hovers, a seleção e os ícones, quando o manual o reserva para destaque pontual; no escuro, um accent marrom-oliva e bordas brancas sem matiz.
+- **Achado de acessibilidade:** a borda do campo de texto tinha ≈1,3:1 sobre o fundo; o WCAG 1.4.11 pede 3:1 para o limite de campos. Corrigida.
+- **Sistema adotado (60-30-10):** neutros na matiz da tinta; azul-caneta para ações, foco, hover e seleção; marca-texto só em tokens próprios (`--citacao` para as fontes de lei e `--realce` para o traço de marca-texto no título).
+- **Teste primeiro:** `src/styles.contraste.test.ts` lê o `styles.css`, converte oklch para sRGB, compõe transparências e confere, nos dois temas, 14 pares de texto (≥ 4,5:1), 5 elementos gráficos (≥ 3:1) e a regra de harmonia — 54 casos. Falhou na paleta antiga exatamente nos pontos do diagnóstico; uma mutação (cor de citação escurecida no tema escuro) foi detectada.
+- **O que a prévia pegou:** o realce do título aparecia como um bloco amarelo cheio — o `<mark>` herda do navegador um fundo amarelo puro por baixo do degradê. Corrigido com fundo transparente; o contraste do texto sobre o realce é 13,3:1 (claro) e 7,9:1 (escuro).
 - **Tempo real:** [A PREENCHER]

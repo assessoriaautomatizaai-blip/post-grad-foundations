@@ -1,4 +1,6 @@
-# Tira-dúvidas da reforma tributária no WhatsApp
+<p><img src="docs/marca/inciso-assinatura.svg" alt="Inciso" height="56"></p>
+
+# Inciso — tira-dúvidas da reforma tributária no WhatsApp
 
 Agente de IA que responde, pelo WhatsApp, **dúvidas básicas sobre a reforma tributária brasileira** (EC 132/2023 e LC 214/2025). Toda resposta **cita o artigo de lei** de onde veio, com link para o texto oficial no Planalto; quando a pergunta foge da base, o agente **recusa** em vez de inventar.
 
@@ -45,14 +47,15 @@ flowchart LR
 
 ## Tecnologias
 
-| Camada                           | Tecnologia                                                                                                                       |
-| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Aplicação                        | TanStack Start (React 19, TypeScript estrito), gerada e sincronizada com o [Lovable](https://lovable.dev)                        |
-| Validação de entradas            | zod                                                                                                                              |
-| Modelo de linguagem (no produto) | **Gemini 3.8 Flash**, pelo SDK oficial `@google/genai` ([ADR-003](docs/decisoes.md))                                             |
-| WhatsApp                         | **Evolution API v2**, hospedada na Cloudfy                                                                                       |
-| Testes                           | Vitest e Testing Library                                                                                                         |
-| IA no desenvolvimento            | **Claude Code (Claude Opus 5.5)** — planejamento, testes, código, revisão e documentação; **Lovable** — template e sincronização |
+| Camada                           | Tecnologia                                                                                                                             |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Aplicação                        | TanStack Start (React 19, TypeScript estrito), gerada e sincronizada com o [Lovable](https://lovable.dev)                              |
+| Validação de entradas            | zod                                                                                                                                    |
+| Modelo de linguagem (no produto) | **Gemini 3.8 Flash**, pelo SDK oficial `@google/genai` ([ADR-003](docs/decisoes.md))                                                   |
+| WhatsApp                         | **Evolution API v2**, hospedada na Cloudfy                                                                                             |
+| Interface                        | Tailwind CSS 4 e componentes Radix; fontes Schibsted Grotesk, Source Serif 4 e IBM Plex Mono servidas pelo próprio app (`@fontsource`) |
+| Testes                           | Vitest e Testing Library                                                                                                               |
+| IA no desenvolvimento            | **Claude Code (Claude Opus 5.5)** — planejamento, testes, código, revisão e documentação; **Lovable** — template e sincronização       |
 
 Versões travadas em [`bun.lock`](bun.lock).
 
@@ -185,6 +188,11 @@ O projeto usou IA em dois papéis, com controles diferentes (registro completo e
 | [docs/HISTORY-IA.md](docs/HISTORY-IA.md)             | Registro do uso de IA, etapa por etapa                   |
 | [docs/conferencia-base.md](docs/conferencia-base.md) | Conferência humana dos trechos e sinônimos               |
 | [docs/implantacao.md](docs/implantacao.md)           | Implantação com Lovable, Gemini e Evolution              |
+| [docs/marca/](docs/marca/cores-e-fontes.md)          | Marca Inciso: logotipo, ícones, cores e fontes           |
+
+## Marca
+
+O nome **Inciso** vem da subdivisão de artigo de lei — o agente sempre aponta o dispositivo de onde tirou a resposta. O símbolo "I –" é o traço do I seguido do travessão que separa os incisos no texto legal. Arquivos (SVG e PNG, inclusive a foto de perfil do WhatsApp), cores e fontes estão em [docs/marca/](docs/marca/cores-e-fontes.md). A busca de anterioridade no INPI foi preliminar [A CONFERIR].
 
 ## Licença e créditos
 
