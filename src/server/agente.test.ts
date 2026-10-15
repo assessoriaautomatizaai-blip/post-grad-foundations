@@ -1,17 +1,18 @@
 import { describe, expect, it, vi } from "vitest";
 
-import type { LlmAdapter } from "@/core/answer";
+import type { FonteWeb, LlmAdapter } from "@/core/answer";
+import base from "../../knowledge/base.json";
 
 import { createAgente, MAX_PERGUNTA, perguntaSchema } from "./agente";
 
-// Especificação do serviço do agente (H08). É a função única que o simulador web e,
-// na H09, o webhook do WhatsApp usam: base real, sinônimos reais e o núcleo completo.
+// Especificação do serviço do agente (H08; ADR-007). É a função única que o simulador web
+// e o webhook do WhatsApp usam: base real e o núcleo completo.
 // O modelo é falso: nenhum teste chama o Gemini.
 
-function modeloFalso(resposta: string | Error) {
+function modeloFalso(resposta: string | Error, fontesWeb: FonteWeb[] = []) {
   const gerar = vi.fn<LlmAdapter["gerar"]>(async () => {
     if (resposta instanceof Error) throw resposta;
-    return resposta;
+    return { texto: resposta, fontesWeb };
   });
   return { gerar };
 }
@@ -27,12 +28,22 @@ describe("createAgente", () => {
     expect(resposta.fontes.map((t) => t.id)).toEqual(["lc214-art31"]);
   });
 
-  it("recusa pergunta fora do escopo sem chamar o modelo", async () => {
-    const llm = modeloFalso("não deveria ser chamado");
-    const resposta = await createAgente({ llm }).perguntar("Qual o valor do IPVA do meu carro?");
+  it("manda ao modelo todos os trechos da base real", async () => {
+    const llm = modeloFalso("O ISS acaba em 2033 [ec132-adct129].");
+    await createAgente({ llm }).perguntar("Quando o ISS deixa de existir?");
 
-    expect(resposta.tipo).toBe("recusa");
-    expect(llm.gerar).not.toHaveBeenCalled();
+    const enviado = llm.gerar.mock.calls[0]?.[0];
+    for (const t of base) expect(enviado?.usuario).toContain(t.id);
+  });
+
+  it("responde pergunta fora da base com o complemento da web e a fonte", async () => {
+    const fonte = { titulo: "gov.br", url: "https://www.gov.br/x" };
+    const resposta = await createAgente({
+      llm: modeloFalso("*Complemento:* O IPVA não muda com a reforma do consumo.", [fonte]),
+    }).perguntar("Qual o valor do IPVA do meu carro?");
+
+    expect(resposta.tipo).toBe("resposta");
+    expect(resposta.fontesWeb).toEqual([fonte]);
   });
 
   it("entrega o erro do modelo para registro e responde com a mensagem de falha", async () => {

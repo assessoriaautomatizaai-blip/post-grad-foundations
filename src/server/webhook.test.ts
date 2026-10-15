@@ -10,7 +10,12 @@ import { createDeduplicador, createWebhookHandler, MENSAGEM_PERGUNTA_LONGA } fro
 // sem WhatsApp e sem Gemini. O envio da resposta (H10) entra como função falsa.
 
 const SEGREDO = "segredo-de-teste-com-tamanho-razoavel";
-const RESPOSTA: Resposta = { tipo: "resposta", texto: "Resposta do agente.", fontes: [] };
+const RESPOSTA: Resposta = {
+  tipo: "resposta",
+  texto: "Resposta do agente.",
+  fontes: [],
+  fontesWeb: [],
+};
 
 function montar(opcoes: { segredo?: string | undefined } = {}) {
   const agente = { perguntar: vi.fn<Agente["perguntar"]>(async () => RESPOSTA) };

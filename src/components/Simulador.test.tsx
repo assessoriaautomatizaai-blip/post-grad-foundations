@@ -23,6 +23,7 @@ const respostaComFonte: Resposta = {
   texto:
     "É a separação do tributo no pagamento (LC 214/2025, art. 31, caput).\n\n*Fontes:*\n• LC 214/2025, art. 31, caput\n\n_Resposta informativa._",
   fontes: [split],
+  fontesWeb: [],
 };
 
 function montar(perguntar = vi.fn(async (_: string): Promise<Resposta> => respostaComFonte)) {
@@ -81,6 +82,7 @@ describe("Simulador", () => {
       tipo: "resposta",
       texto: respostas.shift() ?? "",
       fontes: [],
+      fontesWeb: [],
     }));
     const { enviar, conversa } = montar(perguntar);
 
@@ -122,6 +124,45 @@ describe("Simulador", () => {
     expect(link.getAttribute("rel")).toContain("noopener");
   });
 
+  it("mostra as fontes da web como links à parte, identificados como não conferidos", async () => {
+    const fonteWeb = {
+      titulo: "Receita Federal — Reforma",
+      url: "https://www.gov.br/receitafederal/x",
+    };
+    const { enviar } = montar(
+      vi.fn(async (): Promise<Resposta> => ({ ...respostaComFonte, fontesWeb: [fonteWeb] })),
+    );
+    enviar("O que muda nas notas fiscais?");
+
+    const lista = await screen.findByRole("list", { name: /fontes da web/i });
+    const link = within(lista).getByRole("link", { name: /Receita Federal — Reforma/ });
+    expect(link).toHaveAttribute("href", fonteWeb.url);
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link.getAttribute("rel")).toContain("noopener");
+    expect(lista).toHaveTextContent(/não conferid/i);
+    // As fontes da lei continuam numa lista própria, separada da web.
+    expect(screen.getByRole("list", { name: /fontes da lei/i })).not.toBe(lista);
+  });
+
+  it.each([
+    ["fora_do_tema", /fora do tema/i],
+    ["sem_fonte", /sem fonte/i],
+  ] as const)("identifica a resposta do tipo %s com um selo próprio", async (tipo, selo) => {
+    const { enviar } = montar(
+      vi.fn(async (): Promise<Resposta> => ({
+        tipo,
+        texto: "Mensagem fixa.",
+        fontes: [],
+        fontesWeb: [],
+      })),
+    );
+    enviar("Qual a previsão do tempo?");
+
+    expect(
+      await within(screen.getByRole("log", { name: /conversa/i })).findByText(selo),
+    ).toBeInTheDocument();
+  });
+
   it("mostra *negrito* e _itálico_ do WhatsApp como formatação, sem os símbolos", async () => {
     const { enviar } = montar();
     enviar("O que é o split payment?");
@@ -137,6 +178,7 @@ describe("Simulador", () => {
       tipo: "resposta",
       texto: '<img src=x onerror="alert(1)"> texto',
       fontes: [],
+      fontesWeb: [],
     }));
     const { enviar, conversa } = montar(perguntar);
     enviar("pergunta?");

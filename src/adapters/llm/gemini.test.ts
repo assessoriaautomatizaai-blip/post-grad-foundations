@@ -2,11 +2,19 @@ import { describe, expect, it, vi } from "vitest";
 
 import { createGeminiAdapter, geminiConfigFromEnv, type GeminiClient } from "./gemini";
 
-// Especificação do adaptador do Gemini (H07, ADR-003). O cliente do SDK é trocado
-// por um falso com a mesma forma de chamada (ai.models.generateContent → response.text):
+// Especificação do adaptador do Gemini (H07, ADR-003; busca no Google pelo ADR-007).
+// O cliente do SDK é trocado por um falso com a mesma forma de chamada
+// (ai.models.generateContent → response.text e candidates[0].groundingMetadata):
 // nenhum teste acessa a rede nem precisa de chave.
 
-function clienteFalso(resposta: { text?: string } | Error) {
+type RespostaFalsa = {
+  text?: string;
+  candidates?: {
+    groundingMetadata?: { groundingChunks?: { web?: { uri?: string; title?: string } }[] };
+  }[];
+};
+
+function clienteFalso(resposta: RespostaFalsa | Error) {
   const generateContent = vi.fn(async () => {
     if (resposta instanceof Error) throw resposta;
     return resposta;
@@ -42,11 +50,70 @@ describe("createGeminiAdapter", () => {
     expect(config.maxOutputTokens).toBeLessThanOrEqual(2048);
   });
 
-  it("devolve o texto gerado", async () => {
+  it("devolve o texto gerado, sem fontes da web quando a busca não foi usada", async () => {
     const { client } = clienteFalso({ text: "Resposta [fx-1]." });
     await expect(
       createGeminiAdapter({ client, model: "m" }).gerar({ sistema: "s", usuario: "u" }),
-    ).resolves.toBe("Resposta [fx-1].");
+    ).resolves.toEqual({ texto: "Resposta [fx-1].", fontesWeb: [] });
+  });
+
+  it("liga a busca no Google (ADR-007)", async () => {
+    const { client, generateContent } = clienteFalso({ text: "ok" });
+    await createGeminiAdapter({ client, model: "m" }).gerar({ sistema: "s", usuario: "u" });
+
+    expect(generateContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        config: expect.objectContaining({ tools: [{ googleSearch: {} }] }),
+      }),
+    );
+  });
+
+  it("devolve as fontes da busca (título e endereço) junto com o texto", async () => {
+    const { client } = clienteFalso({
+      text: "*Complemento:* texto.",
+      candidates: [
+        {
+          groundingMetadata: {
+            groundingChunks: [
+              { web: { uri: "https://www.gov.br/receitafederal/x", title: "gov.br" } },
+              { web: { uri: "https://cgibs.gov.br/y", title: "cgibs.gov.br" } },
+            ],
+          },
+        },
+      ],
+    });
+    const geracao = await createGeminiAdapter({ client, model: "m" }).gerar({
+      sistema: "s",
+      usuario: "u",
+    });
+
+    expect(geracao.fontesWeb).toEqual([
+      { titulo: "gov.br", url: "https://www.gov.br/receitafederal/x" },
+      { titulo: "cgibs.gov.br", url: "https://cgibs.gov.br/y" },
+    ]);
+  });
+
+  it("ignora pedaço da busca sem endereço e usa o endereço como título quando falta o título", async () => {
+    const { client } = clienteFalso({
+      text: "ok",
+      candidates: [
+        {
+          groundingMetadata: {
+            groundingChunks: [
+              {},
+              { web: { title: "sem endereço" } },
+              { web: { uri: "https://a.gov.br" } },
+            ],
+          },
+        },
+      ],
+    });
+    const geracao = await createGeminiAdapter({ client, model: "m" }).gerar({
+      sistema: "s",
+      usuario: "u",
+    });
+
+    expect(geracao.fontesWeb).toEqual([{ titulo: "https://a.gov.br", url: "https://a.gov.br" }]);
   });
 
   it("lança erro quando o modelo não devolve texto (ex.: bloqueio de segurança)", async () => {
