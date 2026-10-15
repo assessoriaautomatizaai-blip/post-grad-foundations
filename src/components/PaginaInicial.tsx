@@ -61,7 +61,11 @@ const RESULTADOS = [
     rotulo: "com o trecho certo entre os 3 primeiros",
     detalhe: "calibração e teste",
   },
-  { valor: "≈60%", rotulo: "das perguntas válidas respondidas", detalhe: "o resto é recusado" },
+  {
+    valor: "60–71%",
+    rotulo: "das perguntas válidas respondidas",
+    detalhe: "calibração e teste; o resto é recusado",
+  },
 ] as const;
 
 export function PaginaInicial() {

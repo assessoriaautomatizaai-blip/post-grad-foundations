@@ -200,3 +200,12 @@
 - **Teste primeiro:** `src/styles.contraste.test.ts` lê o `styles.css`, converte oklch para sRGB, compõe transparências e confere, nos dois temas, 14 pares de texto (≥ 4,5:1), 5 elementos gráficos (≥ 3:1) e a regra de harmonia — 54 casos. Falhou na paleta antiga exatamente nos pontos do diagnóstico; uma mutação (cor de citação escurecida no tema escuro) foi detectada.
 - **O que a prévia pegou:** o realce do título aparecia como um bloco amarelo cheio — o `<mark>` herda do navegador um fundo amarelo puro por baixo do degradê. Corrigido com fundo transparente; o contraste do texto sobre o realce é 13,3:1 (claro) e 7,9:1 (escuro).
 - **Tempo real:** [A PREENCHER]
+
+### 15/10/2026 — Recusa indevida do ISS e falha de abstenção (descobertas no site publicado)
+
+- **Origem:** o autor testou o site publicado com "quando o iss deixa de existir ?" e recebeu recusa, embora a base tenha o dispositivo (EC 132/2023, ADCT, art. 129).
+- **Diagnóstico com números, não com palpite:** a busca achava o artigo certo em 1º lugar (escore 3,24), mas a cobertura ficava em 0,23 (mínimo 0,30): "deixa" e "existir" não existem na base e pesam como os termos mais raros da pergunta. A hipótese inicial da IA (sinônimos não aplicados) estava errada — o erro era do próprio script de diagnóstico, que passava os sinônimos no formato errado.
+- **A simulação da correção revelou um defeito pior, já em produção:** "O IPVA acaba?", "Quando acaba o IPTU?" e "O imposto de renda acaba?" **passavam** pelo filtro e seriam respondidas com o artigo que extingue ICMS e ISS — "acaba" casava com "extintos" e a cobertura passava do mínimo. O conjunto-ouro não tinha esse padrão, e por isso a abstenção medida era 100%.
+- **Correção aprovada pelo autor (testes primeiro):** 7 casos novos (2 de resposta, 5 de recusa); regra no código que recusa pergunta que cita tributo fora da base (lista conferida contra a base: nenhum aparece nela; "renda" sozinha ficou de fora para não barrar "família de baixa renda"); sinônimo de linguagem "existir → extintos". Teste de mutação: sem a regra, 4 casos falham; sem o sinônimo, 2 falham.
+- **Avaliação:** calibração inalterada; teste de 57% para 71% de respostas corretas (t01 deixou de ser recusada); abstenção 100% nos dois conjuntos. Ressalva registrada: o t01 é do conjunto de teste; a mudança veio da pergunta real, não do gabarito.
+- **Tempo real:** [A PREENCHER]

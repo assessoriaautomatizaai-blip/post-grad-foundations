@@ -41,7 +41,7 @@ flowchart LR
 
 1. **Base de conhecimento** ([`knowledge/base.json`](knowledge/base.json)): 29 trechos copiados literalmente do Planalto, um por dispositivo legal, **conferidos por pessoa** no texto oficial ([conferência](docs/conferencia-base.md)).
 2. **Busca** lexical (BM25) com redução de plural e sinônimos que ligam o nome do tributo ao jeito como a lei o cita ("IBS" → "art. 156-A").
-3. **Decisão no código**, antes de qualquer IA: saudação vira boas-vindas; pergunta sem trecho suficiente (escore e cobertura mínimos) vira **recusa, sem custo de modelo**.
+3. **Decisão no código**, antes de qualquer IA: saudação vira boas-vindas; pergunta que cita tributo fora da base (IPVA, IPTU, ITBI, imposto de renda…) ou sem trecho suficiente (escore e cobertura mínimos) vira **recusa, sem custo de modelo**.
 4. **Geração**: o Gemini recebe só os trechos aprovados e cita cada um pelo id (`[lc214-art31]`). O código confere: id que não estava entre os recuperados, ou resposta sem citação, vira recusa. Depois troca o id pela citação legível e acrescenta as fontes com link e o aviso.
 5. **Canal**: o mesmo serviço atende o WhatsApp (webhook da Evolution API) e o **simulador web**, que permite avaliar o agente sem WhatsApp.
 
@@ -117,7 +117,9 @@ npm run build   # build de produção
 | ---------------------------------------------- | -------------- | -------------- |
 | Perguntas fora do escopo recusadas             | **100%** (6/6) | **100%** (4/4) |
 | Trecho certo entre os 3 recuperados (recall@3) | 73%            | 86%            |
-| Respondidas usando o trecho certo              | 60%            | 57%            |
+| Respondidas usando o trecho certo              | 60%            | 71%            |
+
+O teste subiu de 57% para 71% em 15/10/2026 com o sinônimo "existir → extintos", criado por uma pergunta real do simulador publicado ("Quando o ISS deixa de existir?"), não pelo gabarito; o efeito no caso t01 foi consequência, registrada no [histórico](docs/HISTORY-IA.md).
 
 O agente erra **do lado seguro**: nenhuma pergunta fora do escopo foi respondida, nem as armadilhas que usam palavras da base ("Quanto custa abrir um MEI?"). Em troca, recusa perguntas que poderia responder — ver [limitações](#limitações-e-próximos-passos).
 
@@ -168,7 +170,7 @@ O projeto usou IA em dois papéis, com controles diferentes (registro completo e
 
 **Limitações conhecidas (medidas, não estimadas):**
 
-- **Recusa demais.** Só 57% a 60% das perguntas dentro do escopo são respondidas; o critério de recall@3 ≥ 80% do escopo **não foi atingido** na calibração (73%). A causa é vocabulário: palavras do dia a dia ausentes da lei, flexão verbal ("compensar" × "compensado") e termos onipresentes ("IBS" aparece em 19 dos 29 trechos).
+- **Recusa demais.** Só 60% a 71% das perguntas dentro do escopo são respondidas; o critério de recall@3 ≥ 80% do escopo **não foi atingido** na calibração (73%). A causa é vocabulário: palavras do dia a dia ausentes da lei, flexão verbal ("compensar" × "compensado") e termos onipresentes ("IBS" aparece em 19 dos 29 trechos).
 - **Uma pergunta passa com trecho errado** no conjunto-ouro ("Serviços de saúde vão pagar menos imposto?" recupera o Imposto Seletivo, que fala em "prejudiciais à saúde").
 - **Base pequena e manual**: 29 trechos; sem o Anexo I (lista da cesta básica), sem regulamentos, legislação estadual ou municipal. Atualização manual.
 - Só mensagens de texto; sem memória entre mensagens; sem limitação de taxa por remetente.

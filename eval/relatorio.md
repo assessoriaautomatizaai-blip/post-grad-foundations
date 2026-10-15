@@ -23,8 +23,8 @@
 |---|---|
 | Perguntas dentro do escopo | 7 |
 | Recall@3 (trecho esperado entre os 3 recuperados) | 86% |
-| Respostas corretas (respondeu usando um trecho esperado) | 57% |
-| Recusas indevidas | t01, t03, t06 |
+| Respostas corretas (respondeu usando um trecho esperado) | 71% |
+| Recusas indevidas | t03, t06 |
 | Respostas com trecho errado | — |
 | Perguntas fora do escopo | 4 |
 | Abstenção correta (recusou fora do escopo) | 100% |
