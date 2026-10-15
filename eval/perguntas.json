@@ -7,93 +7,126 @@
       "id": "c01",
       "conjunto": "calibracao",
       "pergunta": "O que significa a sigla IBS?",
-      "esperado": ["lc214-art1"]
+      "esperado": [
+        "lc214-art1"
+      ]
     },
     {
       "id": "c02",
       "conjunto": "calibracao",
       "pergunta": "Quem cobra a CBS, a União ou o estado?",
-      "esperado": ["lc214-art1", "lc214-art14"]
+      "esperado": [
+        "lc214-art1",
+        "lc214-art14"
+      ]
     },
     {
       "id": "c03",
       "conjunto": "calibracao",
       "pergunta": "Em 2026 quanto é cobrado de IBS?",
-      "esperado": ["lc214-art343"]
+      "esperado": [
+        "lc214-art343"
+      ]
     },
     {
       "id": "c04",
       "conjunto": "calibracao",
       "pergunta": "Em 2026 vou ter que pagar IBS e CBS ou dá para compensar?",
-      "esperado": ["lc214-art348-i-ii", "lc214-art348-p1"]
+      "esperado": [
+        "lc214-art348-i-ii",
+        "lc214-art348-p1"
+      ]
     },
     {
       "id": "c05",
       "conjunto": "calibracao",
       "pergunta": "Quando o PIS e a Cofins deixam de ser cobrados?",
-      "esperado": ["ec132-adct126"]
+      "esperado": [
+        "ec132-adct126"
+      ]
     },
     {
       "id": "c06",
       "conjunto": "calibracao",
       "pergunta": "O IPI vai acabar?",
-      "esperado": ["ec132-adct126"]
+      "esperado": [
+        "ec132-adct126"
+      ]
     },
     {
       "id": "c07",
       "conjunto": "calibracao",
       "pergunta": "Como vai funcionar a redução do ICMS entre 2029 e 2032?",
-      "esperado": ["ec132-adct128"]
+      "esperado": [
+        "ec132-adct128"
+      ]
     },
     {
       "id": "c08",
       "conjunto": "calibracao",
       "pergunta": "O que é o princípio da neutralidade?",
-      "esperado": ["lc214-art2"]
+      "esperado": [
+        "lc214-art2"
+      ]
     },
     {
       "id": "c09",
       "conjunto": "calibracao",
       "pergunta": "Quem tem direito à devolução do imposto para família de baixa renda?",
-      "esperado": ["lc214-art112", "lc214-art113"]
+      "esperado": [
+        "lc214-art112",
+        "lc214-art113"
+      ]
     },
     {
       "id": "c10",
       "conjunto": "calibracao",
       "pergunta": "Qual o percentual de devolução do imposto na conta de energia elétrica?",
-      "esperado": ["lc214-art118"]
+      "esperado": [
+        "lc214-art118"
+      ]
     },
     {
       "id": "c11",
       "conjunto": "calibracao",
       "pergunta": "Arroz e feijão vão ter imposto?",
-      "esperado": ["lc214-art125", "ec132-art8"]
+      "esperado": [
+        "lc214-art125",
+        "ec132-art8"
+      ]
     },
     {
       "id": "c12",
       "conjunto": "calibracao",
       "pergunta": "Serviços de saúde vão pagar menos imposto?",
-      "esperado": ["lc214-art128"]
+      "esperado": [
+        "lc214-art128"
+      ]
     },
     {
       "id": "c13",
       "conjunto": "calibracao",
       "pergunta": "O split payment vale para pagamento com cartão?",
-      "esperado": ["lc214-art31"]
+      "esperado": [
+        "lc214-art31"
+      ]
     },
     {
       "id": "c14",
       "conjunto": "calibracao",
       "pergunta": "Empresa do Simples pode escolher pagar IBS e CBS pelo regime regular?",
-      "esperado": ["lc214-art41-p1-p3"]
+      "esperado": [
+        "lc214-art41-p1-p3"
+      ]
     },
     {
       "id": "c15",
       "conjunto": "calibracao",
       "pergunta": "Comprei de uma empresa do Simples Nacional, posso aproveitar crédito?",
-      "esperado": ["lc214-art47-p3"]
+      "esperado": [
+        "lc214-art47-p3"
+      ]
     },
-
     {
       "id": "c16",
       "conjunto": "calibracao",
@@ -136,50 +169,63 @@
       "fora_do_escopo": true,
       "motivo": "cálculo de caso concreto (fora do escopo); armadilha: IBS existe na base"
     },
-
     {
       "id": "t01",
       "conjunto": "teste",
       "pergunta": "Até quando vai existir o ISS?",
-      "esperado": ["ec132-adct129", "ec132-adct128"]
+      "esperado": [
+        "ec132-adct129",
+        "ec132-adct128"
+      ]
     },
     {
       "id": "t02",
       "conjunto": "teste",
       "pergunta": "O que é crédito de IBS e CBS?",
-      "esperado": ["lc214-art47"]
+      "esperado": [
+        "lc214-art47"
+      ]
     },
     {
       "id": "t03",
       "conjunto": "teste",
       "pergunta": "Sobre o que incide o IBS?",
-      "esperado": ["lc214-art4"]
+      "esperado": [
+        "lc214-art4"
+      ]
     },
     {
       "id": "t04",
       "conjunto": "teste",
       "pergunta": "Bebida alcoólica vai pagar Imposto Seletivo?",
-      "esperado": ["lc214-art409"]
+      "esperado": [
+        "lc214-art409"
+      ]
     },
     {
       "id": "t05",
       "conjunto": "teste",
       "pergunta": "O Imposto Seletivo pode ser cobrado mais de uma vez?",
-      "esperado": ["lc214-art410"]
+      "esperado": [
+        "lc214-art410"
+      ]
     },
     {
       "id": "t06",
       "conjunto": "teste",
       "pergunta": "Contador vai ter desconto no imposto?",
-      "esperado": ["lc214-art127"]
+      "esperado": [
+        "lc214-art127"
+      ]
     },
     {
       "id": "t07",
       "conjunto": "teste",
       "pergunta": "Quem define a alíquota do IBS no meu município?",
-      "esperado": ["lc214-art14"]
+      "esperado": [
+        "lc214-art14"
+      ]
     },
-
     {
       "id": "t08",
       "conjunto": "teste",
@@ -207,6 +253,22 @@
       "pergunta": "Qual a melhor forma de pagar menos imposto?",
       "fora_do_escopo": true,
       "motivo": "planejamento tributário (fora do escopo); armadilha: 'imposto' é comum na base"
+    },
+    {
+      "id": "t12",
+      "conjunto": "teste",
+      "pergunta": "O que é o IBS?",
+      "esperado": [
+        "lc214-art1"
+      ]
+    },
+    {
+      "id": "t13",
+      "conjunto": "teste",
+      "pergunta": "O que é a CBS?",
+      "esperado": [
+        "lc214-art1"
+      ]
     }
   ]
 }
