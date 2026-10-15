@@ -11,8 +11,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "eval": "vitest run src/eval/conjunto-ouro.test.ts --mode eval"
+    "test:watch": "vitest"
   },
   "overrides": {
     "rolldown": "1.2.1"
