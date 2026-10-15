@@ -25,9 +25,9 @@ function PaginaSimulador() {
         <header className="mx-auto mb-8 max-w-3xl">
           <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">Simulador</h1>
           <p className="mt-3 text-muted-foreground">
-            A mesma conversa do WhatsApp, no navegador. As respostas citam o artigo da LC 214/2025
-            ou da EC 132/2023 de onde vieram e, quando a lei não basta, completam com fontes da web,
-            identificadas como não conferidas.
+            Converse com o Agente de IA da reforma tributária. As respostas citam o artigo da LC
+            214/2025 ou da EC 132/2023 de onde vieram e, quando a lei não basta, completam com
+            fontes da web, identificadas como não conferidas.
           </p>
         </header>
         <Simulador perguntar={(pergunta) => perguntarAoAgente({ data: { pergunta } })} />

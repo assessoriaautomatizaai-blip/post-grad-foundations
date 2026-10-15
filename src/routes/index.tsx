@@ -5,7 +5,7 @@ import { PaginaInicial } from "@/components/PaginaInicial";
 
 const TITULO = "Inciso — tira-dúvidas da reforma tributária";
 const DESCRICAO =
-  "Agente de WhatsApp que responde dúvidas básicas sobre a reforma tributária, citando o artigo da lei de onde veio cada resposta.";
+  "Agente de IA que responde dúvidas sobre a reforma tributária, citando o artigo da lei de onde veio cada resposta.";
 
 export const Route = createFileRoute("/")({
   head: () => ({

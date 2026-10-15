@@ -17,7 +17,7 @@ const PASSOS = [
   {
     icone: MessageCircle,
     titulo: "A pergunta chega",
-    texto: "Pelo WhatsApp ou pelo simulador, em linguagem do dia a dia.",
+    texto: "No chat do simulador, em linguagem do dia a dia.",
   },
   {
     icone: FileSearch,
@@ -95,9 +95,9 @@ export function PaginaInicial() {
               .
             </h1>
             <p className="mt-5 max-w-xl font-serif text-lg text-muted-foreground">
-              O Inciso é um agente de WhatsApp que responde em português claro e cita o artigo de
-              lei de onde tirou cada informação. Quando a lei não basta, completa com fontes da web,
-              sempre com o link e separadas do que é lei.
+              O Inciso é um Agente de IA que responde em português claro e cita o artigo de lei de
+              onde tirou cada informação. Quando a lei não basta, completa com fontes da web, sempre
+              com o link e separadas do que é lei.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" className="group">

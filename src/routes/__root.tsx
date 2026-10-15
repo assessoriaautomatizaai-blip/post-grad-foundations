@@ -86,14 +86,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Inciso — tira-dúvidas da reforma tributária" },
       {
         name: "description",
-        content:
-          "Agente de WhatsApp que responde dúvidas básicas sobre a reforma tributária, citando a lei.",
+        content: "Agente de IA que responde dúvidas sobre a reforma tributária, citando a lei.",
       },
       { property: "og:title", content: "Inciso — tira-dúvidas da reforma tributária" },
       {
         property: "og:description",
-        content:
-          "Agente de WhatsApp que responde dúvidas básicas sobre a reforma tributária, citando a lei.",
+        content: "Agente de IA que responde dúvidas sobre a reforma tributária, citando a lei.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
