@@ -121,3 +121,14 @@
 - **Execução real (produto montado, servidor local):** "oi" → boas-vindas; "Qual o valor do IPVA do meu carro?" → recusa, sem chamar o modelo; "O que é o split payment?" → mensagem de falha amigável, porque não há chave neste ambiente. O log do servidor registrou `GEMINI_API_KEY não configurada`, **sem o texto da pergunta**.
 - **Ainda não verificado:** a resposta real do Gemini. Observação: o servidor de desenvolvimento da configuração do Lovable também escuta na rede local (Network: 192.168.x.x) — aceitável só para desenvolvimento.
 - **Tempo real:** [A PREENCHER]
+
+### 15/10/2026 — Webhook da Evolution API (H09)
+
+- **Fase:** implementação, em TDD.
+- **Fato volátil conferido na fonte primária:** a página de documentação da Evolution sobre webhooks deu 404. A IA foi ao **código-fonte** (`webhook.controller.ts`, branch `main`) e às issues do repositório oficial. Três achados mudaram o desenho: (1) os cabeçalhos configurados no webhook são enviados em toda chamada — é por eles que passa o segredo; (2) a Evolution **reenvia** a chamada quando falha ou demora, então duplicata é certa; (3) a issue #1340 mostra que as mensagens **enviadas** pela própria instância chegam como `messages.upsert` — sem filtrar `fromMe`, o agente responderia a si mesmo em loop.
+- **Red:** 25 casos aprovados antes do código, com payloads de exemplo no formato do código-fonte (números e chaves fictícios).
+- **Green:** 182/182; lint, tipos e build sem erro; nada do webhook no código do navegador.
+- **Teste de mutação:** 10 defeitos (responder a si mesmo, aceitar grupo e status, sem deduplicação, não liberar após falha, aceitar sem segredo configurado, comparar só o começo do segredo, responder mensagem antiga, mandar pergunta longa ao agente, deduplicação sem prazo, deduplicação sem limite) — **todos derrubados**.
+- **Execução real da rota (servidor local, `curl`, segredo de teste aleatório num `.env` ignorado pelo Git):** sem segredo e com segredo errado → 401; corpo inválido → 400; `connection.update`, `fromMe` e grupo → 200 ignorado; mensagem válida → 500, porque o envio é da H10 e foi deixado falhando de propósito para o webhook nunca fingir que respondeu. O log registrou só a causa do erro, **sem número e sem texto**.
+- **Achado na execução real, não coberto pelos testes:** `GET` na rota devolvia 200 com a página vazia do app. Corrigido para 405 (`Allow: POST`) e conferido com `curl`.
+- **Tempo real:** [A PREENCHER]

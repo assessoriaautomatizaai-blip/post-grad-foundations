@@ -103,10 +103,16 @@
 **Estado:** Proposta
 
 **Decisão.**
-- O webhook exige segredo compartilhado (`WEBHOOK_SECRET`); sem ele, 401.
+- O webhook exige segredo compartilhado (`WEBHOOK_SECRET`), enviado pela Evolution no cabeçalho `x-webhook-secret` (campo `headers` da configuração do webhook) e comparado em tempo constante; sem ele, 401. Sem segredo configurado no servidor, o webhook recusa tudo (503). Alternativa, se a versão da Evolution na Cloudfy não enviar cabeçalhos: o recurso `jwt_key` do próprio webhook da Evolution (token JWT HS256 de 10 minutos no cabeçalho `Authorization`).
 - Payload validado com `zod`; só mensagens de texto recebidas, fora de grupos, são processadas.
 - Deduplicação por id de mensagem.
 - Logs sem número de telefone nem texto da mensagem em claro.
 - Chaves só em `.env` (local) e nos segredos do Lovable (produção).
 
-**Consequências.** Reduz abuso do endpoint e exposição de dados pessoais (LGPD). Não há limitação de taxa no MVP — declarada como limitação.
+**Detalhes conferidos no código-fonte da Evolution API (15/10/2026, H09).**
+- As mensagens **enviadas** pela instância também chegam como `messages.upsert`, com `fromMe: true` (issue #1340): ignorá-las é o que evita o agente responder a si mesmo em loop.
+- A Evolution **reenvia** o webhook quando a chamada falha ou passa de 30 s: a deduplicação por id é obrigatória, e o handler devolve 500 só quando o envio falhou (para a nova tentativa ser útil).
+- Conversa individual é `@s.whatsapp.net` ou `@lid` (endereçamento novo do WhatsApp); grupos (`@g.us`), status (`status@broadcast`) e canais são ignorados.
+- Mensagens com mais de 5 minutos são ignoradas (reenvio de histórico após reconexão).
+
+**Consequências.** Reduz abuso do endpoint e exposição de dados pessoais (LGPD). Não há limitação de taxa no MVP — declarada como limitação. A deduplicação é em memória: com várias instâncias do servidor, uma duplicata rara ainda pode passar — também declarada como limitação.

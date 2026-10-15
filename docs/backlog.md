@@ -88,12 +88,14 @@ Como avaliador, quero testar o agente no navegador, sem WhatsApp.
 
 ## v0.4.0 — WhatsApp e avaliação
 
-**H09 ⬜ Webhook da Evolution API**
-- [ ] Rota `POST /api/whatsapp/webhook` aceita só requisições com o segredo correto (senão 401)
-- [ ] *Payload* validado com `zod`; evento que não é mensagem de texto recebida → ignorado com 200
-- [ ] Ignora mensagens enviadas pelo próprio número e mensagens de grupo
-- [ ] Mesma mensagem (mesmo id) entregue duas vezes → respondida uma vez só
-- [ ] Testes com *payloads* de exemplo salvos em fixture (sem rede)
+**H09 ✅ Webhook da Evolution API**
+- [x] Rota `POST /api/whatsapp/webhook` aceita só requisições com o segredo correto no cabeçalho `x-webhook-secret` (senão 401; sem segredo configurado, 503; outros métodos, 405)
+- [x] *Payload* validado com `zod`; evento que não é mensagem de texto recebida → ignorado com 200
+- [x] Ignora mensagens enviadas pelo próprio número (evita loop), de grupo, de status, antigas (> 5 min) e sem texto
+- [x] Mesma mensagem (mesmo id) entregue duas vezes → respondida uma vez só; após falha no envio, a nova tentativa da Evolution é processada
+- [x] Testes com *payloads* de exemplo em fixture (sem rede), no formato do código-fonte da Evolution API
+- [x] Execução real da rota no servidor local, com `curl`: autenticação, filtros e falha no envio conferidos
+- [ ] Envio da resposta — a rota usa um envio que falha de propósito até a H10
 
 **H10 ⬜ Envio da resposta**
 - [ ] Adaptador `sendText` da Evolution API com timeout; falha registrada sem dado pessoal em claro
