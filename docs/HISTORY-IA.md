@@ -166,3 +166,17 @@
 - **O que a IA deixou de propósito:** o nome `tanstack_start_ts` no `package.json` — está também no `bun.lock`, e trocá-lo quebraria a instalação travada descrita no README.
 - **Documentação desatualizada corrigida:** ADRs ainda marcados como "Proposta", escopo "aguardando aprovação", comando de instalação errado no `CLAUDE.md` (o `npm install` ignora o `bun.lock`).
 - **Tempo real:** [A PREENCHER]
+
+### 15/10/2026 — Frontend profissional (prompt 01)
+
+- **Ferramenta:** o skill `frontend-prompt-optimizer` gerou um prompt estruturado (objetivo, contexto, passos, critérios de sucesso, princípios de design) a partir do estado real do código; o prompt está versionado em `prompts/01-frontend-profissional.md` e foi executado pelo Claude Code.
+- **Achados no código do template, antes de desenhar:** `<html lang="en">` com conteúdo em português (WCAG 3.1.1 — leitor de tela pronunciaria errado); página 404 e de erro em inglês; tokens de modo escuro sem nenhuma forma de ativá-los; nenhuma navegação entre páginas.
+- **Testes primeiro:** 18 casos novos (exemplos clicáveis, contador de caracteres, nova conversa, tema, link de pular conteúdo, navegação com página atual, página inicial). Os 11 testes antigos do simulador seguiram valendo sem alteração.
+- **Contraste calculado, não estimado:** a IA converteu os tokens oklch para sRGB e calculou a razão de contraste WCAG dos 22 pares texto/fundo nos dois temas — todos ≥ 4,5:1 (menor: 5,12:1).
+- **O que a revisão pegou:**
+  - O Node 26 traz um `localStorage` global experimental que encobre o do jsdom nos testes; corrigido no `setup.ts` (ambiente), não no código.
+  - O texto do rodapé dizia "não substitu**em**" e o teste esperava "não substitui": ajustado o texto, não o teste.
+  - `tsc` acusou um tipo com `exactOptionalPropertyTypes`; o primeiro "tsc ok" relatado pela IA era falso, porque o comando media o código de saída do `head`, não do `tsc` — refeito com o código de saída correto.
+  - As capturas de tela da prévia saíam em branco depois de rolar a página. Antes de concluir que a página tinha defeito, a IA inspecionou o DOM (elemento visível em cada ponto, opacidade, cores): estava tudo certo — era a captura. Passou a capturar aumentando a altura da janela.
+- **Verificação real (servidor local, navegador):** temas claro e escuro, tema mantido entre páginas, exemplo clicável, recusa ("Fora da base") e falha ("Falha técnica") com tratamento visual próprio, foco voltando ao campo, e **nenhuma rolagem horizontal em 375 px**. Nada da base, da chave ou do prompt no código do navegador; sem dependências novas e sem fontes externas.
+- **Tempo real:** [A PREENCHER]
