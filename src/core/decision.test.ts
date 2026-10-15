@@ -114,6 +114,9 @@ describe("decide — base real com limites padrão", () => {
     "A cesta básica terá imposto?",
     "Quando acaba o PIS e a Cofins?",
     "Remédios terão redução?",
+    // Pergunta real do simulador publicado (15/10/2026), recusada por cobertura baixa.
+    "Quando o ISS deixa de existir?",
+    "O ICMS vai deixar de existir?",
   ])("responde: “%s”", (pergunta) => {
     expect(decidir(pergunta)).toBe("responder");
   });
@@ -127,6 +130,13 @@ describe("decide — base real com limites padrão", () => {
     "O ITBI muda na reforma?",
     "Quanto custa abrir uma empresa?",
     "Posso parcelar dívida com a Receita?",
+    // Tributo fora da base com verbo de extinção: o artigo que extingue ICMS e ISS
+    // não pode ser usado para responder sobre outro tributo.
+    "O IPVA acaba?",
+    "Quando acaba o IPTU?",
+    "O imposto de renda acaba?",
+    "O imposto de renda vai deixar de existir?",
+    "O ITBI deixa de existir?",
   ])("recusa: “%s”", (pergunta) => {
     expect(decidir(pergunta)).toBe("recusar");
   });
