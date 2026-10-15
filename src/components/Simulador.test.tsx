@@ -165,3 +165,47 @@ describe("Simulador", () => {
     expect(conversa()).toHaveAttribute("aria-live", "polite");
   });
 });
+
+// Frontend profissional (prompt 01): estado vazio, contador e nova conversa.
+describe("Simulador — estado vazio, contador e nova conversa", () => {
+  it("sem mensagens, mostra perguntas de exemplo que enviam a própria pergunta ao clicar", async () => {
+    const { perguntar } = montar();
+    const exemplos = screen.getAllByRole("button", { name: /\?$/ });
+    expect(exemplos.length).toBeGreaterThanOrEqual(3);
+
+    const escolhido = exemplos[0] as HTMLButtonElement;
+    fireEvent.click(escolhido);
+
+    await screen.findByText(/separação do tributo/);
+    expect(perguntar).toHaveBeenCalledWith(escolhido.textContent);
+  });
+
+  it("esconde as perguntas de exemplo depois que a conversa começa", async () => {
+    const { enviar } = montar();
+    enviar("O que é o split payment?");
+    await screen.findByText(/separação do tributo/);
+
+    expect(screen.queryAllByRole("button", { name: /\?$/ })).toHaveLength(0);
+  });
+
+  it("mostra quantos caracteres foram usados do limite, ligado ao campo", () => {
+    const { campo } = montar();
+    const contador = document.getElementById(campo.getAttribute("aria-describedby") ?? "");
+
+    expect(contador).toHaveTextContent("0/500");
+    fireEvent.change(campo, { target: { value: "Olá IBS" } });
+    expect(contador).toHaveTextContent("7/500");
+  });
+
+  it("só oferece 'Nova conversa' quando há mensagens, e ela limpa o histórico", async () => {
+    const { enviar, conversa } = montar();
+    expect(screen.queryByRole("button", { name: /nova conversa/i })).not.toBeInTheDocument();
+
+    enviar("O que é o split payment?");
+    await screen.findByText(/separação do tributo/);
+    fireEvent.click(screen.getByRole("button", { name: /nova conversa/i }));
+
+    expect(within(conversa()).queryAllByRole("article")).toHaveLength(0);
+    expect(screen.getAllByRole("button", { name: /\?$/ }).length).toBeGreaterThanOrEqual(3);
+  });
+});

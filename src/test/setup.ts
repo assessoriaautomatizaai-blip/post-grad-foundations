@@ -18,3 +18,13 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: () => {},
   }),
 });
+
+// Node 26 traz um localStorage global experimental que fica indefinido sem a flag
+// --localstorage-file e encobre o do jsdom. Nos testes, usamos o do jsdom.
+const jsdomGlobal = (globalThis as { jsdom?: { window: Window } }).jsdom;
+if (jsdomGlobal && typeof globalThis.localStorage === "undefined") {
+  Object.defineProperty(globalThis, "localStorage", {
+    value: jsdomGlobal.window.localStorage,
+    configurable: true,
+  });
+}
