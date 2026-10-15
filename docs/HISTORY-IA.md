@@ -144,3 +144,15 @@
 - **Erro de verificação pego antes de virar conclusão:** o primeiro teste da rota no servidor local mostrou no log a mensagem do envio provisório, já removida do código. A IA conferiu de qual pasta o servidor tinha subido: era a **cópia antiga**, porque a ferramenta de pré-visualização reaproveitou a configuração da raiz antiga. O resultado foi descartado, a configuração corrigida para o caminho novo e o teste refeito.
 - **Execução real (servidor da pasta nova):** "oi" e "IPVA" chegaram ao agente (boas-vindas e recusa, sem chamar o modelo) e a tentativa de envio registrou no log `EVOLUTION_API_URL não configurada` — o envio real está ligado. O envio de ponta a ponta fica para a H12, com a instância da Cloudfy.
 - **Tempo real:** [A PREENCHER]
+
+### 15/10/2026 — Conjunto-ouro e calibração (H11)
+
+- **Fase:** avaliação do RAG além dos testes (P-avaliacao-de-rag-alem-dos-testes).
+- **O que a IA fez:** propôs 32 perguntas escritas como um leigo perguntaria, com o gabarito (trecho esperado) de cada uma, separadas em **calibração** (21) e **teste** (11, nunca usado para ajustar). Incluiu 4 armadilhas fora do escopo com palavras da base. O autor aprovou o gabarito.
+- **Red/Green:** 14 casos (formato do conjunto e cálculo das métricas) aprovados antes do código; implementação passou de primeira. `npm run eval` grava `eval/relatorio.md`.
+- **Linha de base antes de calibrar:** 100% de abstenção fora do escopo; 13/22 respostas certas dentro.
+- **Calibração honesta:** busca em grade só no conjunto de calibração, com a restrição de nenhuma resposta fora do escopo. Ganho máximo: **+1 pergunta**, exigindo mudança de código. Com 15 perguntas isso é ruído; a IA recomendou e manteve os limites atuais e foi investigar **por que** as perguntas falham.
+- **Diagnóstico:** as falhas são de **vocabulário** — verbos e palavras comuns ausentes da base dominando a cobertura, flexão verbal ("compensar" × "compensado"), termo onipresente ("IBS" em 19 dos 29 trechos) e ambiguidade ("saúde"). Ajustar limiar não resolve; o caminho é busca híbrida e flexão verbal (v2).
+- **Teste medido uma única vez**, depois da decisão: 100% de abstenção, recall@3 86%, respostas corretas 57%.
+- **O que não foi cumprido e está declarado:** o critério de recall ≥ 80% do escopo ficou em 73% na calibração (77% no total). Uma pergunta ("serviços de saúde") passa com trecho errado — risco registrado no ADR-004.
+- **Tempo real:** [A PREENCHER]

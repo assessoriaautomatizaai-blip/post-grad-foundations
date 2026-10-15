@@ -79,7 +79,10 @@
   - Ajustes na busca que tornaram a cobertura útil: palavras de pergunta como vazias ("qual" casava com "segundo o qual"), redução de plural ("advogado" × "advogados") e sinônimos de linguagem ("remédio" → "medicamentos").
 - **Limites provisórios:** escore ≥ 0,5 e cobertura ≥ 0,3 (`DECISAO_PADRAO`). Em 20 perguntas de teste: 8/8 fora do escopo recusadas; 10/12 dentro respondidas; os 2 erros são recusas indevidas (lado seguro).
 - ⚠️ **Margem estreita:** a pergunta fora do escopo com maior cobertura ("Como declarar o imposto de renda?") ficou em 0,28, contra o mínimo de 0,30. Calibração definitiva na H11, com o conjunto-ouro.
-- Limiar calibrado: [A PREENCHER após H11]
+- **Calibração (15/10/2026, H11), só com o conjunto de calibração** (21 perguntas; o de teste, 11, ficou separado): busca em grade de escore mínimo, cobertura mínima e peso dos termos desconhecidos, com a restrição de **nenhuma resposta fora do escopo**. A melhor configuração acertou 10/15 contra 9/15 dos limites atuais, exigindo mudança de código — com 15 perguntas, um acerto a mais está no ruído e seria ajuste viciado. **Limites mantidos: escore ≥ 0,5 e cobertura ≥ 0,3.**
+- **Diagnóstico das falhas: vocabulário, não limiar.** Verbos e palavras comuns ausentes da base ("significa", "pagar", "posso", "comprei") pesam como termo principal; flexão verbal ("compensar" × "compensado"; "aproveitar crédito" × "apropriar créditos"); termo onipresente ("IBS" está em 19 dos 29 trechos) piora o ranking; ambiguidade legítima ("saúde" no Imposto Seletivo e na redução de 60%). Caminho para v2: busca híbrida (BM25 + embeddings), flexão verbal e lista ampliada de palavras vazias — avaliados contra o mesmo conjunto-ouro.
+- **Resultado** (`npm run eval`, `eval/relatorio.md`): abstenção fora do escopo **100%** na calibração e no teste; recall@3 73% (calibração) e 86% (teste); respostas corretas 60% e 57%. O critério de recall ≥ 80% do escopo **não foi atingido na calibração** (17/22 = 77% no total).
+- ⚠️ **Risco:** uma pergunta ("Serviços de saúde vão pagar menos imposto?") passou com trecho errado (Imposto Seletivo, "prejudiciais à saúde"). O prompt manda responder só com os trechos; o comportamento real do modelo nesse caso fica para a verificação com o Gemini.
 
 ---
 

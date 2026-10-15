@@ -104,11 +104,12 @@ Como avaliador, quero testar o agente no navegador, sem WhatsApp.
 - [x] Ligado ao webhook, no lugar do envio provisório; conferido no servidor local
 - [x] Checagem de tipos (`tsc`): 2 testes aprovados tinham uma variável local `fetch` que referenciava a si mesma — renomeada para `buscar` com aprovação do autor, sem mudar asserção
 
-**H11 ⬜ Conjunto-ouro e avaliação**
-- [ ] `eval/perguntas.json` com ≥ 20 perguntas: pergunta, `ids` esperados ou `fora_do_escopo: true`
-- [ ] Pelo menos 5 perguntas fora do escopo (ex.: imposto de renda, cálculo de caso concreto)
-- [ ] `npm run eval` gera relatório com recall@3 e taxa de abstenção correta
-- [ ] Resultado registrado no README (com data)
+**H11 ✅ Conjunto-ouro e avaliação**
+- [x] `eval/perguntas.json` com 32 perguntas (22 dentro, 10 fora do escopo), separadas em calibração (21) e teste (11); gabarito aprovado pelo autor
+- [x] 10 perguntas fora do escopo, 4 delas armadilhas com palavras da base (MEI, ICMS, IBS, imposto)
+- [x] `npm run eval` gera `eval/relatorio.md` com recall@3, respostas corretas, recusas indevidas e abstenção correta, por conjunto; a suíte exige 100% de abstenção fora do escopo
+- [x] Calibração só com o conjunto de calibração; limites mantidos (ADR-004)
+- [ ] Resultado registrado no README (com data) — na v1.0.0
 
 **H12 ⬜ Teste do produto montado**
 - [ ] Pergunta real enviada pelo WhatsApp → resposta com fonte; registrar GIF ou print (sem número de telefone visível)

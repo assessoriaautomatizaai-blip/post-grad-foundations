@@ -61,8 +61,8 @@ Fontes: EC 132/2023 e LC 214/2025, no texto oficial do Planalto. Cada trecho é 
 
 | Critério | Meta | Como medir |
 |---|---|---|
-| Recuperação | o trecho correto entre os 3 primeiros em ≥ [A PREENCHER, sugestão 80%] das perguntas do conjunto-ouro | `npm run eval` |
-| Abstenção | 100% das perguntas fora do escopo recusadas | `npm run eval` |
+| Recuperação | o trecho correto entre os 3 primeiros em ≥ 80% das perguntas do conjunto-ouro — **medido em 15/10/2026: 73% (calibração), 86% (teste); 77% no total — não atingido** | `npm run eval` |
+| Abstenção | 100% das perguntas fora do escopo recusadas — **medido em 15/10/2026: 100% (calibração e teste)** | `npm run eval` |
 | Citação | toda resposta não recusada contém ao menos uma fonte da base | teste automatizado sobre a saída |
 | Execução real | uma pergunta enviada pelo WhatsApp recebe resposta com fonte | demonstração gravada (GIF/print) |
 | Reprodutibilidade | um terceiro clona, instala, roda testes e o simulador seguindo só o README | teste em clone limpo |
