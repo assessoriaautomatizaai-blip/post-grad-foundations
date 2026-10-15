@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { SCRIPT_ANIMACAO } from "../lib/animacao";
 import { SCRIPT_TEMA } from "../lib/tema";
 
 function NotFoundComponent() {
@@ -118,6 +119,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         {/* Antes do primeiro paint: aplica o tema escolhido (ou o do sistema) sem piscar. */}
         <script dangerouslySetInnerHTML={{ __html: SCRIPT_TEMA }} />
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_ANIMACAO }} />
         <HeadContent />
       </head>
       <body>

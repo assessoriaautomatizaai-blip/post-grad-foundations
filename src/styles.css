@@ -85,7 +85,7 @@
  * Contraste e harmonia conferidos por src/styles.contraste.test.ts.
  */
 :root {
-  --radius: 0.625rem;
+  --radius: 0.375rem;
   --marca-traco: oklch(0.45 0.212 267);
   --background: oklch(0.969 0.004 121.6);
   --foreground: oklch(0.21 0.029 266.1);
@@ -244,4 +244,113 @@
 
 .pontinho {
   animation: pontinho 1.2s infinite ease-in-out;
+}
+
+/*
+ * Prompt 03 — movimento com propósito. Os estados escondidos só valem sob html.anima
+ * (src/lib/animacao.ts): sem JavaScript, sem IntersectionObserver ou com "reduzir
+ * movimento", todo o conteúdo aparece. O gatilho é o data-visivel do useRevelar.
+ */
+.realce-marca {
+  background-image: linear-gradient(transparent 58%, var(--color-realce) 58%);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.anima .realce-marca {
+  transition: background-size 900ms cubic-bezier(0.2, 0.7, 0.2, 1) 250ms;
+}
+
+.anima [data-visivel="false"] .realce-marca {
+  background-size: 0% 100%;
+}
+
+.filete {
+  transform-origin: left;
+}
+
+.anima .filete {
+  transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.anima [data-visivel="false"] .filete {
+  transform: scaleX(0);
+}
+
+.anima .surgir {
+  transition:
+    opacity 500ms ease,
+    transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--ordem, 0) * 70ms);
+}
+
+.anima [data-visivel="false"] .surgir {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* Sublinhado que cresce nos links de texto e marca a página atual. */
+.sublinhado {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 250ms ease;
+}
+
+.sublinhado:hover,
+.sublinhado:focus-visible,
+.sublinhado[aria-current="page"] {
+  background-size: 100% 1px;
+}
+
+/* Marca-texto ao passar o mouse (o que o agente responde). */
+.marcavel {
+  background-image: linear-gradient(transparent 60%, var(--color-realce) 60%);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 350ms ease;
+}
+
+.marcavel:hover {
+  background-size: 100% 100%;
+}
+
+/* Riscado como a redação revogada no Planalto (o que o agente não responde). */
+.revogado {
+  text-decoration-line: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in oklch, var(--color-muted-foreground) 70%, transparent);
+}
+
+/* Transição entre páginas (View Transitions, ligada no roteador). */
+::view-transition-old(root) {
+  animation: 160ms ease both sair-pagina;
+}
+
+::view-transition-new(root) {
+  animation: 260ms cubic-bezier(0.2, 0.7, 0.2, 1) both entrar-pagina;
+}
+
+@keyframes sair-pagina {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes entrar-pagina {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

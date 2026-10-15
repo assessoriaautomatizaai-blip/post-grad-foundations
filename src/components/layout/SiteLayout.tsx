@@ -9,8 +9,9 @@ import { ThemeToggle } from "./ThemeToggle";
 export const URL_REPOSITORIO =
   "https://github.com/assessoriaautomatizaai-blip/post-grad-foundations";
 
+// Sublinhado que cresce (src/styles.css, prompt 03), em vez de botão com fundo.
 const ESTILO_LINK =
-  "rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground aria-[current=page]:bg-secondary";
+  "sublinhado py-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground";
 
 /** Estrutura comum: pular para o conteúdo, cabeçalho com navegação e tema, rodapé com aviso. */
 export function SiteLayout({ children }: { children: ReactNode }) {
@@ -39,7 +40,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           </Link>
 
           <div className="flex items-center gap-1">
-            <nav aria-label="Principal" className="flex items-center gap-1">
+            <nav aria-label="Principal" className="mr-3 flex items-center gap-5 sm:gap-6">
               <Link to="/" activeOptions={{ exact: true }} className={ESTILO_LINK}>
                 Início
               </Link>
