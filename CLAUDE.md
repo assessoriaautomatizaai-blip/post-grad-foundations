@@ -55,9 +55,10 @@ Simulador web (/simulador) ─────────────────�
 ## Comandos
 
 ```bash
-npm install      # instala dependências (lockfile: bun.lock)
-npm run dev      # servidor local
-npm test         # suíte de testes
-npm run lint     # lint
-npm run build    # build de produção
+bun install --frozen-lockfile   # instala dependências exatamente como no bun.lock
+npm run dev                     # servidor local
+npm test                        # suíte de testes
+npm run lint                    # lint
+npm run eval                    # conjunto-ouro: grava eval/relatorio.md
+npm run build                   # build de produção
 ```
