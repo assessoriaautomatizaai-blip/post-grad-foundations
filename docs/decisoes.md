@@ -6,7 +6,7 @@
 
 ## ADR-001 — Núcleo em TypeScript puro, separado dos adaptadores
 
-**Estado:** Proposta
+**Estado:** Aceita (14/10/2026) — implementada nas H02 a H08
 
 **Contexto.** O curso exige testes automatizados passando e um projeto que terceiros reproduzam. O WhatsApp (Evolution API) e o LLM são dependências externas, instáveis e difíceis de testar.
 
@@ -21,7 +21,7 @@
 
 ## ADR-002 — Evolution API chamando diretamente o Lovable; n8n fora do MVP
 
-**Estado:** Proposta
+**Estado:** Aceita (15/10/2026) — implementada nas H09 e H10
 
 **Contexto.** O fluxo poderia ser `Evolution → n8n → LLM → Evolution` ou `Evolution → rota do servidor no Lovable → Evolution`. Fluxos do n8n são editados visualmente, versionados como JSON opaco e difíceis de cobrir com testes automatizados.
 
@@ -29,7 +29,7 @@
 
 **Consequências.**
 - ✅ Um só repositório, uma só linguagem, tudo testável e versionado.
-- ⚠️ A rota de servidor precisa responder rápido à Evolution API; se a geração demorar, pode ser preciso responder 200 imediatamente e processar depois. [A CONFERIR na implementação]
+- A rota processa a mensagem dentro da própria requisição. Conferido na H09 e na H10: a Evolution espera até 30 s pelo webhook (`webhook.controller.ts`), e o pior caso aqui é o tempo limite do Gemini (15 s) mais o do envio (10 s por mensagem). Se passar disso, a Evolution reenvia e a deduplicação evita resposta dupla.
 
 ---
 
@@ -63,7 +63,7 @@
 
 ## ADR-004 — Recuperação lexical (BM25) com recusa por limiar no código
 
-**Estado:** Proposta
+**Estado:** Aceita (14/10/2026) — implementada nas H05 e H06; calibrada na H11
 
 **Contexto.** Em domínio jurídico, o vocabulário da pergunta costuma coincidir com o da lei ("CBS", "IBS", "Simples Nacional", "split payment"). Busca semântica com embeddings exige outro serviço, chave e um banco vetorial, e não é determinística entre versões do modelo.
 
@@ -88,7 +88,7 @@
 
 ## ADR-005 — Base de conhecimento como arquivos versionados, um trecho por dispositivo
 
-**Estado:** Proposta
+**Estado:** Aceita (14/10/2026) — implementada nas H03 e H04
 
 **Contexto.** Fatos tributários mudam (regulamentações novas, transição até 2033). A resposta precisa dizer de onde veio e de quando é a informação.
 
@@ -97,13 +97,13 @@
 **Consequências.**
 - ✅ Toda mudança na base aparece no histórico do Git; a citação é exata.
 - ⚠️ Atualização é manual — limitação declarada no README.
-- ⚠️ Os textos das normas são públicos (lei não tem proteção autoral — Lei 9.610/1998, art. 8º, IV) [A CONFERIR], mas resumos e comentários de terceiros não entram na base.
+- ⚠️ Os textos das normas são públicos (Lei 9.610/1998, art. 8º, IV: não são objeto de proteção como direitos autorais "os textos de tratados ou convenções, leis, decretos, regulamentos, decisões judiciais e demais atos oficiais" — conferido no Planalto em 15/10/2026), mas resumos e comentários de terceiros não entram na base.
 
 ---
 
 ## ADR-006 — Segurança e privacidade do canal
 
-**Estado:** Proposta
+**Estado:** Aceita (15/10/2026) — implementada nas H09 e H10
 
 **Decisão.**
 - O webhook exige segredo compartilhado (`WEBHOOK_SECRET`), enviado pela Evolution no cabeçalho `x-webhook-secret` (campo `headers` da configuração do webhook) e comparado em tempo constante; sem ele, 401. Sem segredo configurado no servidor, o webhook recusa tudo (503). Alternativa, se a versão da Evolution na Cloudfy não enviar cabeçalhos: o recurso `jwt_key` do próprio webhook da Evolution (token JWT HS256 de 10 minutos no cabeçalho `Authorization`).

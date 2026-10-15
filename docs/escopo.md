@@ -1,6 +1,6 @@
 # Escopo do MVP
 
-> Estado: **proposta — aguardando aprovação**. Itens marcados [A PREENCHER] / [A CONFERIR] dependem de decisão do autor.
+> Estado: **aprovado pelo autor em 14/10/2026**. Os critérios de sucesso foram medidos em 15/10/2026 (ver tabela abaixo e [eval/relatorio.md](../eval/relatorio.md)).
 
 ## Problema
 
