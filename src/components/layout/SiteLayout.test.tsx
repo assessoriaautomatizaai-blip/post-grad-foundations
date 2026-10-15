@@ -15,6 +15,12 @@ describe("SiteLayout", () => {
       caminho,
     );
 
+  it("mostra a marca Inciso no cabeçalho, com link para a página inicial", async () => {
+    await montar("/simulador");
+    const marca = screen.getByRole("img", { name: "Inciso" });
+    expect(marca.closest("a")).toHaveAttribute("href", "/");
+  });
+
   it("tem link para pular direto ao conteúdo principal", async () => {
     await montar();
     const pular = screen.getByRole("link", { name: /pular para o conteúdo/i });
