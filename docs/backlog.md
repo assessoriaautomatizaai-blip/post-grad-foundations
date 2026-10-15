@@ -120,11 +120,15 @@ Como avaliador, quero testar o agente no navegador, sem WhatsApp.
 
 **H13 ✅ README final** — descrição, arquitetura (Mermaid), pré-requisitos, instalação, variáveis de ambiente, uso (simulador e WhatsApp), testes, avaliação, tecnologias incluindo **modelos de IA e assistentes de código**, "Como a IA foi usada", "Limitações e próximos passos", licença.
 
-**H14 ⬜ Revisão de entrega**
-- [ ] Varredura de segredos no histórico (`gitleaks`)
-- [ ] README conferido contra o código (todo comando e exemplo executado de fato)
-- [ ] Clone limpo: instalar, testar, rodar o simulador só seguindo o README
-- [ ] ≥ 10 commits significativos em Conventional Commits
-- [ ] `LICENSE` presente; tag `v1.0.0`; repositório **público**
+**H14 🟨 Revisão de entrega**
+- [x] Varredura de segredos nas 10.843 linhas adicionadas em todo o histórico (padrões do gitleaks, que não estava instalado; controle positivo com segredos falsos): nenhum segredo; nenhum `.env` jamais commitado
+- [x] README conferido contra o código: comandos executados num clone limpo do GitHub; exemplo do webhook corrigido (503, não 401, com o `.env.example`)
+- [x] Clone limpo: instalar, testar, avaliar, construir e rodar o servidor seguindo só o README
+- [x] ≥ 10 commits significativos em Conventional Commits (64 do autor, todos no padrão)
+- [x] 48 links relativos da documentação conferidos, sem link quebrado
+- [x] `npm run lint` voltou a passar; página inicial e título do site deixaram de ser os do template
+- [x] `LICENSE` (MIT)
+- [ ] Tag `v1.0.0` — depois da H12
+- [ ] Repositório **público** — decisão do autor
 
 **H15 ⬜ Fórum N5** — rascunho da postagem (5 itens) e da réplica a um colega, para aprovação do autor.

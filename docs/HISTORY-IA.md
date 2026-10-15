@@ -156,3 +156,13 @@
 - **Teste medido uma única vez**, depois da decisão: 100% de abstenção, recall@3 86%, respostas corretas 57%.
 - **O que não foi cumprido e está declarado:** o critério de recall ≥ 80% do escopo ficou em 73% na calibração (77% no total). Uma pergunta ("serviços de saúde") passa com trecho errado — risco registrado no ADR-004.
 - **Tempo real:** [A PREENCHER]
+
+### 15/10/2026 — README final, licença e revisão de entrega (H13 e H14)
+
+- **README conferido em clone limpo:** a IA clonou o repositório do GitHub numa pasta temporária e seguiu o README ao pé da letra (instalar, testar, avaliar, construir, rodar). Pegou **um erro no próprio README**: o exemplo do webhook dizia 401, mas com o `.env.example` (segredo vazio) o código devolve 503, a falha fechada que ele mesmo implementa. Também corrigiu a versão mínima do Node (22.12, exigência do TanStack Start conferida no npm) e removeu do `.env.example` uma variável que nenhum código lê.
+- **Varredura de segredos:** sem `gitleaks` instalado (instalar exigiria autorização), a IA varreu as 10.843 linhas adicionadas em todo o histórico com os padrões equivalentes e fez um **controle positivo** com segredos falsos no formato real, para provar que a varredura detectaria. Resultado: nenhum segredo; o único achado era um valor fictício dos testes.
+- **Fato jurídico conferido na fonte:** a afirmação de que lei não tem proteção autoral, usada para publicar os trechos na base, foi conferida no art. 8º, IV, da Lei 9.610/1998 no Planalto.
+- **Restos do template encontrados e corrigidos:** página inicial "Em construção" e título "Lovable App" — a primeira coisa que o avaliador veria. O `npm run lint` falhava por um arquivo do template; voltou a passar.
+- **O que a IA deixou de propósito:** o nome `tanstack_start_ts` no `package.json` — está também no `bun.lock`, e trocá-lo quebraria a instalação travada descrita no README.
+- **Documentação desatualizada corrigida:** ADRs ainda marcados como "Proposta", escopo "aguardando aprovação", comando de instalação errado no `CLAUDE.md` (o `npm install` ignora o `bun.lock`).
+- **Tempo real:** [A PREENCHER]
