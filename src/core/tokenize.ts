@@ -33,11 +33,9 @@ export function normalizeText(text: string): string {
 }
 
 /**
- * Normaliza um texto em tokens para a recuperação BM25.
- *
- * Pergunta do usuário e trecho da lei passam pela mesma função: a normalização de
- * `normalizeText` (pontuação, hífen, barra e "º" viram separador) e o descarte
- * das palavras vazias.
+ * Normaliza um texto em tokens: a normalização de `normalizeText` (pontuação, hífen,
+ * barra e "º" viram separador) e o descarte das palavras vazias. Usada para reconhecer
+ * saudação (src/core/decision.ts); a busca BM25 que também a usava saiu com o ADR-007.
  */
 export function tokenize(text: string): string[] {
   const normalizado = normalizeText(text);

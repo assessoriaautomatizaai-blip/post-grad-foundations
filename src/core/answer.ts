@@ -1,76 +1,156 @@
-import { decide, MENSAGEM_RECUSA, type Limites } from "./decision";
+import { ehSaudacao, MENSAGEM_BOAS_VINDAS } from "./decision";
 import type { Trecho } from "./knowledge";
 import { PROMPT_SISTEMA } from "./prompts/sistema";
-import { search, type Indice } from "./retrieval";
 
 export interface Prompt {
   sistema: string;
   usuario: string;
 }
 
+/** Página encontrada pela busca do modelo. Não é conferida por pessoa (ADR-007). */
+export interface FonteWeb {
+  titulo: string;
+  url: string;
+}
+
+/** O que o modelo devolve: o texto e as fontes da busca na web que ele usou. */
+export interface Geracao {
+  texto: string;
+  fontesWeb: FonteWeb[];
+}
+
 /** Modelo de linguagem atrás de uma interface: o núcleo não sabe qual é o provedor. */
 export interface LlmAdapter {
-  gerar(prompt: Prompt, opcoes?: { signal?: AbortSignal }): Promise<string>;
+  gerar(prompt: Prompt, opcoes?: { signal?: AbortSignal }): Promise<Geracao>;
 }
 
 export interface Resposta {
-  tipo: "resposta" | "recusa" | "boas_vindas" | "falha";
+  tipo: "resposta" | "boas_vindas" | "fora_do_tema" | "sem_fonte" | "falha";
   texto: string;
-  /** Trechos efetivamente citados na resposta. */
+  /** Trechos da base efetivamente citados na resposta. */
   fontes: Trecho[];
+  /** Páginas da busca na web listadas na resposta (complemento não conferido). */
+  fontesWeb: FonteWeb[];
 }
 
 export const AVISO =
-  "_Resposta informativa, com base na legislação citada. Não substitui a orientação de um contador ou advogado._";
+  "_Resposta informativa. A lei citada vem da base conferida; as fontes da web aparecem como não conferidas. Não substitui a orientação de um contador ou advogado._";
 
 // Não expõe detalhe técnico (código de erro, provedor, chave): isso fica só no log do servidor.
 export const MENSAGEM_FALHA =
   "Tive um problema técnico para responder agora. Tente de novo em alguns minutos.";
 
-const TIMEOUT_PADRAO_MS = 15_000;
-const CITACAO = /\[([a-z0-9]+(?:-[a-z0-9]+)*)\]/g;
+// Não afirma nenhum fato: aparece justamente quando a resposta não tinha fonte confiável.
+export const MENSAGEM_SEM_FONTE = [
+  "Não consegui confirmar essa informação numa fonte confiável agora.",
+  "",
+  "Tente reformular a pergunta ou procure um contador ou advogado.",
+].join("\n");
 
-const recusa = (): Resposta => ({ tipo: "recusa", texto: MENSAGEM_RECUSA, fontes: [] });
-const falha = (): Resposta => ({ tipo: "falha", texto: MENSAGEM_FALHA, fontes: [] });
+export const MENSAGEM_FORA_DO_TEMA = [
+  "Eu sou especializado na reforma tributária, então não consigo ajudar com esse assunto.",
+  "",
+  "Posso responder perguntas como:",
+  "• O que muda com o IBS e a CBS?",
+  "• Quando o ICMS e o ISS deixam de existir?",
+  "• Quem tem direito ao cashback?",
+].join("\n");
+
+const TIMEOUT_PADRAO_MS = 25_000;
+const CITACAO = /\[([a-z0-9]+(?:-[a-z0-9]+)*)\]/g;
+const FORA_DO_TEMA = "[fora-do-tema]";
+const COMPLEMENTO = /\*Complemento:\*/i;
+
+const semResposta = (tipo: Resposta["tipo"], texto: string): Resposta => ({
+  tipo,
+  texto,
+  fontes: [],
+  fontesWeb: [],
+});
 const citacaoLegivel = (t: Trecho) => `${t.norma}, ${t.dispositivo}`;
 
 // A pergunta é texto do usuário: sem "<" e ">", ela não consegue abrir nem fechar os
 // delimitadores do prompt para se passar por instrução.
 const neutralizar = (texto: string) => texto.replace(/</g, "‹").replace(/>/g, "›");
 
-/** Monta o prompt: regras fixas no sistema; trechos e pergunta delimitados na mensagem. */
-export function buildPrompt(pergunta: string, trechos: readonly Trecho[]): Prompt {
-  const blocos = trechos
+/** Monta o prompt: regras fixas no sistema; a base inteira e a pergunta delimitadas na mensagem. */
+export function buildPrompt(pergunta: string, base: readonly Trecho[]): Prompt {
+  const blocos = base
     .map((t) => `<trecho id="${t.id}" fonte="${citacaoLegivel(t)}">\n${t.texto}\n</trecho>`)
     .join("\n");
   return {
     sistema: PROMPT_SISTEMA,
-    usuario: `<trechos>\n${blocos}\n</trechos>\n\n<pergunta>\n${neutralizar(pergunta.trim())}\n</pergunta>`,
+    usuario: `<base>\n${blocos}\n</base>\n\n<pergunta>\n${neutralizar(pergunta.trim())}\n</pergunta>`,
   };
 }
 
-/**
- * Confere as citações do modelo e monta a resposta final. Vira recusa, sem mostrar o
- * texto do modelo, quando não há citação ou quando algum id citado não foi recuperado.
- */
-export function renderAnswer(textoDoModelo: string, trechos: readonly Trecho[]): Resposta {
-  const porId = new Map(trechos.map((t) => [t.id, t]));
-  const citados = [...textoDoModelo.matchAll(CITACAO)].map((m) => m[1] ?? "");
+/** Só http(s), sem repetir endereço, na ordem em que a busca devolveu. */
+function fontesWebValidas(fontes: readonly FonteWeb[]): FonteWeb[] {
+  const vistas = new Set<string>();
+  return fontes.filter(({ url }) => {
+    let protocolo: string;
+    try {
+      protocolo = new URL(url).protocol;
+    } catch {
+      return false;
+    }
+    if ((protocolo !== "https:" && protocolo !== "http:") || vistas.has(url)) return false;
+    vistas.add(url);
+    return true;
+  });
+}
 
-  if (textoDoModelo.trim() === "" || citados.length === 0) return recusa();
-  if (citados.some((id) => !porId.has(id))) return recusa();
+/**
+ * Confere o que o modelo devolveu e monta a resposta final (ADR-007):
+ * - "[fora-do-tema]" vira a mensagem fixa de redirecionamento;
+ * - id citado que não existe na base bloqueia a resposta inteira;
+ * - a parte "*Complemento:*" só fica se a busca devolveu fonte;
+ * - sem citação da base e sem fonte da web, a resposta não é mostrada.
+ */
+export function renderAnswer(geracao: Geracao, base: readonly Trecho[]): Resposta {
+  const textoDoModelo = geracao.texto.trim();
+  if (textoDoModelo === "") return semResposta("sem_fonte", MENSAGEM_SEM_FONTE);
+  if (textoDoModelo.includes(FORA_DO_TEMA)) {
+    return semResposta("fora_do_tema", MENSAGEM_FORA_DO_TEMA);
+  }
+
+  const porId = new Map(base.map((t) => [t.id, t]));
+  const citadosNoModelo = [...textoDoModelo.matchAll(CITACAO)].map((m) => m[1] ?? "");
+  if (citadosNoModelo.some((id) => !porId.has(id))) {
+    return semResposta("sem_fonte", MENSAGEM_SEM_FONTE);
+  }
+
+  const fontesWeb = fontesWebValidas(geracao.fontesWeb);
+  const inicioComplemento = textoDoModelo.search(COMPLEMENTO);
+  const texto =
+    inicioComplemento >= 0 && fontesWeb.length === 0
+      ? textoDoModelo.slice(0, inicioComplemento).trim()
+      : textoDoModelo;
+
+  const citados = [...texto.matchAll(CITACAO)].map((m) => m[1] ?? "");
+  if (texto === "" || (citados.length === 0 && fontesWeb.length === 0)) {
+    return semResposta("sem_fonte", MENSAGEM_SEM_FONTE);
+  }
 
   const fontes = [...new Set(citados)].map((id) => porId.get(id) as Trecho);
-  const corpo = textoDoModelo
-    .trim()
-    .replace(CITACAO, (_, id: string) => `(${citacaoLegivel(porId.get(id) as Trecho)})`);
-  const listaDeFontes = fontes.map((t) => `• ${citacaoLegivel(t)}: ${t.url_fonte}`).join("\n");
+  const corpo = texto.replace(
+    CITACAO,
+    (_, id: string) => `(${citacaoLegivel(porId.get(id) as Trecho)})`,
+  );
+  const partes = [corpo];
+  if (fontes.length > 0) {
+    partes.push(
+      `*Fontes da lei:*\n${fontes.map((t) => `• ${citacaoLegivel(t)}: ${t.url_fonte}`).join("\n")}`,
+    );
+  }
+  if (fontesWeb.length > 0) {
+    partes.push(
+      `*Outras fontes (não conferidas):*\n${fontesWeb.map((f) => `• ${f.titulo}: ${f.url}`).join("\n")}`,
+    );
+  }
+  partes.push(AVISO);
 
-  return {
-    tipo: "resposta",
-    texto: `${corpo}\n\n*Fontes:*\n${listaDeFontes}\n\n${AVISO}`,
-    fontes,
-  };
+  return { tipo: "resposta", texto: partes.join("\n\n"), fontes, fontesWeb };
 }
 
 async function comTempoLimite<T>(
@@ -93,37 +173,32 @@ async function comTempoLimite<T>(
 }
 
 /**
- * Responde a uma pergunta de ponta a ponta: busca, decide e, só se for responder,
- * chama o modelo. Nunca lança erro: falha do modelo vira a mensagem de falha.
+ * Responde a uma pergunta de ponta a ponta. Saudação não chama o modelo; o resto vai ao
+ * modelo com a base inteira. Nunca lança erro: falha do modelo vira a mensagem de falha.
  */
 export async function answerQuestion(
   pergunta: string,
   dependencias: {
-    indice: Indice;
+    base: readonly Trecho[];
     llm: LlmAdapter;
-    limites?: Limites;
     timeoutMs?: number;
     /** Recebe o erro do modelo para o servidor registrar; o usuário vê só MENSAGEM_FALHA. */
     registrarErro?: (erro: unknown) => void;
   },
 ): Promise<Resposta> {
-  const { indice, llm, limites, timeoutMs = TIMEOUT_PADRAO_MS, registrarErro } = dependencias;
-  const decisao = decide(pergunta, search(indice, pergunta), limites);
+  const { base, llm, timeoutMs = TIMEOUT_PADRAO_MS, registrarErro } = dependencias;
 
-  if (decisao.tipo === "boas_vindas") {
-    return { tipo: "boas_vindas", texto: decisao.mensagem, fontes: [] };
-  }
-  if (decisao.tipo === "recusar") return recusa();
+  if (ehSaudacao(pergunta)) return semResposta("boas_vindas", MENSAGEM_BOAS_VINDAS);
 
-  let textoDoModelo: string;
+  let geracao: Geracao;
   try {
-    textoDoModelo = await comTempoLimite(
-      (signal) => llm.gerar(buildPrompt(pergunta, decisao.trechos), { signal }),
+    geracao = await comTempoLimite(
+      (signal) => llm.gerar(buildPrompt(pergunta, base), { signal }),
       timeoutMs,
     );
   } catch (erro) {
     registrarErro?.(erro);
-    return falha();
+    return semResposta("falha", MENSAGEM_FALHA);
   }
-  return renderAnswer(textoDoModelo, decisao.trechos);
+  return renderAnswer(geracao, base);
 }

@@ -1,10 +1,7 @@
 import base from "../../knowledge/base.json";
 import { answerQuestion, type LlmAdapter, type Resposta } from "@/core/answer";
-import type { Limites } from "@/core/decision";
 import { parseKnowledgeBase } from "@/core/knowledge";
 import { MAX_PERGUNTA, perguntaSchema } from "@/core/pergunta";
-import { buildIndex } from "@/core/retrieval";
-import { SINONIMOS } from "@/core/sinonimos";
 
 export { MAX_PERGUNTA, perguntaSchema };
 
@@ -14,21 +11,20 @@ export interface Agente {
 
 /**
  * Serviço único do agente, usado pelo simulador web e pelo webhook do WhatsApp.
- * A base é validada e indexada uma vez, na criação; cada pergunta só busca e decide.
+ * A base é validada uma vez, na criação; cada pergunta vai ao modelo com a base inteira
+ * (ADR-007).
  */
 export function createAgente(dependencias: {
   llm: LlmAdapter;
   registrarErro?: (erro: unknown) => void;
-  limites?: Limites;
 }): Agente {
-  const indice = buildIndex(parseKnowledgeBase(base), { sinonimos: SINONIMOS });
-  const { llm, registrarErro, limites } = dependencias;
+  const trechos = parseKnowledgeBase(base);
+  const { llm, registrarErro } = dependencias;
   return {
     perguntar: (pergunta) =>
       answerQuestion(pergunta, {
-        indice,
+        base: trechos,
         llm,
-        ...(limites ? { limites } : {}),
         ...(registrarErro ? { registrarErro } : {}),
       }),
   };

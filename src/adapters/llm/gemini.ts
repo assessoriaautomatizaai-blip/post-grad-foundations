@@ -1,12 +1,15 @@
 import { GoogleGenAI } from "@google/genai";
 
-import type { LlmAdapter } from "@/core/answer";
+import type { FonteWeb, LlmAdapter } from "@/core/answer";
 
-// Resposta curta para WhatsApp e custo previsível. No Gemini 3.x o raciocínio interno
-// também conta neste limite; se as respostas vierem cortadas, é aqui que se ajusta.
-const MAX_OUTPUT_TOKENS = 1024;
-// Baixa variação: a resposta deve parafrasear a lei, não criar.
+// Resposta para WhatsApp e custo previsível. No Gemini 3.x o raciocínio interno também
+// conta neste limite, e a busca na web (ADR-007) aumenta o texto: se as respostas vierem
+// cortadas, é aqui que se ajusta.
+const MAX_OUTPUT_TOKENS = 2048;
+// Baixa variação: a resposta deve explicar a lei e as fontes, não criar.
 const TEMPERATURA = 0.2;
+// Busca no Google (ADR-007): o modelo completa o que a base não cobre, com fonte.
+const FERRAMENTAS = [{ googleSearch: {} }];
 
 /** A parte do cliente do SDK `@google/genai` que o adaptador usa. */
 export interface GeminiClient {
@@ -18,9 +21,25 @@ export interface GeminiClient {
         systemInstruction?: string;
         maxOutputTokens?: number;
         temperature?: number;
+        tools?: { googleSearch: Record<string, never> }[];
         abortSignal?: AbortSignal;
       };
-    }): Promise<{ text?: string | undefined }>;
+    }): Promise<{
+      text?: string | undefined;
+      candidates?:
+        | {
+            groundingMetadata?:
+              | {
+                  groundingChunks?:
+                    | {
+                        web?: { uri?: string | undefined; title?: string | undefined } | undefined;
+                      }[]
+                    | undefined;
+                }
+              | undefined;
+          }[]
+        | undefined;
+    }>;
   };
 }
 
@@ -35,6 +54,7 @@ export function createGeminiAdapter(opcoes: { client: GeminiClient; model: strin
           systemInstruction: prompt.sistema,
           maxOutputTokens: MAX_OUTPUT_TOKENS,
           temperature: TEMPERATURA,
+          tools: FERRAMENTAS,
           ...(signal ? { abortSignal: signal } : {}),
         },
       });
@@ -43,7 +63,13 @@ export function createGeminiAdapter(opcoes: { client: GeminiClient; model: strin
         // Ex.: resposta bloqueada por filtro de segurança ou cortada pelo limite de tokens.
         throw new Error("Gemini não devolveu texto");
       }
-      return texto;
+      // Fontes da busca: pedaços sem endereço são descartados; sem título, usa o endereço.
+      const fontesWeb: FonteWeb[] = (
+        resposta.candidates?.[0]?.groundingMetadata?.groundingChunks ?? []
+      ).flatMap(({ web }) =>
+        web?.uri ? [{ titulo: web.title?.trim() || web.uri, url: web.uri }] : [],
+      );
+      return { texto, fontesWeb };
     },
   };
 }
