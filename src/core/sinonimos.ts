@@ -34,4 +34,6 @@ export const SINONIMOS: Sinonimos = {
   remedio: ["medicamentos"],
   reducao: ["reduzidas", "reduzida", "reduzidos", "reduzido"],
   acaba: ["extintos", "extintas", "extinta", "extinto"],
+  // "Quando o ISS deixa de existir?" (pergunta real do simulador, 15/10/2026).
+  existir: ["extintos", "extintas", "extinta", "extinto"],
 };

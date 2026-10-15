@@ -1,6 +1,6 @@
 import type { Trecho } from "./knowledge";
 import type { Resultado } from "./retrieval";
-import { tokenize } from "./tokenize";
+import { normalizeText, tokenize } from "./tokenize";
 
 export interface Limites {
   /** Escore BM25 mínimo do trecho. */
@@ -46,6 +46,34 @@ export const MENSAGEM_RECUSA = [
   "Tente reformular a pergunta ou procure um contador ou advogado.",
 ].join("\n");
 
+// Tributos que não estão na base (docs/escopo.md, "Fora do escopo"). Pergunta que cita um
+// deles é recusada antes da busca: "O IPVA acaba?" casava com o artigo que extingue o ICMS
+// e o ISS (ADCT, art. 129) pela palavra "acaba", e a cobertura passava do mínimo.
+// Não é afirmação ao usuário, só filtro de escopo; conferido em 15/10/2026 que nenhum
+// aparece em knowledge/base.json. "renda" sozinha fica de fora: "família de baixa renda"
+// é pergunta de cashback.
+const TRIBUTOS_FORA_DA_BASE = [
+  "ipva",
+  "iptu",
+  "itbi",
+  "itcmd",
+  "itcd",
+  "itr",
+  "imposto de renda",
+  "imposto sobre a renda",
+  "irpf",
+  "irpj",
+  "csll",
+  "iof",
+  "inss",
+  "fgts",
+];
+
+function citaTributoForaDaBase(pergunta: string): boolean {
+  const texto = ` ${normalizeText(pergunta)} `;
+  return TRIBUTOS_FORA_DA_BASE.some((tributo) => texto.includes(` ${tributo} `));
+}
+
 function validar(limites: Limites): void {
   const { scoreMinimo, coberturaMinima } = limites;
   if (!Number.isFinite(scoreMinimo) || scoreMinimo < 0) {
@@ -62,8 +90,8 @@ function validar(limites: Limites): void {
 
 /**
  * Decide o que fazer com a pergunta, antes de qualquer chamada ao modelo de linguagem:
- * dar boas-vindas, recusar (fora da base) ou responder com os trechos que passam
- * nos dois mínimos, na ordem da busca.
+ * dar boas-vindas, recusar (cita tributo fora da base, ou nenhum trecho passa nos
+ * mínimos) ou responder com os trechos que passam nos dois mínimos, na ordem da busca.
  */
 export function decide(
   pergunta: string,
@@ -74,6 +102,10 @@ export function decide(
 
   if (tokenize(pergunta).every((palavra) => SAUDACOES.has(palavra))) {
     return { tipo: "boas_vindas", mensagem: MENSAGEM_BOAS_VINDAS };
+  }
+
+  if (citaTributoForaDaBase(pergunta)) {
+    return { tipo: "recusar", mensagem: MENSAGEM_RECUSA };
   }
 
   const trechos = resultados
