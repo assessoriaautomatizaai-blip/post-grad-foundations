@@ -144,6 +144,56 @@ describe("Simulador", () => {
     expect(screen.getByRole("list", { name: /fontes da lei/i })).not.toBe(lista);
   });
 
+  it("não mostra endereços crus no balão: as fontes aparecem só como links com nome", async () => {
+    const redirecionamento =
+      "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEghG4H3gRcfwS6OWl4OjOwHs7pz_32amddUoj116k7ri33T7uT6";
+    const { enviar, conversa } = montar(
+      vi.fn(async (): Promise<Resposta> => ({
+        tipo: "resposta",
+        texto: `Resposta (LC 214/2025, art. 31, caput).\n\n*Fontes da lei:*\n• LC 214/2025, art. 31, caput: ${split.url_fonte}\n\n*Outras fontes (não conferidas):*\n• senado.leg.br: ${redirecionamento}\n\n_Aviso._`,
+        corpo: "Resposta (LC 214/2025, art. 31, caput).\n\n_Aviso._",
+        fontes: [split],
+        fontesWeb: [{ titulo: "senado.leg.br", url: redirecionamento }],
+      })),
+    );
+    enviar("O que é o split payment?");
+
+    const link = await screen.findByRole("link", { name: /senado\.leg\.br/ });
+    expect(link).toHaveAttribute("href", redirecionamento);
+    const balao = within(conversa()).getAllByRole("article")[1] as HTMLElement;
+    for (const paragrafo of balao.querySelectorAll("span")) {
+      expect(paragrafo.textContent).not.toContain("https://");
+    }
+  });
+
+  it("numera as fontes da web com o mesmo nome, para cada link ter um nome único", async () => {
+    const { enviar } = montar(
+      vi.fn(async (): Promise<Resposta> => ({
+        ...respostaComFonte,
+        fontesWeb: [
+          { titulo: "senado.leg.br", url: "https://exemplo.gov.br/a" },
+          { titulo: "senado.leg.br", url: "https://exemplo.gov.br/b" },
+        ],
+      })),
+    );
+    enviar("Pergunta?");
+
+    const lista = await screen.findByRole("list", { name: /fontes da web/i });
+    const nomes = within(lista)
+      .getAllByRole("link")
+      .map((link) => link.textContent);
+    expect(nomes).toEqual(["senado.leg.br", "senado.leg.br (2)"]);
+  });
+
+  it("o balão quebra palavras longas, para nada estourar a largura da página", async () => {
+    const { enviar, conversa } = montar();
+    enviar("O que é o split payment?");
+
+    await screen.findByRole("link", { name: "LC 214/2025, art. 31, caput" });
+    const balao = within(conversa()).getAllByRole("article")[1] as HTMLElement;
+    expect(balao.className).toMatch(/overflow-wrap:anywhere|break-words/);
+  });
+
   it.each([
     ["fora_do_tema", /fora do tema/i],
     ["sem_fonte", /sem fonte/i],

@@ -179,6 +179,29 @@ describe("renderAnswer — complemento da web", () => {
   });
 });
 
+describe("renderAnswer — corpo para telas que mostram as fontes como links", () => {
+  const texto = "O ISS acaba em 2033 [fx-ec].\n\n*Complemento:* A Receita publicou um guia.";
+
+  it("o corpo tem a resposta e as citações legíveis, sem as listas de endereços", () => {
+    const resposta = renderAnswer(geracao(texto, [receita]), base);
+
+    expect(resposta.corpo).toContain("(EC 132/2023, art. 2º (ADCT, art. 129))");
+    expect(resposta.corpo).toContain("*Complemento:* A Receita publicou um guia.");
+    expect(resposta.corpo).not.toMatch(/Fontes da lei|Outras fontes/);
+    expect(resposta.corpo).not.toContain("https://");
+  });
+
+  it("o corpo termina com o aviso, como o texto do WhatsApp", () => {
+    expect(renderAnswer(geracao(texto, [receita]), base).corpo?.endsWith(AVISO)).toBe(true);
+  });
+
+  it("o texto do WhatsApp continua com as listas e os endereços (lá o link precisa aparecer)", () => {
+    const resposta = renderAnswer(geracao(texto, [receita]), base);
+    expect(resposta.texto).toContain(ec.url_fonte);
+    expect(resposta.texto).toContain(receita.url);
+  });
+});
+
 describe("renderAnswer — sem fonte, fora do tema e aviso", () => {
   it("não mostra resposta sem nenhuma fonte (nem lei, nem web)", () => {
     const resposta = renderAnswer(geracao("A alíquota vai ser 27%, pode confiar."), base);
