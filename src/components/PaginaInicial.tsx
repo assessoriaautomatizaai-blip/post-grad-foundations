@@ -21,9 +21,9 @@ const PASSOS = [
   },
   {
     icone: FileSearch,
-    titulo: "O Gemini lê a lei",
+    titulo: "O LLM lê a lei",
     texto:
-      "O modelo recebe a base inteira: 96 trechos copiados literalmente do texto oficial da EC 132/2023 e da LC 214/2025, no Planalto.",
+      "O LLM recebe a base inteira: 96 trechos copiados literalmente do texto oficial da EC 132/2023 e da LC 214/2025, no Planalto.",
   },
   {
     icone: Globe,
@@ -201,7 +201,7 @@ export function PaginaInicial() {
         </h2>
         <p className="mt-3 max-w-2xl text-muted-foreground">
           Garantias conferidas no código e em testes automatizados; base conferida em 15/10/2026. A
-          avaliação com o Gemini sobre o conjunto-ouro está sendo refeita para o método atual; o
+          avaliação com o LLM sobre o conjunto-ouro está sendo refeita para o método atual; o
           relatório publicado é o do método anterior (busca por palavras).
         </p>
         <dl className="mt-10 grid gap-4 sm:grid-cols-3">
