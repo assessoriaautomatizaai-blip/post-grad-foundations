@@ -2,7 +2,7 @@
 
 # Inciso — tira-dúvidas da reforma tributária no WhatsApp
 
-Agente de IA que responde, pelo WhatsApp, **dúvidas básicas sobre a reforma tributária brasileira** (EC 132/2023 e LC 214/2025). Toda resposta **cita o artigo de lei** de onde veio, com link para o texto oficial no Planalto; quando a pergunta foge da base, o agente **recusa** em vez de inventar.
+Agente de IA que responde, pelo WhatsApp, **dúvidas básicas sobre a reforma tributária brasileira** (EC 132/2023 e LC 214/2025). Toda resposta **cita o artigo de lei** de onde veio, com link para o texto oficial no Planalto; quando a lei não basta, o agente **completa com busca na web**, sempre com o link e separado do que é lei. Artigo inventado nunca chega ao usuário: o código confere.
 
 Mini-projeto do curso C4 — _Laboratório Introdutório: Construindo um Mini-projeto com IA Generativa_ — da Especialização em Engenharia de Software (UFG/AKCIT).
 
@@ -30,19 +30,17 @@ flowchart LR
   E -->|webhook + segredo| W["/api/whatsapp/webhook"]
   S["/simulador<br/>(navegador)"] --> A
   W --> A[Serviço do agente]
-  A --> B[Busca BM25<br/>+ sinônimos]
-  B --> K[(Base: 29 trechos<br/>LC 214 e EC 132)]
-  A --> D{Decisão no código<br/>escore e cobertura}
-  D -->|fora da base| R[Recusa sem chamar o modelo]
-  D -->|responder| G[Gemini 3.8 Flash<br/>só com os trechos]
-  G --> V[Confere as citações<br/>id não recuperado = recusa]
-  V -->|resposta + fontes + aviso| E
+  A -->|saudação| BV[Boas-vindas, sem modelo]
+  A --> G[Gemini 3.8 Flash<br/>base inteira + busca Google]
+  K[(Base: 96 trechos<br/>LC 214 e EC 132)] --> G
+  G --> V[Código confere:<br/>artigo inexistente bloqueia<br/>complemento sem link sai]
+  V -->|lei citada + complemento com link + aviso| E
 ```
 
-1. **Base de conhecimento** ([`knowledge/base.json`](knowledge/base.json)): 29 trechos copiados literalmente do Planalto, um por dispositivo legal, **conferidos por pessoa** no texto oficial ([conferência](docs/conferencia-base.md)).
-2. **Busca** lexical (BM25) com redução de plural e sinônimos que ligam o nome do tributo ao jeito como a lei o cita ("IBS" → "art. 156-A").
-3. **Decisão no código**, antes de qualquer IA: saudação vira boas-vindas; pergunta que cita tributo fora da base (IPVA, IPTU, ITBI, imposto de renda…) ou sem trecho suficiente (escore e cobertura mínimos) vira **recusa, sem custo de modelo**.
-4. **Geração**: o Gemini recebe só os trechos aprovados e cita cada um pelo id (`[lc214-art31]`). O código confere: id que não estava entre os recuperados, ou resposta sem citação, vira recusa. Depois troca o id pela citação legível e acrescenta as fontes com link e o aviso.
+1. **Base de conhecimento** ([`knowledge/base.json`](knowledge/base.json)): 96 trechos copiados literalmente do Planalto, um por dispositivo legal, todos conferidos automaticamente contra o texto vigente (já com a LC 227/2026). Os 29 originais foram conferidos também por pessoa; os 67 da ampliação de 15/10/2026 aguardam essa conferência ([conferência](docs/conferencia-base.md)).
+2. **O Gemini lê a base inteira** em toda pergunta e raciocina sobre ela: entende paráfrase ("deixa de existir" = "ficam extintos") sem lista de sinônimos. Tudo o que vem da base cita o trecho pelo id (`[lc214-art31]`).
+3. **Busca no Google** completa o que a lei não cobre (prazos, notas fiscais, comunicados), num parágrafo "_Complemento:_" com os links das páginas, identificados como **não conferidos**.
+4. **O código confere antes de enviar** ([ADR-007](docs/decisoes.md)): artigo citado que não existe na base bloqueia a resposta; complemento sem fonte da web é removido; resposta sem fonte nenhuma vira mensagem fixa; assunto fora da reforma vira mensagem que explica o foco do agente. Saudação recebe boas-vindas sem chamar o modelo.
 5. **Canal**: o mesmo serviço atende o WhatsApp (webhook da Evolution API) e o **simulador web**, que permite avaliar o agente sem WhatsApp.
 
 ## Tecnologias
@@ -51,7 +49,7 @@ flowchart LR
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | Aplicação                        | TanStack Start (React 19, TypeScript estrito), gerada e sincronizada com o [Lovable](https://lovable.dev)                              |
 | Validação de entradas            | zod                                                                                                                                    |
-| Modelo de linguagem (no produto) | **Gemini 3.8 Flash**, pelo SDK oficial `@google/genai` ([ADR-003](docs/decisoes.md))                                                   |
+| Modelo de linguagem (no produto) | **Gemini 3.8 Flash** com busca no Google, pelo SDK oficial `@google/genai` ([ADR-003 e ADR-007](docs/decisoes.md))                     |
 | WhatsApp                         | **Evolution API v2**, hospedada na Cloudfy                                                                                             |
 | Interface                        | Tailwind CSS 4 e componentes Radix; fontes Schibsted Grotesk, Source Serif 4 e IBM Plex Mono servidas pelo próprio app (`@fontsource`) |
 | Testes                           | Vitest e Testing Library                                                                                                               |
@@ -71,7 +69,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Abra `http://localhost:8080/simulador` (o terminal mostra a porta). Sem chaves no `.env`, o simulador já responde saudações e **recusa** perguntas fora da base; para respostas com o Gemini, preencha `GEMINI_API_KEY` e `GEMINI_MODEL`.
+Abra `http://localhost:8080/simulador` (o terminal mostra a porta). Sem chaves no `.env`, o simulador já responde saudações; as demais perguntas mostram a mensagem de falha técnica até você preencher `GEMINI_API_KEY` e `GEMINI_MODEL` (a busca no Google exige o plano pago).
 
 | Variável                                                       | Para quê                                                         |
 | -------------------------------------------------------------- | ---------------------------------------------------------------- |
@@ -83,15 +81,16 @@ O `.env` é ignorado pelo Git. Em produção, os valores ficam nos segredos do L
 
 ## Uso
 
-**Simulador** — `/simulador`: digite a pergunta; a resposta mostra as fontes como links para o Planalto.
+**Simulador** — `/simulador`: digite a pergunta; a resposta mostra as fontes da lei como links para o Planalto e, quando houver, as fontes da web à parte, como não conferidas.
 
 **WhatsApp** — mande a pergunta para o número do agente. Exemplos:
 
-| Pergunta                             | Comportamento                                                        |
-| ------------------------------------ | -------------------------------------------------------------------- |
-| `oi`                                 | Boas-vindas com perguntas de exemplo                                 |
-| `O que é o split payment?`           | Resposta citando "(LC 214/2025, art. 31, caput)", com fontes e aviso |
-| `Qual o valor do IPVA do meu carro?` | Recusa: não está na base                                             |
+| Pergunta                    | Comportamento                                                        |
+| --------------------------- | -------------------------------------------------------------------- |
+| `oi`                        | Boas-vindas com perguntas de exemplo                                 |
+| `O que é o split payment?`  | Resposta citando "(LC 214/2025, art. 31, caput)", com fontes e aviso |
+| `O IPVA acaba?`             | Complemento com fonte da web, separado do que é lei                  |
+| `Qual a previsão do tempo?` | Mensagem que explica o foco do agente e sugere perguntas             |
 
 **Webhook** — `POST /api/whatsapp/webhook`, chamado pela Evolution API. Com `WEBHOOK_SECRET` vazio (como no `.env.example`), recusa tudo com **503**; com o segredo configurado, chamada sem o cabeçalho `x-webhook-secret` correto recebe **401**:
 
@@ -102,37 +101,26 @@ curl -i -X POST http://localhost:8080/api/whatsapp/webhook -H "content-type: app
 ## Testes e avaliação
 
 ```bash
-npm test        # 223 testes, sem rede e sem chaves
-npm run eval    # conjunto-ouro: grava eval/relatorio.md
+npm test        # 228 testes, sem rede e sem chaves
 npm run build   # build de produção
 ```
 
-**Testes.** Escritos **antes** do código e aprovados pelo autor antes de cada implementação (TDD). Nenhum teste chama o Gemini, a Evolution ou a internet: modelo, cliente HTTP e WhatsApp são falsos nos testes.
+**Testes.** Escritos **antes** do código e aprovados pelo autor antes de cada implementação (TDD). Nenhum teste chama o Gemini, a Evolution ou a internet: modelo, cliente HTTP e WhatsApp são falsos nos testes. As garantias do [ADR-007](docs/decisoes.md) (artigo inventado bloqueia, complemento sem link sai, resposta sem fonte não aparece) são testadas no núcleo.
 
 **Teste de mutação manual.** Depois de cada etapa, defeitos foram inseridos de propósito no código para confirmar que os testes os pegam: **48 defeitos, 46 detectados de primeira**; 1 era equivalente (não mudava o comportamento) e 1 revelou uma lacuna real, fechada com um teste novo.
 
-**Conjunto-ouro** ([`eval/perguntas.json`](eval/perguntas.json)): 32 perguntas escritas como um leigo perguntaria, com gabarito conferido pelo autor, separadas em calibração (21) e teste (11, nunca usado para ajustar). Resultado de 15/10/2026 ([relatório](eval/relatorio.md)):
-
-|                                                | Calibração     | Teste          |
-| ---------------------------------------------- | -------------- | -------------- |
-| Perguntas fora do escopo recusadas             | **100%** (6/6) | **100%** (4/4) |
-| Trecho certo entre os 3 recuperados (recall@3) | 73%            | 86%            |
-| Respondidas usando o trecho certo              | 60%            | 71%            |
-
-O teste subiu de 57% para 71% em 15/10/2026 com o sinônimo "existir → extintos", criado por uma pergunta real do simulador publicado ("Quando o ISS deixa de existir?"), não pelo gabarito; o efeito no caso t01 foi consequência, registrada no [histórico](docs/HISTORY-IA.md).
-
-O agente erra **do lado seguro**: nenhuma pergunta fora do escopo foi respondida, nem as armadilhas que usam palavras da base ("Quanto custa abrir um MEI?"). Em troca, recusa perguntas que poderia responder — ver [limitações](#limitações-e-próximos-passos).
+**Avaliação com o conjunto-ouro** ([`eval/perguntas.json`](eval/perguntas.json)): 32 perguntas escritas como um leigo perguntaria, com gabarito conferido pelo autor. O [relatório de 15/10/2026](eval/relatorio.md) mediu o **método anterior** (busca por palavras, ADR-004): 100% de recusa fora do escopo, mas só 60% a 71% das perguntas válidas respondidas. Com o ADR-007, a avaliação passa a chamar o Gemini de verdade (rede e chave) e está sendo refeita.
 
 ## Estrutura do projeto
 
 ```
-knowledge/base.json        base de conhecimento (29 trechos conferidos)
-src/core/                  regra de negócio pura e testável: busca, decisão, geração, divisão de mensagens
+knowledge/base.json        base de conhecimento (96 trechos literais do Planalto)
+src/core/                  regra de negócio pura e testável: saudação, prompt, conferência de fontes, divisão de mensagens
 src/core/prompts/          prompt de sistema do agente (versionado)
 src/adapters/              Gemini e Evolution API, atrás de interfaces
 src/server/                serviço do agente e webhook (só no servidor)
 src/routes/                páginas (/simulador) e rota do webhook
-src/eval/  eval/           avaliação pelo conjunto-ouro
+eval/                      conjunto-ouro e relatório da avaliação anterior
 scripts/planalto/          extração dos trechos do texto oficial
 docs/                      escopo, backlog, decisões, estimativa, registro do uso de IA
 ```
@@ -142,7 +130,7 @@ docs/                      escopo, backlog, decisões, estimativa, registro do u
 O projeto usou IA em dois papéis, com controles diferentes (registro completo em [docs/HISTORY-IA.md](docs/HISTORY-IA.md)):
 
 - **No desenvolvimento** — Claude Code leu o material do curso, propôs escopo, backlog e decisões, escreveu testes e código e conferiu fatos voláteis na fonte. Em cada etapa: a IA propõe os testes, **o autor aprova**, a IA implementa, roda testes, tipos, lint, build e mutações, e o autor aprova antes de cada envio ao GitHub. O contrato desse trabalho está em [CLAUDE.md](CLAUDE.md).
-- **No produto** — o Gemini só redige a resposta a partir de trechos já escolhidos pelo código; quem decide responder ou recusar é o código, e as citações do modelo são conferidas.
+- **No produto** — o Gemini lê a base inteira de lei e completa com busca no Google; o código confere as citações (artigo inexistente bloqueia a resposta) e exige link em todo complemento da web ([ADR-007](docs/decisoes.md)).
 
 **Fatos voláteis vieram da fonte, não da memória do modelo:** preços do Gemini (página oficial), forma de chamada do SDK (documentação e tipos instalados), formato do webhook e do envio da Evolution (código-fonte da Evolution, porque a página de documentação estava fora do ar) e o texto da lei (Planalto).
 
@@ -165,19 +153,22 @@ O projeto usou IA em dois papéis, com controles diferentes (registro completo e
 - Logs registram só a causa do erro — **nunca número de telefone nem texto da mensagem** (LGPD).
 - Gemini no **plano pago**: no gratuito, o conteúdo enviado pode ser usado pelo Google para melhorar seus produtos.
 - A pergunta do usuário vai ao modelo isolada entre delimitadores neutralizados, como dado, não como instrução.
+- Links da web só aparecem se forem `http` ou `https`; o texto do modelo é mostrado como texto, sem interpretar HTML.
 
 ## Limitações e próximos passos
 
-**Limitações conhecidas (medidas, não estimadas):**
+**Limitações conhecidas:**
 
-- **Recusa demais.** Só 60% a 71% das perguntas dentro do escopo são respondidas; o critério de recall@3 ≥ 80% do escopo **não foi atingido** na calibração (73%). A causa é vocabulário: palavras do dia a dia ausentes da lei, flexão verbal ("compensar" × "compensado") e termos onipresentes ("IBS" aparece em 19 dos 29 trechos).
-- **Uma pergunta passa com trecho errado** no conjunto-ouro ("Serviços de saúde vão pagar menos imposto?" recupera o Imposto Seletivo, que fala em "prejudiciais à saúde").
-- **Base pequena e manual**: 29 trechos; sem o Anexo I (lista da cesta básica), sem regulamentos, legislação estadual ou municipal. Atualização manual.
+- **Complemento da web não é conferido por pessoa.** A página pode estar desatualizada ou ser fraca; por isso aparece separada da lei, com link e o rótulo "não conferida". O código não julga a qualidade da página.
+- **O código confere a existência da fonte, não a fidelidade do texto.** Ele garante que o artigo citado existe na base e que o complemento tem link, mas não que a frase resume corretamente o trecho. Isso depende do modelo e é o que a avaliação com o Gemini mede.
+- **Avaliação do método atual em andamento**: o relatório publicado é do método anterior.
+- **Custo e tempo maiores por pergunta**: a base inteira vai em cada chamada (~11 mil tokens de entrada, ≈ US$ 0,011 por resposta) e a busca deixa a resposta mais lenta (tempo limite de 25 s). A busca exige o **plano pago** do Gemini (5.000 buscas grátis por mês).
+- **Base manual**: 96 trechos; sem os anexos (listas por código NCM), regulamentos, legislação estadual ou municipal. Os 67 trechos da ampliação aguardam conferência humana.
 - Só mensagens de texto; sem memória entre mensagens; sem limitação de taxa por remetente.
 - Deduplicação de mensagens em memória: com várias instâncias do servidor, uma duplicata rara pode passar.
-- [A CONFERIR na H12] Comportamento real do Gemini e da Evolution em produção.
+- [A CONFERIR] Os links devolvidos pela busca podem ser endereços de redirecionamento do Google, e não o endereço final da página.
 
-**Próximos passos:** busca híbrida (BM25 + embeddings) e tratamento de flexão verbal, medidos contra o mesmo conjunto-ouro; ampliar a base com regulamentações; limitação de taxa; mensagens de voz.
+**Próximos passos:** avaliação com o Gemini sobre o conjunto-ouro; camada de orientação oficial (trechos literais da Receita e do CGIBS, conferidos); limitação de taxa; mensagens de voz.
 
 ## Documentação
 

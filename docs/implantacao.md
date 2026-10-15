@@ -18,14 +18,14 @@ Guarde o valor num gerenciador de senhas. Ele vai em dois lugares: nos segredos 
 
 1. Abra o projeto no Lovable e cadastre os segredos (configurações do projeto → _Secrets_):
 
-   | Segredo              | Valor                                                                       |
-   | -------------------- | --------------------------------------------------------------------------- |
-   | `GEMINI_API_KEY`     | chave da Gemini API, **plano pago** (ADR-003)                               |
-   | `GEMINI_MODEL`       | `gemini-3.8-flash`                                                          |
-   | `WEBHOOK_SECRET`     | o valor gerado no passo 1                                                   |
-   | `EVOLUTION_API_URL`  | endereço da sua Evolution na Cloudfy, **com `https://`** e sem barra no fim |
-   | `EVOLUTION_API_KEY`  | token da instância (preferível) ou chave global da Evolution                |
-   | `EVOLUTION_INSTANCE` | nome da instância, exatamente como criado no passo 3                        |
+   | Segredo              | Valor                                                                                                    |
+   | -------------------- | -------------------------------------------------------------------------------------------------------- |
+   | `GEMINI_API_KEY`     | chave da Gemini API, **plano pago** (ADR-003; a busca no Google do ADR-007 não existe no plano gratuito) |
+   | `GEMINI_MODEL`       | `gemini-3.8-flash`                                                                                       |
+   | `WEBHOOK_SECRET`     | o valor gerado no passo 1                                                                                |
+   | `EVOLUTION_API_URL`  | endereço da sua Evolution na Cloudfy, **com `https://`** e sem barra no fim                              |
+   | `EVOLUTION_API_KEY`  | token da instância (preferível) ou chave global da Evolution                                             |
+   | `EVOLUTION_INSTANCE` | nome da instância, exatamente como criado no passo 3                                                     |
 
 2. Publique o app. O endereço público fica parecido com `https://<projeto>.lovable.app`.
 3. **Teste o Gemini antes do WhatsApp:** abra `https://<projeto>.lovable.app/simulador` e pergunte "O que é o split payment?". A resposta deve citar "(LC 214/2025, art. 31, caput)" e terminar com fontes e aviso.
