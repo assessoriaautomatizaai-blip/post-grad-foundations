@@ -221,3 +221,11 @@
 - **O que a verificação pegou:** a página inicial passou a mostrar a mesma data duas vezes e um teste existente acusou (corrigido o texto, não o teste); o custo por resposta estimado no ADR (~8 mil tokens) estava abaixo do real — medido em ~11 mil tokens de entrada (≈ US$ 0,011), corrigido no ADR, no README e na estimativa.
 - **Pendente:** avaliação com o Gemini sobre o conjunto-ouro (testes próprios, numa etapa seguinte) e teste real da busca, inclusive se os links vêm como redirecionamento do Google [A CONFERIR].
 - **Tempo real:** [A PREENCHER]
+
+### 15/10/2026 — Links da busca quebravam o simulador; termos do Google
+
+- **Primeiro teste real (pelo autor, no Lovable):** a busca no Google funcionou, com fontes da lei e da web separadas. Mas os endereços da web vieram como redirecionamento do Google, com centenas de caracteres sem espaço, e estouraram o balão do simulador.
+- **A IA leu os termos da Gemini API antes de corrigir:** a ideia inicial (trocar o redirecionamento pelo endereço final da página) **violaria os termos**, que proíbem alterar os links e coletá-los por meios automatizados. A correção ficou dentro dos termos: os links são mostrados como vieram, com o nome do site como rótulo.
+- **Testes primeiro:** 5 casos novos — o núcleo devolve um `corpo` sem as listas de endereços (o texto do WhatsApp continua com eles, porque lá o endereço é o link); o simulador não mostra endereço cru, numera nomes repetidos ("senado.leg.br (2)") e o balão quebra palavras longas.
+- **Achados dos termos que ficaram pendentes:** exibir as _Search Suggestions_ junto com a resposta (exigência) e a proibição de "modificar" os resultados frente à conferência do ADR-007 — registrados como [A CONFERIR] no ADR-007, para decisão do autor.
+- **Tempo real:** [A PREENCHER]
