@@ -95,11 +95,14 @@ Como avaliador, quero testar o agente no navegador, sem WhatsApp.
 - [x] Mesma mensagem (mesmo id) entregue duas vezes → respondida uma vez só; após falha no envio, a nova tentativa da Evolution é processada
 - [x] Testes com *payloads* de exemplo em fixture (sem rede), no formato do código-fonte da Evolution API
 - [x] Execução real da rota no servidor local, com `curl`: autenticação, filtros e falha no envio conferidos
-- [ ] Envio da resposta — a rota usa um envio que falha de propósito até a H10
+- [x] Envio da resposta — ligado ao adaptador da Evolution na H10
 
-**H10 ⬜ Envio da resposta**
-- [ ] Adaptador `sendText` da Evolution API com timeout; falha registrada sem dado pessoal em claro
-- [ ] Resposta longa quebrada em mensagens de até [A CONFERIR] caracteres
+**H10 ✅ Envio da resposta**
+- [x] Adaptador `sendText` da Evolution API v2 (`POST /message/sendText/{instância}`, cabeçalho `apikey`, corpo `{ number, text }` — conferido no código-fonte) com timeout de 10 s e cancelamento; erro sem chave, número ou texto
+- [x] Resposta longa quebrada em mensagens de até 1.600 caracteres (limite de leitura no celular), preferindo parágrafos e sem cortar palavras
+- [x] `EVOLUTION_API_URL` precisa ser `https`
+- [x] Ligado ao webhook, no lugar do envio provisório; conferido no servidor local
+- [x] Checagem de tipos (`tsc`): 2 testes aprovados tinham uma variável local `fetch` que referenciava a si mesma — renomeada para `buscar` com aprovação do autor, sem mudar asserção
 
 **H11 ⬜ Conjunto-ouro e avaliação**
 - [ ] `eval/perguntas.json` com ≥ 20 perguntas: pergunta, `ids` esperados ou `fora_do_escopo: true`

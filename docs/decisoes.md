@@ -115,4 +115,6 @@
 - Conversa individual é `@s.whatsapp.net` ou `@lid` (endereçamento novo do WhatsApp); grupos (`@g.us`), status (`status@broadcast`) e canais são ignorados.
 - Mensagens com mais de 5 minutos são ignoradas (reenvio de histórico após reconexão).
 
+**Envio (15/10/2026, H10).** `POST {EVOLUTION_API_URL}/message/sendText/{EVOLUTION_INSTANCE}`, cabeçalho `apikey`, corpo `{ number, text }` (na v1 era `textMessage`; conferido em `sendMessage.dto.ts` e `sendMessage.router.ts`). O `number` recebe o identificador como veio do webhook: a função `createJid` da Evolution aceita `@s.whatsapp.net` e `@lid` sem alteração. URL obrigatoriamente `https`. Respostas acima de 1.600 caracteres vão em várias mensagens, em ordem, uma de cada vez; se uma falhar, as seguintes não saem e o webhook devolve 500 para a Evolution tentar de novo.
+
 **Consequências.** Reduz abuso do endpoint e exposição de dados pessoais (LGPD). Não há limitação de taxa no MVP — declarada como limitação. A deduplicação é em memória: com várias instâncias do servidor, uma duplicata rara ainda pode passar — também declarada como limitação.

@@ -132,3 +132,15 @@
 - **Execução real da rota (servidor local, `curl`, segredo de teste aleatório num `.env` ignorado pelo Git):** sem segredo e com segredo errado → 401; corpo inválido → 400; `connection.update`, `fromMe` e grupo → 200 ignorado; mensagem válida → 500, porque o envio é da H10 e foi deixado falhando de propósito para o webhook nunca fingir que respondeu. O log registrou só a causa do erro, **sem número e sem texto**.
 - **Achado na execução real, não coberto pelos testes:** `GET` na rota devolvia 200 com a página vazia do app. Corrigido para 405 (`Allow: POST`) e conferido com `curl`.
 - **Tempo real:** [A PREENCHER]
+
+### 15/10/2026 — Projeto movido para fora do iCloud e envio pela Evolution (H10)
+
+- **Mudança de ambiente, por decisão do autor:** depois de o iCloud tirar do disco 344 arquivos em menos de uma hora, o repositório foi clonado de novo em `~/Projetos/whats-app-agent`, fora da sincronização. Suíte: de travamentos e minutos para **3,5 s**. A cópia antiga ficou parada.
+- **Fato volátil conferido na fonte primária:** endpoint, cabeçalho e corpo do envio de texto conferidos no código-fonte da Evolution (`sendMessage.router.ts`, `sendMessage.dto.ts`, `auth.guard.ts`, `createJid.ts`). Na v2 o corpo é `{ number, text }`; na v1 era `textMessage` — a mutação que volta ao formato v1 é derrubada pelos testes.
+- **Red:** 25 casos aprovados antes do código — 9 da divisão de mensagens e 16 do adaptador (com `fetch` falso, sem rede).
+- **Green:** 207/207; lint e build sem erro; nada da Evolution no código do navegador.
+- **Erro da própria IA no teste aprovado:** a checagem de tipos (`tsc`) reprovou dois testes em que a IA escreveu `const fetch = vi.fn<typeof fetch>(...)` — o `typeof fetch` passa a apontar para a própria variável. O vitest não checa tipos, então os testes rodavam. A correção é só renomear a variável, sem mudar asserção; **não foi feita sem aprovação do autor** (CLAUDE.md, regra 4). Aprovada, a variável virou `buscar`; o arquivo manteve as mesmas 25 asserções e o `tsc` passou.
+- **Teste de mutação:** 10 defeitos (sem `apikey`, corpo da v1, ignorar recusa da Evolution, número no erro, sem cancelamento por tempo, aceitar `http`, instância sem codificar, barra dupla na URL, parte acima do limite, ignorar parágrafos) — **todos derrubados**.
+- **Erro de verificação pego antes de virar conclusão:** o primeiro teste da rota no servidor local mostrou no log a mensagem do envio provisório, já removida do código. A IA conferiu de qual pasta o servidor tinha subido: era a **cópia antiga**, porque a ferramenta de pré-visualização reaproveitou a configuração da raiz antiga. O resultado foi descartado, a configuração corrigida para o caminho novo e o teste refeito.
+- **Execução real (servidor da pasta nova):** "oi" e "IPVA" chegaram ao agente (boas-vindas e recusa, sem chamar o modelo) e a tentativa de envio registrou no log `EVOLUTION_API_URL não configurada` — o envio real está ligado. O envio de ponta a ponta fica para a H12, com a instância da Cloudfy.
+- **Tempo real:** [A PREENCHER]
