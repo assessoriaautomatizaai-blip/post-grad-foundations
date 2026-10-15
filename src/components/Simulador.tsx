@@ -1,6 +1,7 @@
-import { AlertTriangle, BookOpenCheck, Info, RotateCcw, Scale, SendHorizontal } from "lucide-react";
+import { AlertTriangle, BookOpenCheck, Info, RotateCcw, SendHorizontal } from "lucide-react";
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 
+import { LogoSimbolo } from "@/components/marca/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -57,7 +58,7 @@ const ESTILO_AGENTE: Record<Resposta["tipo"], string> = {
 function Selo({ tipo }: { tipo?: Resposta["tipo"] | undefined }) {
   if (tipo === "recusa") {
     return (
-      <span className="mb-2 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+      <span className="mb-2 inline-flex items-center gap-1.5 font-sans text-xs font-medium text-muted-foreground">
         <Info className="size-3.5" aria-hidden="true" />
         Fora da base
       </span>
@@ -65,7 +66,7 @@ function Selo({ tipo }: { tipo?: Resposta["tipo"] | undefined }) {
   }
   if (tipo === "falha") {
     return (
-      <span className="mb-2 inline-flex items-center gap-1.5 text-xs font-medium text-destructive">
+      <span className="mb-2 inline-flex items-center gap-1.5 font-sans text-xs font-medium text-destructive">
         <AlertTriangle className="size-3.5" aria-hidden="true" />
         Falha técnica
       </span>
@@ -132,12 +133,14 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
     <section className="mx-auto flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl border bg-background shadow-sm">
       <div className="flex items-center justify-between gap-3 border-b bg-card px-4 py-3 sm:px-5">
         <div className="flex items-center gap-3">
-          <span className="flex size-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            <Scale className="size-4.5" aria-hidden="true" />
+          <span className="flex size-10 items-center justify-center rounded-xl border bg-background">
+            <LogoSimbolo decorativo className="size-7" />
           </span>
           <div className="leading-tight">
-            <p className="text-sm font-semibold text-foreground">Agente da reforma tributária</p>
-            <p className="text-xs text-muted-foreground">Responde citando a EC 132 e a LC 214</p>
+            <p className="text-sm font-semibold text-foreground">Inciso</p>
+            <p className="text-xs text-muted-foreground">
+              Tira-dúvidas da reforma tributária · cita a lei
+            </p>
           </div>
         </div>
         {mensagens.length > 0 && (
@@ -157,7 +160,7 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
       <div className="flex min-h-[22rem] flex-col gap-4 px-4 py-5 sm:px-5">
         {mensagens.length === 0 && !aguardando && (
           <div className="m-auto flex max-w-md flex-col items-center gap-4 py-6 text-center">
-            <p className="font-serif text-xl font-semibold text-foreground">
+            <p className="text-xl font-semibold text-foreground">
               Pergunte sobre a reforma tributária
             </p>
             <p className="text-sm text-muted-foreground">
@@ -187,7 +190,7 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
                 m.autor === "usuario"
                   ? "self-end rounded-2xl rounded-br-sm bg-primary text-primary-foreground"
                   : cn(
-                      "self-start rounded-2xl rounded-bl-sm text-foreground",
+                      "self-start rounded-2xl rounded-bl-sm font-serif text-[0.95rem] text-foreground",
                       ESTILO_AGENTE[m.tipo ?? "resposta"],
                     ),
               )}
@@ -203,7 +206,7 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
                         href={t.url_fonte}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-full border border-selo/50 bg-accent px-3 py-1 text-xs font-medium text-accent-foreground transition-colors hover:border-selo"
+                        className="inline-flex items-center gap-1.5 rounded-md border border-citacao-borda bg-citacao px-2.5 py-1 font-mono text-xs font-medium text-citacao-foreground transition-colors hover:border-selo"
                       >
                         <BookOpenCheck className="size-3.5" aria-hidden="true" />
                         {`${t.norma}, ${t.dispositivo}`}
@@ -241,8 +244,8 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
           <span
             id={contadorId}
             className={cn(
-              "text-xs tabular-nums text-muted-foreground",
-              texto.length > MAX_PERGUNTA * 0.9 && "text-accent-foreground",
+              "font-mono text-xs tabular-nums text-muted-foreground",
+              texto.length > MAX_PERGUNTA * 0.9 && "font-medium text-destructive",
             )}
           >
             {texto.length}/{MAX_PERGUNTA}

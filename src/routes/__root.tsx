@@ -18,7 +18,7 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <p className="font-serif text-7xl font-semibold text-foreground" aria-hidden="true">
+        <p className="font-mono text-7xl font-medium text-foreground" aria-hidden="true">
           404
         </p>
         <h1 className="mt-4 text-xl font-semibold text-foreground">Página não encontrada</h1>
@@ -81,15 +81,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { name: "theme-color", content: "#f8f5ee", media: "(prefers-color-scheme: light)" },
-      { name: "theme-color", content: "#111a1f", media: "(prefers-color-scheme: dark)" },
-      { title: "Tira-dúvidas da reforma tributária" },
+      { name: "theme-color", content: "#F4F5F2", media: "(prefers-color-scheme: light)" },
+      { name: "theme-color", content: "#121826", media: "(prefers-color-scheme: dark)" },
+      { title: "Inciso — tira-dúvidas da reforma tributária" },
       {
         name: "description",
         content:
           "Agente de WhatsApp que responde dúvidas básicas sobre a reforma tributária, citando a lei.",
       },
-      { property: "og:title", content: "Tira-dúvidas da reforma tributária" },
+      { property: "og:title", content: "Inciso — tira-dúvidas da reforma tributária" },
       {
         property: "og:description",
         content:
@@ -103,7 +103,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+      { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
   }),
   shellComponent: RootShell,

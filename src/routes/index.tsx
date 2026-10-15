@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { PaginaInicial } from "@/components/PaginaInicial";
 
-const TITULO = "Tira-dúvidas da reforma tributária";
+const TITULO = "Inciso — tira-dúvidas da reforma tributária";
 const DESCRICAO =
   "Agente de WhatsApp que responde dúvidas básicas sobre a reforma tributária, citando o artigo da lei de onde veio cada resposta.";
 

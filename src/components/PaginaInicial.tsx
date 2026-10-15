@@ -70,20 +70,24 @@ export function PaginaInicial() {
       <section className="relative overflow-hidden border-b">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--color-accent),transparent_60%)] opacity-70"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--color-accent),transparent_55%)]"
         />
         <div className="relative mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:py-24 lg:grid-cols-[1.15fr_1fr] lg:items-center">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
+            <p className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 font-mono text-xs font-medium text-muted-foreground">
               <span className="size-1.5 rounded-full bg-selo" aria-hidden="true" />
               EC 132/2023 · LC 214/2025
             </p>
             <h1 className="mt-6 text-4xl font-semibold text-foreground sm:text-5xl">
-              Dúvidas sobre a reforma tributária, respondidas com a lei na mão.
+              Dúvidas sobre a reforma tributária, respondidas com o{" "}
+              <mark className="bg-transparent bg-[linear-gradient(transparent_62%,var(--color-realce)_62%)] text-inherit">
+                dispositivo citado
+              </mark>
+              .
             </h1>
-            <p className="mt-5 max-w-xl text-lg text-muted-foreground">
-              Um agente de WhatsApp que responde em português simples e cita o artigo exato de onde
-              tirou cada informação. Se a base não responde, ele diz que não sabe.
+            <p className="mt-5 max-w-xl font-serif text-lg text-muted-foreground">
+              O Inciso é um agente de WhatsApp que responde em português claro e cita o artigo de
+              lei de onde tirou cada informação. Fora da base, ele diz que não tem a informação.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" className="group">
@@ -116,7 +120,7 @@ export function PaginaInicial() {
                   A resposta vem redigida a partir do dispositivo que trata do tema, com a fonte ao
                   final:
                 </p>
-                <span className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-selo/50 bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
+                <span className="mt-3 inline-flex items-center gap-1.5 rounded-md border border-citacao-borda bg-citacao px-2.5 py-1 font-mono text-xs font-medium text-citacao-foreground">
                   <BookOpenCheck className="size-3.5" aria-hidden="true" />
                   LC 214/2025, art. 31, caput
                 </span>
@@ -193,7 +197,9 @@ export function PaginaInicial() {
           {RESULTADOS.map(({ valor, rotulo, detalhe }) => (
             <div key={rotulo} className="rounded-xl border bg-card p-6">
               <dt className="text-sm text-muted-foreground">{rotulo}</dt>
-              <dd className="mt-2 font-serif text-4xl font-semibold text-foreground">{valor}</dd>
+              <dd className="mt-2 font-mono text-4xl font-medium tracking-tight text-foreground">
+                {valor}
+              </dd>
               <dd className="mt-1 text-xs text-muted-foreground">{detalhe}</dd>
             </div>
           ))}

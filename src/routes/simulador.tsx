@@ -7,7 +7,7 @@ import { perguntarAoAgente } from "@/lib/simulador.functions";
 export const Route = createFileRoute("/simulador")({
   head: () => ({
     meta: [
-      { title: "Simulador — Tira-dúvidas da reforma tributária" },
+      { title: "Simulador — Inciso" },
       {
         name: "description",
         content:

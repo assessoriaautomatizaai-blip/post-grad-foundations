@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Github, Scale } from "lucide-react";
+import { Github } from "lucide-react";
 import type { ReactNode } from "react";
+
+import { LogoAssinatura } from "@/components/marca/Logo";
 
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -25,17 +27,14 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
           <Link
             to="/"
-            className="group flex items-center gap-2.5 rounded-md"
-            aria-label="Tira-dúvidas da reforma tributária — página inicial"
+            className="flex items-center gap-3 rounded-md"
+            title="Inciso — página inicial"
           >
-            <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm transition-transform group-hover:-rotate-6">
-              <Scale className="size-5" aria-hidden="true" />
-            </span>
-            <span className="hidden leading-tight sm:block">
-              <span className="block font-serif text-base font-semibold text-foreground">
-                Tira-dúvidas
-              </span>
-              <span className="block text-xs text-muted-foreground">Reforma tributária</span>
+            <LogoAssinatura className="h-10" />
+            <span className="hidden border-l pl-3 text-xs leading-tight text-muted-foreground md:block">
+              Tira-dúvidas da
+              <br />
+              reforma tributária
             </span>
           </Link>
 
@@ -70,12 +69,12 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <footer className="border-t bg-secondary/40">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 text-sm text-muted-foreground sm:px-6 md:flex-row md:items-center md:justify-between">
           <p className="max-w-prose">
-            <strong className="font-semibold text-foreground">Informativo.</strong> As respostas
-            citam a EC 132/2023 e a LC 214/2025, mas a resposta não substitui a orientação de um
-            contador ou advogado.
+            <strong className="font-semibold text-foreground">Informativo.</strong> As respostas do
+            Inciso citam a EC 132/2023 e a LC 214/2025, mas a resposta não substitui a orientação de
+            um contador ou advogado.
           </p>
           <p className="shrink-0">
-            Mini-projeto C4 · UFG/AKCIT ·{" "}
+            Inciso · Mini-projeto C4 · UFG/AKCIT ·{" "}
             <a
               href={`${URL_REPOSITORIO}/blob/main/LICENSE`}
               target="_blank"
