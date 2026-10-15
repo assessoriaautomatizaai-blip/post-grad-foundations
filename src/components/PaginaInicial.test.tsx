@@ -1,6 +1,7 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import base from "../../knowledge/base.json";
 import { renderComRoteador } from "@/test/roteador";
 
 import { PaginaInicial } from "./PaginaInicial";
@@ -32,5 +33,29 @@ describe("PaginaInicial", () => {
 
     expect(relatorio.getAttribute("href")).toContain("eval/relatorio.md");
     expect(screen.getByText(/15\/10\/2026/)).toBeInTheDocument();
+  });
+});
+
+// Identidade autoral (prompt 03): a página mostra a lei de verdade, não um chat de mentira.
+describe("PaginaInicial — lei comentada", () => {
+  it("o trecho de lei do topo é o texto literal da base, com o dispositivo e o link oficial", async () => {
+    await renderComRoteador(<PaginaInicial />);
+    const trecho = base.find((t) => t.id === "lc214-art157");
+    if (!trecho) throw new Error("trecho lc214-art157 sumiu da base");
+
+    const figura = screen.getByRole("figure", { name: /trecho da lei/i });
+    expect(figura.textContent?.replace(/\s+/g, " ")).toContain(trecho.texto);
+    const fonte = within(figura).getByRole("link", { name: /LC 214\/2025, art\. 157/ });
+    expect(fonte).toHaveAttribute("href", trecho.url_fonte);
+  });
+
+  it("“Como funciona” é uma lista ordenada de 4 passos", async () => {
+    await renderComRoteador(<PaginaInicial />);
+    const secao = screen.getByRole("heading", { name: /como funciona/i }).closest("section");
+    if (!secao) throw new Error("seção não encontrada");
+
+    const passos = within(secao).getByRole("list");
+    expect(passos.tagName).toBe("OL");
+    expect(within(passos).getAllByRole("listitem")).toHaveLength(4);
   });
 });
