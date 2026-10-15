@@ -229,3 +229,20 @@
 - **Testes primeiro:** 5 casos novos — o núcleo devolve um `corpo` sem as listas de endereços (o texto do WhatsApp continua com eles, porque lá o endereço é o link); o simulador não mostra endereço cru, numera nomes repetidos ("senado.leg.br (2)") e o balão quebra palavras longas.
 - **Achados dos termos que ficaram pendentes:** exibir as _Search Suggestions_ junto com a resposta (exigência) e a proibição de "modificar" os resultados frente à conferência do ADR-007 — registrados como [A CONFERIR] no ADR-007, para decisão do autor.
 - **Tempo real:** [A PREENCHER]
+
+### 15/10/2026 — Identidade autoral: "lei comentada" (prompt 03)
+
+- **Pedido do autor:** tirar a "cara de feito com IA", com transições, efeitos e layout moderno. O skill `frontend-prompt-optimizer` gerou `prompts/03-identidade-autoral.md` a partir de um diagnóstico do código: 7 clichês de template (topo padrão de SaaS com pílula e card flutuante, brilho de gradiente, 4 cards iguais com ícone em quadradinho, ✓/✗ em dois cards, 3 cards de estatística, mesmo raio/borda/sombra em tudo, fade genérico).
+- **Direção tirada da própria marca:** seções numeradas como dispositivos ("Art. 1º", "§ 1º"), passos como incisos ("I –"), um trecho **literal** da LC 214 (art. 157) no topo em vez de um chat de mentira, o que o agente não responde **riscado** como a redação revogada que o Planalto exibe, números dentro de uma frase.
+- **Movimento com propósito, sem dependência nova:** marca-texto que passa sobre o trecho, filetes que se desenham, incisos em sequência, sublinhado que cresce, transição entre páginas pela View Transitions API (suporte conferido no `@tanstack/react-router` instalado). Os estados escondidos só valem sob uma classe posta antes da primeira pintura quando o navegador pode animar: sem JavaScript, sem IntersectionObserver ou com "reduzir movimento", todo o conteúdo aparece.
+- **O que a IA corrigiu no próprio plano:** a primeira escolha de trecho para o topo (ADCT, art. 129) exigiria afirmar que "art. 156, III" é o ISS — ligação que ficou [A CONFERIR] com o autor. Trocado pelo art. 157, que se explica sozinho; um teste confere que o texto da página é igual ao da base.
+- **Testes primeiro:** 7 casos novos (revelação ao rolar, trecho literal, lista de incisos, transição no roteador); testes existentes sem alteração. Verificado no navegador: claro, escuro e 375 px sem rolagem lateral.
+- **Tempo real:** [A PREENCHER]
+
+### 15/10/2026 — Página harmonizada e simulador com visual de conversa de mensageiro
+
+- **Página inicial refeita a pedido do autor** ("o final ficou despadronizado"): a primeira versão usava três padrões diferentes depois do topo (lista com rótulo, duas colunas com fundo, frase gigante com números). A revisão adotou um esqueleto único para as quatro seções — dispositivo (Art. 1º a 4º), título e resumo à esquerda; a mesma lista de incisos à direita, com o mesmo marcador, filete, tamanho de texto e fundo. Os números de "Fonte em toda resposta" viraram marcadores da lista, lidos pelo leitor de tela.
+- **Simulador com cara de conversa de mensageiro:** cabeçalho com avatar e status ("online" / "digitando…"), fundo bege com trama discreta (padrão próprio, não o papel de parede de outro aplicativo), balões de saída verdes e de entrada claros com "rabinho", hora em cada mensagem, tiques de "enviada" e "lida", etiqueta "Hoje" e barra de digitação arredondada com botão redondo. Sem logotipo nem nome de marca de terceiros.
+- **Testes primeiro:** 3 casos novos (hora em `<time>`, tiques "Enviada"/"Lida", status no cabeçalho); os 21 testes anteriores do simulador continuaram valendo sem alteração — o rótulo "Sua pergunta", o botão "Enviar", o anúncio "consultando" e as listas de fontes foram mantidos (alguns agora só para leitor de tela).
+- **O que a prévia pegou:** ao chegar mensagem, a rolagem automática movia a página inteira e escondia o cabeçalho da conversa atrás do menu do site; trocada por rolagem só da área de mensagens. Na conferência, a IA separou o efeito do próprio código do efeito da ferramenta de navegador (que rola até o campo antes de clicar).
+- **Tempo real:** [A PREENCHER]
