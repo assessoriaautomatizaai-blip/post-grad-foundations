@@ -10,6 +10,7 @@ Mini-projeto do curso C4 — _Laboratório Introdutório: Construindo um Mini-pr
 
 ## Sumário
 
+- [Demonstração](#demonstração)
 - [Como funciona](#como-funciona)
 - [Tecnologias](#tecnologias)
 - [Instalação e execução local](#instalação-e-execução-local)
@@ -21,6 +22,16 @@ Mini-projeto do curso C4 — _Laboratório Introdutório: Construindo um Mini-pr
 - [Limitações e próximos passos](#limitações-e-próximos-passos)
 - [Documentação](#documentação)
 - [Licença e créditos](#licença-e-créditos)
+
+## Demonstração
+
+Site publicado: **https://inciso.lovable.app** (página inicial e simulador).
+
+![Página inicial do Inciso: título "Dúvidas sobre a reforma tributária, respondidas em um piscar de olhos" e, ao lado, o art. 157 da LC 214/2025 com o trecho "Fica isento do IBS e da CBS" marcado](docs/img/pagina-inicial.jpg)
+
+![Simulador do Inciso no visual de conversa: a pergunta "oi" num balão verde com hora e tiques de lida, e a resposta de boas-vindas com perguntas de exemplo](docs/img/simulador.jpg)
+
+Capturas de 16/10/2026, do servidor local. A resposta com o LLM (lei citada e complemento da web com link) foi verificada pelo autor no Lovable em 15/10/2026.
 
 ## Como funciona
 
@@ -101,7 +112,7 @@ curl -i -X POST http://localhost:8080/api/whatsapp/webhook -H "content-type: app
 ## Testes e avaliação
 
 ```bash
-npm test        # 228 testes, sem rede e sem chaves
+npm test        # 244 testes, sem rede e sem chaves
 npm run build   # build de produção
 ```
 
@@ -109,7 +120,7 @@ npm run build   # build de produção
 
 **Teste de mutação manual.** Depois de cada etapa, defeitos foram inseridos de propósito no código para confirmar que os testes os pegam: **48 defeitos, 46 detectados de primeira**; 1 era equivalente (não mudava o comportamento) e 1 revelou uma lacuna real, fechada com um teste novo.
 
-**Avaliação com o conjunto-ouro** ([`eval/perguntas.json`](eval/perguntas.json)): 32 perguntas escritas como um leigo perguntaria, com gabarito conferido pelo autor. O [relatório de 15/10/2026](eval/relatorio.md) mediu o **método anterior** (busca por palavras, ADR-004): 100% de recusa fora do escopo, mas só 60% a 71% das perguntas válidas respondidas. Com o ADR-007, a avaliação passa a chamar o Gemini de verdade (rede e chave) e está sendo refeita.
+**Avaliação com o conjunto-ouro** ([`eval/perguntas.json`](eval/perguntas.json)): 34 perguntas escritas como um leigo perguntaria, com gabarito conferido pelo autor. O [relatório de 15/10/2026](eval/relatorio.md) mediu o **método anterior** (busca por palavras, ADR-004): 100% de recusa fora do escopo, mas só 60% a 71% das perguntas válidas respondidas. Com o ADR-007, a avaliação passa a chamar o Gemini de verdade (rede e chave) e está sendo refeita.
 
 ## Estrutura do projeto
 
