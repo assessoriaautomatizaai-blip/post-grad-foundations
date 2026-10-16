@@ -60,6 +60,6 @@ bun install --frozen-lockfile   # instala dependências exatamente como no bun.l
 npm run dev                     # servidor local
 npm test                        # suíte de testes
 npm run lint                    # lint
-npm run eval                    # conjunto-ouro: grava eval/relatorio.md
+# avaliação do conjunto-ouro: em revisão desde o ADR-007 (passa a chamar o LLM de verdade)
 npm run build                   # build de produção
 ```
