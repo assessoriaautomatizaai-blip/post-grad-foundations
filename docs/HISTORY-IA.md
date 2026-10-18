@@ -10,6 +10,22 @@
 | Claude Code (Claude Opus 5.5) | Leitura do material do curso, planejamento, documentação, implementação do núcleo e testes |
 | Lovable                       | Geração da interface (simulador) e sincronização com o GitHub                              |
 
+## Tempo investido (estimado)
+
+**≈ 15,5 h no total (margem de ±3 h)**, contra a estimativa inicial de 22,5 h ([estimativa.md](estimativa.md)). Não houve cronômetro: o tempo foi **reconstruído em 18/10/2026** a partir (1) dos horários dos commits, agrupados em blocos de trabalho; (2) dos horários das sessões do assistente de código ligadas ao projeto; e (3) das atividades sem commit registradas abaixo (conferência humana da base, testes no site publicado, escolha da marca). Para cada bloco: janela entre o primeiro e o último commit + ~30 min de trabalho antes do primeiro commit (os commits saem no fim das etapas) + atividades sem commit. Fica de fora o estudo do material do curso. Como não é medição, **não se afirma ganho de produtividade** pela diferença em relação à estimativa.
+
+| Bloco            | Etapas                                                                                  | Horas      |
+| ---------------- | --------------------------------------------------------------------------------------- | ---------- |
+| 14/10, tarde     | Planejamento, extração e conferência da base, H02–H07                                   | ~5,0       |
+| 15/10, 05h40–07h | Simulador, webhook e envio, saída do iCloud, conjunto-ouro, README e revisão de entrega | ~2,0       |
+| 15/10, manhã     | Marca Inciso e busca no INPI                                                            | ~1,5       |
+| 15/10, manhã     | Aplicação da marca, frontend, ADR-007, links da busca                                   | ~2,5       |
+| 15/10, tarde     | Testes do autor no site publicado; redesenho da página e do chat                        | ~1,0       |
+| 16/10            | Capturas de tela, README, critério de execução real                                     | ~1,0       |
+| 18/10, manhã     | Prompts 04–07 (redesenho consultor, fundo vivo)                                         | ~1,5       |
+| 18/10, tarde     | Entrega: repositório público, documentação como chat com IA, revisão                    | ~1,0       |
+| **Total**        |                                                                                         | **≈ 15,5** |
+
 ## Registro
 
 ### 14/10/2026 — Planejamento e documentos de base (v0.1.0)
@@ -23,7 +39,7 @@
 - **Troca de modelo por custo:** a primeira escolha foi Claude Opus 5.5. A IA estimou o custo por resposta (≈ US$ 0,02) e, a pedido do autor, comparou com o Gemini usando a **página oficial de preços consultada no dia**, não a memória do modelo. O autor escolheu o **Gemini 3.8 Flash** (≈ US$ 0,0034 por resposta, cerca de 5× mais barato).
 - **O que a consulta à fonte revelou** e uma resposta "de memória" não mostraria: (1) o preço do Gemini 3.8 Flash é promocional e **dobra em 01/01/2027**; (2) no plano gratuito, a Google **usa o conteúdo para melhorar os produtos** — inadequado para mensagens reais de usuários (LGPD), então o produto usa o plano pago; (3) por token, o Claude Haiku 5.5 era ainda mais barato — registrado na ADR-003 como alternativa.
 - **A IA também estimou** o esforço: ≈ 22,5 h ([estimativa.md](estimativa.md)).
-- **Tempo real:** [A PREENCHER — estimativa da v0.1.0: 2 h]
+- **Tempo (estimado):** incluído no bloco de 14/10, tarde (~5,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 14/10/2026 — Estrutura de pastas e primeiro teste (H02)
 
@@ -34,7 +50,7 @@
   - O lint do projeto (Prettier) reprovou a primeira versão da lista de palavras vazias por formatação — corrigido sem alterar comportamento, com os testes verdes antes e depois.
   - Decisão deliberada: usar `NFD` e não `NFKD`. Com `NFKD`, o "º" de "5º" viraria a letra "o" e o token seria "5o"; com `NFD`, o "º" vira separador e o token é "5", o que o teste exige.
   - "nao" ficou fora da lista de palavras vazias: a negação muda o sentido da pergunta.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 14/10, tarde (~5,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 14/10/2026 — Esquema da base de conhecimento (H03)
 
@@ -47,7 +63,7 @@
   - **Prova de que a correção funciona (teste de mutação manual):** a implementação foi quebrada de propósito para omitir o nome do campo na mensagem — **8 testes falharam**, contra nenhum antes da correção. O código foi restaurado e a suíte voltou a 25/25.
   - A mutação também mostrou mais duas mensagens do zod **em inglês** (norma fora do enum e tipo errado). Traduzidas.
   - A validação de URL compara o domínio (`planalto.gov.br` ou subdomínio), não o texto: `https://planalto.gov.br.site-falso.com` é rejeitado, e há teste para isso.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 14/10, tarde (~5,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 14/10/2026 — Rascunho da base de conhecimento (H04)
 
@@ -61,14 +77,14 @@
   - O rascunho passa no esquema da H03 (29/29).
 - **Limitação descoberta:** a EC 132 chama os novos tributos de "imposto previsto no art. 156-A" e "contribuição prevista no art. 195, V", sem os nomes IBS e CBS — a busca por palavra não os encontrará a partir de perguntas com os nomes. Vai para a H05 (sinônimos) e para as limitações do README.
 - **Decisão que fica com o humano:** a conferência de cada trecho no texto oficial (`docs/conferencia-base.md`).
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 14/10, tarde (~5,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 14/10/2026 — Conferência humana e base preenchida (H04)
 
 - **Conferência:** o autor conferiu os 29 trechos no texto oficial do Planalto e aprovou todos, **sem correções**.
 - **Obstáculo de processo:** a marcação pelo editor do GitHub foi tentada duas vezes e não chegou ao repositório (nenhum commit, pull request ou branch nova, conferido pela API do GitHub). A IA **não marcou nada sem confirmação** e pediu que a conferência fosse informada no chat; o checklist registra essa origem.
 - **Resultado:** `knowledge/rascunho.json` passou a `knowledge/base.json` sem alteração de conteúdo (comparado byte a byte com a versão enviada para conferência). A suíte carrega a base real e valida o formato: 25/25.
-- **Tempo real:** [A PREENCHER — inclui o tempo de conferência do autor]
+- **Tempo (estimado):** incluído no bloco de 14/10, tarde (~5,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 14/10/2026 — Busca BM25 e sinônimos (H05)
 
@@ -81,7 +97,7 @@
   - Sem borda de palavra no casamento de sinônimos: **nenhum falhou — lacuna real.** "155, II" (ICMS) casaria com "155, III". Na base atual isso não acontece (conferido trecho a trecho), mas uma lei nova na base poderia trazer o erro. Proposto ao autor um teste novo; **não foi adicionado sem aprovação**. Aprovado, o teste foi escrito, e a mesma mutação, reaplicada, passou a derrubá-lo (1 falha); com o código restaurado, 44/44.
 - **O que a conferência dos sinônimos na base pegou:** o "IBS" só achava 1 trecho, porque a EC 132 escreve "arts. 156-A e 195, V" (plural) e a expressão era "art. 156-A". Trocada por "156-A"; agora acha 2 (e a CBS, 3).
 - **Incidente de ambiente:** a suíte passou a travar sem mensagem. Causa: o projeto fica em `~/Documents`, sincronizado com o iCloud, que tinha tirado do disco 11.793 arquivos do `node_modules` e 93 do projeto (inclusive do `.git`); o vitest esperava indefinidamente o download. Correção, por decisão do autor: download forçado dos arquivos do projeto (`brctl download`), verificação do Git (`git fsck`) e `node_modules` reinstalado fora do iCloud, ligado ao projeto por link simbólico. A pasta precisa terminar em `/node_modules/`, porque o Vite reconhece dependências por esse trecho do caminho — por isso não se usou o sufixo `.nosync`.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 14/10, tarde (~5,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 14/10/2026 — Decisão responder × recusar (H06)
 
@@ -92,7 +108,7 @@
 - **Green:** 110/110 na primeira execução. Lint, tipos e build sem erro.
 - **Teste de mutação:** 7 defeitos inseridos de propósito (decisão sem cobertura, sem escore, mínimos exclusivos, saudação com `some`, busca sem plural, cobertura sem peso IDF, cobertura sempre 1). **Todos derrubaram ao menos um teste** (de 1 a 7 falhas cada).
 - **Risco registrado:** a margem da cobertura é estreita (0,28 fora × 0,30 mínimo). Vai para a calibração da H11.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 14/10, tarde (~5,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 14/10/2026 — Geração da resposta com o Gemini (H07)
 
@@ -104,7 +120,7 @@
 - **Green:** 137/137 na primeira execução; lint, tipos e build sem erro. A checagem de tipos também confirmou que o cliente real do SDK é compatível com a interface usada no adaptador.
 - **Teste de mutação:** 8 defeitos inseridos (aceitar `id` não recuperado, não neutralizar a pergunta, tirar o aviso, expor o erro técnico ao usuário, tirar o tempo limite, aceitar resposta sem citação, aceitar resposta vazia do Gemini, vazar a chave na mensagem de erro) — **todos derrubaram ao menos um teste**. Uma mudança inócua de controle não derrubou nenhum, como esperado.
 - **Ainda não verificado:** a chamada real ao Gemini (sem chave neste ambiente). Suíte verde não prova que o produto montado funciona.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 14/10, tarde (~5,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — Simulador web (H08)
 
@@ -120,7 +136,7 @@
 - **Green:** 157/157; lint, tipos e build sem erro. **Teste de mutação:** 8 defeitos (HTML interpretado/XSS, sem `trim`, erro técnico na tela, link sem `noopener`, envio vazio, sem `aria-live`, indicador de espera que nunca some, `registrarErro` ignorado) — **todos derrubados**.
 - **Execução real (produto montado, servidor local):** "oi" → boas-vindas; "Qual o valor do IPVA do meu carro?" → recusa, sem chamar o modelo; "O que é o split payment?" → mensagem de falha amigável, porque não há chave neste ambiente. O log do servidor registrou `GEMINI_API_KEY não configurada`, **sem o texto da pergunta**.
 - **Ainda não verificado:** a resposta real do Gemini. Observação: o servidor de desenvolvimento da configuração do Lovable também escuta na rede local (Network: 192.168.x.x) — aceitável só para desenvolvimento.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, 05h40–07h (~2,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — Webhook da Evolution API (H09)
 
@@ -131,7 +147,7 @@
 - **Teste de mutação:** 10 defeitos (responder a si mesmo, aceitar grupo e status, sem deduplicação, não liberar após falha, aceitar sem segredo configurado, comparar só o começo do segredo, responder mensagem antiga, mandar pergunta longa ao agente, deduplicação sem prazo, deduplicação sem limite) — **todos derrubados**.
 - **Execução real da rota (servidor local, `curl`, segredo de teste aleatório num `.env` ignorado pelo Git):** sem segredo e com segredo errado → 401; corpo inválido → 400; `connection.update`, `fromMe` e grupo → 200 ignorado; mensagem válida → 500, porque o envio é da H10 e foi deixado falhando de propósito para o webhook nunca fingir que respondeu. O log registrou só a causa do erro, **sem número e sem texto**.
 - **Achado na execução real, não coberto pelos testes:** `GET` na rota devolvia 200 com a página vazia do app. Corrigido para 405 (`Allow: POST`) e conferido com `curl`.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, 05h40–07h (~2,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — Projeto movido para fora do iCloud e envio pela Evolution (H10)
 
@@ -143,7 +159,7 @@
 - **Teste de mutação:** 10 defeitos (sem `apikey`, corpo da v1, ignorar recusa da Evolution, número no erro, sem cancelamento por tempo, aceitar `http`, instância sem codificar, barra dupla na URL, parte acima do limite, ignorar parágrafos) — **todos derrubados**.
 - **Erro de verificação pego antes de virar conclusão:** o primeiro teste da rota no servidor local mostrou no log a mensagem do envio provisório, já removida do código. A IA conferiu de qual pasta o servidor tinha subido: era a **cópia antiga**, porque a ferramenta de pré-visualização reaproveitou a configuração da raiz antiga. O resultado foi descartado, a configuração corrigida para o caminho novo e o teste refeito.
 - **Execução real (servidor da pasta nova):** "oi" e "IPVA" chegaram ao agente (boas-vindas e recusa, sem chamar o modelo) e a tentativa de envio registrou no log `EVOLUTION_API_URL não configurada` — o envio real está ligado. O envio de ponta a ponta fica para a H12, com a instância da Cloudfy.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, 05h40–07h (~2,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — Conjunto-ouro e calibração (H11)
 
@@ -155,7 +171,7 @@
 - **Diagnóstico:** as falhas são de **vocabulário** — verbos e palavras comuns ausentes da base dominando a cobertura, flexão verbal ("compensar" × "compensado"), termo onipresente ("IBS" em 19 dos 29 trechos) e ambiguidade ("saúde"). Ajustar limiar não resolve; o caminho é busca híbrida e flexão verbal (v2).
 - **Teste medido uma única vez**, depois da decisão: 100% de abstenção, recall@3 86%, respostas corretas 57%.
 - **O que não foi cumprido e está declarado:** o critério de recall ≥ 80% do escopo ficou em 73% na calibração (77% no total). Uma pergunta ("serviços de saúde") passa com trecho errado — risco registrado no ADR-004.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, 05h40–07h (~2,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — README final, licença e revisão de entrega (H13 e H14)
 
@@ -165,7 +181,7 @@
 - **Restos do template encontrados e corrigidos:** página inicial "Em construção" e título "Lovable App" — a primeira coisa que o avaliador veria. O `npm run lint` falhava por um arquivo do template; voltou a passar.
 - **O que a IA deixou de propósito:** o nome `tanstack_start_ts` no `package.json` — está também no `bun.lock`, e trocá-lo quebraria a instalação travada descrita no README.
 - **Documentação desatualizada corrigida:** ADRs ainda marcados como "Proposta", escopo "aguardando aprovação", comando de instalação errado no `CLAUDE.md` (o `npm install` ignora o `bun.lock`).
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, 05h40–07h (~2,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — Frontend profissional (prompt 01)
 
@@ -179,7 +195,7 @@
   - `tsc` acusou um tipo com `exactOptionalPropertyTypes`; o primeiro "tsc ok" relatado pela IA era falso, porque o comando media o código de saída do `head`, não do `tsc` — refeito com o código de saída correto.
   - As capturas de tela da prévia saíam em branco depois de rolar a página. Antes de concluir que a página tinha defeito, a IA inspecionou o DOM (elemento visível em cada ponto, opacidade, cores): estava tudo certo — era a captura. Passou a capturar aumentando a altura da janela.
 - **Verificação real (servidor local, navegador):** temas claro e escuro, tema mantido entre páginas, exemplo clicável, recusa ("Fora da base") e falha ("Falha técnica") com tratamento visual próprio, foco voltando ao campo, e **nenhuma rolagem horizontal em 375 px**. Nada da base, da chave ou do prompt no código do navegador; sem dependências novas e sem fontes externas.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, manhã (~1,5 h de marca + ~2,5 h de desenvolvimento) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — Aplicação da marca Inciso
 
@@ -189,7 +205,7 @@
 - **Fontes da marca sem chamada externa:** Schibsted Grotesk, Source Serif 4 e IBM Plex Mono instaladas pelo `@fontsource` (versões do `npm view`), servidas pelo próprio app — nenhuma requisição ao Google Fonts. Mono nas citações de lei e nos números; serifada nos textos longos.
 - **Contraste recalculado:** 28 pares texto/fundo nos dois temas, incluindo o traço do logotipo sobre o fundo (mínimo 3:1 para elemento gráfico) — nenhuma falha; menor razão 5,78:1.
 - **Ícones:** favicon SVG e ICO (32 e 48 px), apple-touch-icon e ícones 192/512 gerados a partir dos arquivos do manual; `theme-color` nas cores papel e tinta.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, manhã (~1,5 h de marca + ~2,5 h de desenvolvimento) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — Harmonia da paleta (prompt 02)
 
@@ -199,7 +215,7 @@
 - **Sistema adotado (60-30-10):** neutros na matiz da tinta; azul-caneta para ações, foco, hover e seleção; marca-texto só em tokens próprios (`--citacao` para as fontes de lei e `--realce` para o traço de marca-texto no título).
 - **Teste primeiro:** `src/styles.contraste.test.ts` lê o `styles.css`, converte oklch para sRGB, compõe transparências e confere, nos dois temas, 14 pares de texto (≥ 4,5:1), 5 elementos gráficos (≥ 3:1) e a regra de harmonia — 54 casos. Falhou na paleta antiga exatamente nos pontos do diagnóstico; uma mutação (cor de citação escurecida no tema escuro) foi detectada.
 - **O que a prévia pegou:** o realce do título aparecia como um bloco amarelo cheio — o `<mark>` herda do navegador um fundo amarelo puro por baixo do degradê. Corrigido com fundo transparente; o contraste do texto sobre o realce é 13,3:1 (claro) e 7,9:1 (escuro).
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, manhã (~1,5 h de marca + ~2,5 h de desenvolvimento) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — Recusa indevida do ISS e falha de abstenção (descobertas no site publicado)
 
@@ -208,7 +224,7 @@
 - **A simulação da correção revelou um defeito pior, já em produção:** "O IPVA acaba?", "Quando acaba o IPTU?" e "O imposto de renda acaba?" **passavam** pelo filtro e seriam respondidas com o artigo que extingue ICMS e ISS — "acaba" casava com "extintos" e a cobertura passava do mínimo. O conjunto-ouro não tinha esse padrão, e por isso a abstenção medida era 100%.
 - **Correção aprovada pelo autor (testes primeiro):** 7 casos novos (2 de resposta, 5 de recusa); regra no código que recusa pergunta que cita tributo fora da base (lista conferida contra a base: nenhum aparece nela; "renda" sozinha ficou de fora para não barrar "família de baixa renda"); sinônimo de linguagem "existir → extintos". Teste de mutação: sem a regra, 4 casos falham; sem o sinônimo, 2 falham.
 - **Avaliação:** calibração inalterada; teste de 57% para 71% de respostas corretas (t01 deixou de ser recusada); abstenção 100% nos dois conjuntos. Ressalva registrada: o t01 é do conjunto de teste; a mudança veio da pergunta real, não do gabarito.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, manhã (~1,5 h de marca + ~2,5 h de desenvolvimento) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — O Gemini lê a base inteira e completa com busca na web (ADR-007)
 
@@ -220,7 +236,7 @@
 - **Removido com aprovação:** busca BM25, mapa de sinônimos, limiar, regra de tributos fora da base e a avaliação sem modelo (com seus testes). `eval/perguntas.json` e o último relatório ficaram como histórico do método anterior.
 - **O que a verificação pegou:** a página inicial passou a mostrar a mesma data duas vezes e um teste existente acusou (corrigido o texto, não o teste); o custo por resposta estimado no ADR (~8 mil tokens) estava abaixo do real — medido em ~11 mil tokens de entrada (≈ US$ 0,011), corrigido no ADR, no README e na estimativa.
 - **Pendente:** avaliação com o Gemini sobre o conjunto-ouro (testes próprios, numa etapa seguinte) e teste real da busca, inclusive se os links vêm como redirecionamento do Google [A CONFERIR].
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, manhã (~1,5 h de marca + ~2,5 h de desenvolvimento) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — Links da busca quebravam o simulador; termos do Google
 
@@ -228,7 +244,7 @@
 - **A IA leu os termos da Gemini API antes de corrigir:** a ideia inicial (trocar o redirecionamento pelo endereço final da página) **violaria os termos**, que proíbem alterar os links e coletá-los por meios automatizados. A correção ficou dentro dos termos: os links são mostrados como vieram, com o nome do site como rótulo.
 - **Testes primeiro:** 5 casos novos — o núcleo devolve um `corpo` sem as listas de endereços (o texto do WhatsApp continua com eles, porque lá o endereço é o link); o simulador não mostra endereço cru, numera nomes repetidos ("senado.leg.br (2)") e o balão quebra palavras longas.
 - **Achados dos termos que ficaram pendentes:** exibir as _Search Suggestions_ junto com a resposta (exigência) e a proibição de "modificar" os resultados frente à conferência do ADR-007 — registrados como [A CONFERIR] no ADR-007, para decisão do autor.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, manhã (~1,5 h de marca + ~2,5 h de desenvolvimento) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — Identidade autoral: "lei comentada" (prompt 03)
 
@@ -237,7 +253,7 @@
 - **Movimento com propósito, sem dependência nova:** marca-texto que passa sobre o trecho, filetes que se desenham, incisos em sequência, sublinhado que cresce, transição entre páginas pela View Transitions API (suporte conferido no `@tanstack/react-router` instalado). Os estados escondidos só valem sob uma classe posta antes da primeira pintura quando o navegador pode animar: sem JavaScript, sem IntersectionObserver ou com "reduzir movimento", todo o conteúdo aparece.
 - **O que a IA corrigiu no próprio plano:** a primeira escolha de trecho para o topo (ADCT, art. 129) exigiria afirmar que "art. 156, III" é o ISS — ligação que ficou [A CONFERIR] com o autor. Trocado pelo art. 157, que se explica sozinho; um teste confere que o texto da página é igual ao da base.
 - **Testes primeiro:** 7 casos novos (revelação ao rolar, trecho literal, lista de incisos, transição no roteador); testes existentes sem alteração. Verificado no navegador: claro, escuro e 375 px sem rolagem lateral.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, tarde (~1,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 15/10/2026 — Página harmonizada e simulador com visual de conversa de mensageiro
 
@@ -245,7 +261,7 @@
 - **Simulador com cara de conversa de mensageiro:** cabeçalho com avatar e status ("online" / "digitando…"), fundo bege com trama discreta (padrão próprio, não o papel de parede de outro aplicativo), balões de saída verdes e de entrada claros com "rabinho", hora em cada mensagem, tiques de "enviada" e "lida", etiqueta "Hoje" e barra de digitação arredondada com botão redondo. Sem logotipo nem nome de marca de terceiros.
 - **Testes primeiro:** 3 casos novos (hora em `<time>`, tiques "Enviada"/"Lida", status no cabeçalho); os 21 testes anteriores do simulador continuaram valendo sem alteração — o rótulo "Sua pergunta", o botão "Enviar", o anúncio "consultando" e as listas de fontes foram mantidos (alguns agora só para leitor de tela).
 - **O que a prévia pegou:** ao chegar mensagem, a rolagem automática movia a página inteira e escondia o cabeçalho da conversa atrás do menu do site; trocada por rolagem só da área de mensagens. Na conferência, a IA separou o efeito do próprio código do efeito da ferramenta de navegador (que rola até o campo antes de clicar).
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 15/10, tarde (~1,0 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 18/10/2026 — Frontend para a apresentação ao grupo (prompt 04)
 
@@ -254,7 +270,7 @@
 - **O que mudou:** no topo, uma demonstração sobre a folha de lei (pergunta → digitando → resposta que cita o mesmo artigo marcado), quebrando a grade; no simulador, um **roteiro da demonstração** (I – com a lei, II – com a web, III – fora do tema) que envia cada pergunta com um clique e fica disponível durante a conversa; textura sutil de papel; entrada do topo em sequência; rodapé com a assinatura da marca.
 - **Cuidado com a regra 5:** a resposta da demonstração só afirma o que está no trecho literal da base (LC 214, art. 157) e cita o mesmo dispositivo — um teste confere. Sem JavaScript ou com "reduzir movimento", a demonstração aparece no estado final.
 - **Testes primeiro:** 4 casos novos (demonstração cita o dispositivo; roteiro envia a pergunta; roteiro continua disponível; sem roteiro, sem painel); testes existentes sem alteração. Verificado no navegador: claro, escuro e 375 px sem rolagem lateral.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 18/10, manhã (~1,5 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 18/10/2026 — Robustez, nuance e transições na página inicial (prompt 05)
 
@@ -263,7 +279,7 @@
 - **Acessibilidade:** os contadores mostram a contagem só na tela; o leitor de tela recebe o valor final. A linha de progresso só aparece onde o navegador suporta animação guiada por rolagem, e some com "reduzir movimento".
 - **O que a prévia pegou:** a linha de progresso encostava nos marcadores dos incisos (afastada); uma captura logo após recarregar a página mostrou seções vazias — a IA conferiu o estado dos blocos antes de concluir e viu que era o meio da transição, não defeito.
 - **Testes primeiro:** 3 casos novos (faixa contra a base, valores finais para leitor de tela, cabeçalho ao rolar); testes existentes sem alteração.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 18/10, manhã (~1,5 h) — ver [Tempo investido](#tempo-investido-estimado).
 
 ### 18/10/2026 — Fundo vivo (prompt 06)
 
@@ -272,7 +288,7 @@
 - **Cuidados:** decorativo (escondido do leitor de tela, sem cliques); "reduzir movimento" deixa as manchas paradas e desliga o holofote; em tela de toque não há holofote; o movimento do mouse é aplicado no máximo uma vez por quadro.
 - **O que a verificação pegou:** o primeiro teste do holofote falhou porque o jsdom não implementa `PointerEvent` (o evento chegava sem coordenadas) — o teste passou a disparar `MouseEvent`, e o componente ganhou uma proteção para evento sem coordenadas. Na prévia, o holofote estava fraco demais para notar; pontos e brilho foram reforçados.
 - **Testes primeiro:** 4 casos novos; testes existentes sem alteração.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 18/10, manhã (~1,5 h) — ver [Tempo investido](#tempo-investido-estimado).
 - **Revisão a pedido do autor ("mais high-tech e mais sutil, sem dificultar a leitura"):** os pontos viraram uma grade técnica de linhas finas, visível só no alto e nas bordas; entrou uma varredura de luz que desce pela grade a cada 9 s; o holofote passou a acender as linhas da grade; as manchas de cor foram reduzidas a menos da metade. A área do texto ficou limpa nos dois temas.
 - **Revisão 2 ("um ponto que acompanha o mouse; ainda está muito destacado"):** o holofote que acendia a grade saiu; no lugar, um ponto de 6 px com anel fino segue o cursor com leve atraso. Na verificação, a ampliação da captura parecia não mostrar o ponto — a IA conferiu a posição do elemento na página (estava certa) e viu que a emulação de tamanho reduzia a página dentro da captura; na escala real, o ponto aparece onde devia.
 - **Revisão 2 do fundo ("um ponto que acompanha o mouse; ainda está muito destacado"):** o holofote que acendia a grade saiu; no lugar, um ponto de 6 px com anel fino segue o cursor com leve atraso. A IA conferiu a posição do elemento antes de concluir que ele não aparecia: era a emulação de tamanho reduzindo a página dentro da captura.
@@ -285,4 +301,4 @@
 - **O que mudou:** acabamento global (pílula de tinta com relevo, vidro, cartões); simulador como Consultor (barra lateral com o roteiro, saudação, caixa de várias linhas, fichas por tema, caixa no rodapé durante a conversa); página inicial com topo centralizado em dois tons e caixa de pergunta que abre o simulador; menu em cápsula de vidro. O visual de mensageiro anterior foi removido do CSS.
 - **O que os testes pegaram:** a primeira versão recriava a caixa de pergunta ao passar do estado vazio para a conversa — o campo seria trocado no meio da digitação; 4 testes antigos falharam. A caixa passou a ficar sempre no mesmo lugar da árvore, mudando só o posicionamento.
 - **Testes primeiro:** 4 casos novos; os testes existentes (acessibilidade, fontes, hora, tiques, roteiro) passaram sem alteração.
-- **Tempo real:** [A PREENCHER]
+- **Tempo (estimado):** incluído no bloco de 18/10, manhã (~1,5 h) — ver [Tempo investido](#tempo-investido-estimado).

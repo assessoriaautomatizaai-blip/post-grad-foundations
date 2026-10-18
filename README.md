@@ -153,7 +153,7 @@ O projeto usou IA em dois papéis, com controles diferentes (registro completo e
 - A issue #1340 da Evolution mostrou que as mensagens **enviadas** pelo agente voltam pelo webhook: sem filtro, ele responderia a si mesmo em loop.
 - Um teste da rota foi descartado ao se descobrir que o servidor tinha subido **da pasta antiga**; refeito na pasta certa.
 
-**Tempo real investido:** [A PREENCHER pelo autor] (estimativa inicial: 22,5 h — [docs/estimativa.md](docs/estimativa.md)). Ganhos de produtividade não foram medidos e por isso não são afirmados aqui.
+**Tempo investido:** ≈ 15,5 h (±3 h), **estimado** a partir dos horários dos commits e das sessões de trabalho, porque não houve cronômetro — método e divisão por dia em [docs/HISTORY-IA.md](docs/HISTORY-IA.md#tempo-investido-estimado). Estimativa inicial: 22,5 h ([docs/estimativa.md](docs/estimativa.md)). Ganhos de produtividade não foram medidos e por isso não são afirmados aqui.
 
 ## Segurança e privacidade
 
