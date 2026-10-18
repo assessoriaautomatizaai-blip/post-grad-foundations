@@ -246,3 +246,43 @@
 - **Testes primeiro:** 3 casos novos (hora em `<time>`, tiques "Enviada"/"Lida", status no cabeçalho); os 21 testes anteriores do simulador continuaram valendo sem alteração — o rótulo "Sua pergunta", o botão "Enviar", o anúncio "consultando" e as listas de fontes foram mantidos (alguns agora só para leitor de tela).
 - **O que a prévia pegou:** ao chegar mensagem, a rolagem automática movia a página inteira e escondia o cabeçalho da conversa atrás do menu do site; trocada por rolagem só da área de mensagens. Na conferência, a IA separou o efeito do próprio código do efeito da ferramenta de navegador (que rola até o campo antes de clicar).
 - **Tempo real:** [A PREENCHER]
+
+### 18/10/2026 — Frontend para a apresentação ao grupo (prompt 04)
+
+- **Pedido do autor:** melhorar o frontend com "todo o profissionalismo" para apresentar ao grupo da pós. Executado com o skill `designer-de-interfaces-frontend`; diagnóstico e direção em `prompts/04-apresentacao.md`.
+- **Diagnóstico pensando em quem assiste:** o topo explicava mas não demonstrava; no simulador o apresentador teria de digitar ao vivo e podia esquecer de mostrar os três comportamentos; fundo chapado; rodapé de uma linha; entrada da página sem orquestração.
+- **O que mudou:** no topo, uma demonstração sobre a folha de lei (pergunta → digitando → resposta que cita o mesmo artigo marcado), quebrando a grade; no simulador, um **roteiro da demonstração** (I – com a lei, II – com a web, III – fora do tema) que envia cada pergunta com um clique e fica disponível durante a conversa; textura sutil de papel; entrada do topo em sequência; rodapé com a assinatura da marca.
+- **Cuidado com a regra 5:** a resposta da demonstração só afirma o que está no trecho literal da base (LC 214, art. 157) e cita o mesmo dispositivo — um teste confere. Sem JavaScript ou com "reduzir movimento", a demonstração aparece no estado final.
+- **Testes primeiro:** 4 casos novos (demonstração cita o dispositivo; roteiro envia a pergunta; roteiro continua disponível; sem roteiro, sem painel); testes existentes sem alteração. Verificado no navegador: claro, escuro e 375 px sem rolagem lateral.
+- **Tempo real:** [A PREENCHER]
+
+### 18/10/2026 — Robustez, nuance e transições na página inicial (prompt 05)
+
+- **Pedido do autor:** impressionar pela robustez, pela qualidade das nuances e pelos efeitos de transição. Seis efeitos, cada um com função: faixa de dispositivos em movimento, linha de progresso guiada pela rolagem no "Como funciona", títulos revelados como tinta, contadores no Art. 4º, cabeçalho que ganha contorno ao rolar e nuances de passar o mouse nos incisos.
+- **Regra 5 também na decoração:** a faixa só mostra dispositivos que existem na base; um teste confere cada rótulo contra `knowledge/base.json`.
+- **Acessibilidade:** os contadores mostram a contagem só na tela; o leitor de tela recebe o valor final. A linha de progresso só aparece onde o navegador suporta animação guiada por rolagem, e some com "reduzir movimento".
+- **O que a prévia pegou:** a linha de progresso encostava nos marcadores dos incisos (afastada); uma captura logo após recarregar a página mostrou seções vazias — a IA conferiu o estado dos blocos antes de concluir e viu que era o meio da transição, não defeito.
+- **Testes primeiro:** 3 casos novos (faixa contra a base, valores finais para leitor de tela, cabeçalho ao rolar); testes existentes sem alteração.
+- **Tempo real:** [A PREENCHER]
+
+### 18/10/2026 — Fundo vivo (prompt 06)
+
+- **Retorno do autor:** os efeitos do prompt 05 "não apareceram" na captura dele — eram sutis demais. Pedido: um efeito no plano de fundo que transforme a página.
+- **O que mudou:** fundo em três camadas atrás do site inteiro — manchas de cor da marca derivando devagar, grade de pontos como papel técnico e um holofote que acende a grade em azul perto do cursor.
+- **Cuidados:** decorativo (escondido do leitor de tela, sem cliques); "reduzir movimento" deixa as manchas paradas e desliga o holofote; em tela de toque não há holofote; o movimento do mouse é aplicado no máximo uma vez por quadro.
+- **O que a verificação pegou:** o primeiro teste do holofote falhou porque o jsdom não implementa `PointerEvent` (o evento chegava sem coordenadas) — o teste passou a disparar `MouseEvent`, e o componente ganhou uma proteção para evento sem coordenadas. Na prévia, o holofote estava fraco demais para notar; pontos e brilho foram reforçados.
+- **Testes primeiro:** 4 casos novos; testes existentes sem alteração.
+- **Tempo real:** [A PREENCHER]
+- **Revisão a pedido do autor ("mais high-tech e mais sutil, sem dificultar a leitura"):** os pontos viraram uma grade técnica de linhas finas, visível só no alto e nas bordas; entrou uma varredura de luz que desce pela grade a cada 9 s; o holofote passou a acender as linhas da grade; as manchas de cor foram reduzidas a menos da metade. A área do texto ficou limpa nos dois temas.
+- **Revisão 2 ("um ponto que acompanha o mouse; ainda está muito destacado"):** o holofote que acendia a grade saiu; no lugar, um ponto de 6 px com anel fino segue o cursor com leve atraso. Na verificação, a ampliação da captura parecia não mostrar o ponto — a IA conferiu a posição do elemento na página (estava certa) e viu que a emulação de tamanho reduzia a página dentro da captura; na escala real, o ponto aparece onde devia.
+- **Revisão 2 do fundo ("um ponto que acompanha o mouse; ainda está muito destacado"):** o holofote que acendia a grade saiu; no lugar, um ponto de 6 px com anel fino segue o cursor com leve atraso. A IA conferiu a posição do elemento antes de concluir que ele não aparecia: era a emulação de tamanho reduzindo a página dentro da captura.
+
+- **Revisão 3 do fundo ("ficou atrasado, está péssimo"):** o ponto saiu. O atraso que a IA colocou de propósito para suavizar o movimento foi percebido como lentidão; a lição é que um elemento ligado ao cursor não pode ficar para trás dele.
+
+### 18/10/2026 — Redesenho com base numa referência (prompt 07)
+
+- **Pedido do autor:** usar a página "Consultor IA" da Viver de IA como base para o frontend inteiro. O Firecrawl só via a tela de login (a página exige assinatura); o Claude in Chrome, com a sessão do autor, leu a estrutura e os estilos computados — pílulas com degradê e relevo, vidro, sombras em camadas, saudação em dois tons. A IA propôs usar a referência como **linguagem visual**, sem copiar marca, textos ou identidade, e o autor escolheu o alcance (site inteiro, mantendo marca e fontes do Inciso).
+- **O que mudou:** acabamento global (pílula de tinta com relevo, vidro, cartões); simulador como Consultor (barra lateral com o roteiro, saudação, caixa de várias linhas, fichas por tema, caixa no rodapé durante a conversa); página inicial com topo centralizado em dois tons e caixa de pergunta que abre o simulador; menu em cápsula de vidro. O visual de mensageiro anterior foi removido do CSS.
+- **O que os testes pegaram:** a primeira versão recriava a caixa de pergunta ao passar do estado vazio para a conversa — o campo seria trocado no meio da digitação; 4 testes antigos falharam. A caixa passou a ficar sempre no mesmo lugar da árvore, mudando só o posicionamento.
+- **Testes primeiro:** 4 casos novos; os testes existentes (acessibilidade, fontes, hora, tiques, roteiro) passaram sem alteração.
+- **Tempo real:** [A PREENCHER]
