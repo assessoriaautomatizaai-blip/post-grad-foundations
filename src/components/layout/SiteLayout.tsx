@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { Github } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { LogoAssinatura } from "@/components/marca/Logo";
@@ -47,16 +46,6 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               <Link to="/simulador" className={ESTILO_LINK}>
                 Simulador
               </Link>
-              <a
-                href={URL_REPOSITORIO}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${ESTILO_LINK} inline-flex items-center gap-1.5`}
-              >
-                <Github className="size-4" aria-hidden="true" />
-                <span className="hidden sm:inline">Código</span>
-                <span className="sr-only sm:hidden">Código</span>
-              </a>
             </nav>
             <ThemeToggle />
           </div>

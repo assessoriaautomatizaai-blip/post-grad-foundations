@@ -225,14 +225,6 @@ export function PaginaInicial() {
                   />
                 </Link>
               </Button>
-              <a
-                href={URL_REPOSITORIO}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="sublinhado py-1 text-sm font-medium text-foreground"
-              >
-                Ver o código e a documentação
-              </a>
             </div>
           </div>
 
