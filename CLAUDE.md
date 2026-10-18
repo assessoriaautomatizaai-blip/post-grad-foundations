@@ -4,7 +4,7 @@ Este arquivo é o contrato que qualquer agente de IA de desenvolvimento (Claude 
 
 ## O projeto
 
-**Agente de WhatsApp que responde dúvidas sobre a reforma tributária brasileira**, com resposta **fundamentada em fonte primária** (artigo de lei citado) e **recusa** quando a pergunta está fora da base.
+**Chat com IA, no site, que tira dúvidas sobre a reforma tributária brasileira**, com resposta **fundamentada em fonte primária** (artigo de lei citado) e **recusa** quando a pergunta está fora da base.
 
 Mini-projeto do curso C4 (_Laboratório Introdutório: Construindo um Mini-projeto com IA Generativa_, Especialização em Engenharia de Software — UFG/AKCIT). Prazo de entrega: **19/10/2026, 12h**.
 

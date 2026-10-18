@@ -111,8 +111,9 @@ Como avaliador, quero testar o agente no navegador, sem WhatsApp.
 - [x] Calibração só com o conjunto de calibração; limites mantidos (ADR-004)
 - [ ] Resultado registrado no README (com data) — na v1.0.0
 
-**H12 ⬜ Teste do produto montado**
-- [ ] Pergunta real enviada pelo WhatsApp → resposta com fonte; registrar GIF ou print (sem número de telefone visível)
+**H12 ✅ Teste do produto montado (site)**
+- [x] Pergunta real no site publicado (simulador) → resposta do Gemini com lei citada e complemento da web com link — verificado pelo autor em 15/10/2026; capturas no README
+- [~] ~~Pergunta real pelo WhatsApp~~ — canal retirado da entrega em 18/10/2026 por decisão do autor
 
 ---
 
@@ -128,7 +129,7 @@ Como avaliador, quero testar o agente no navegador, sem WhatsApp.
 - [x] 48 links relativos da documentação conferidos, sem link quebrado
 - [x] `npm run lint` voltou a passar; página inicial e título do site deixaram de ser os do template
 - [x] `LICENSE` (MIT)
-- [ ] Tag `v1.0.0` — depois da H12
-- [ ] Repositório **público** — decisão do autor
+- [ ] Tag `v1.0.0`
+- [x] Repositório **público** — feito pelo autor em 18/10/2026 e conferido sem login (página, README e API respondem 200)
 
 **H15 ⬜ Fórum N5** — rascunho da postagem (5 itens) e da réplica a um colega, para aprovação do autor.

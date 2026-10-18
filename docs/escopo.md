@@ -8,7 +8,9 @@ A reforma tributária do consumo (EC 132/2023 e LC 214/2025) muda a vida de empr
 
 ## Solução (MVP)
 
-Um agente que responde pelo **WhatsApp** a dúvidas sobre a reforma tributária, com três garantias:
+Um **chat com IA**, no site (página de conversa em `/simulador`), que tira dúvidas sobre a reforma tributária, com três garantias:
+
+> **Atualização de 18/10/2026:** o canal WhatsApp saiu desta entrega por decisão do autor. O adaptador (E1, E7) permanece no código, testado com dados simulados, mas não ativado.
 
 1. **Toda afirmação tem fonte:** o que vem da lei cita o dispositivo da base (ex.: "LC 214/2025, art. X"); o que vem da busca na web aparece como _complemento_, com link, identificado como não conferido. Citação de lei inventada nunca chega ao usuário — conferido no código (ADR-007).
 2. **O usuário não fica sem resposta:** o Gemini lê a base inteira e completa com busca no Google; assunto fora da reforma recebe uma mensagem que explica o foco do agente.
@@ -16,14 +18,14 @@ Um agente que responde pelo **WhatsApp** a dúvidas sobre a reforma tributária,
 
 ## Usuários
 
-- **Primário:** empresário ou profissional de contabilidade com dúvida pontual, pelo WhatsApp.
+- **Primário:** empresário ou profissional de contabilidade com dúvida pontual, pelo site.
 - **Avaliador do curso:** precisa reproduzir o projeto **sem ter acesso ao WhatsApp do autor** → simulador web.
 
 ## Dentro do escopo
 
 | #   | Item                                                                                                                                  |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| E1  | Receber mensagem de texto do WhatsApp via webhook da **Evolution API** e responder pelo mesmo canal                                   |
+| E1  | ~~Receber mensagem do WhatsApp via webhook da Evolution API~~ — implementado, mas retirado desta entrega em 18/10/2026 (não ativado)  |
 | E2  | Base de conhecimento versionada em `knowledge/`, **um trecho por dispositivo legal**, com fonte e data de referência                  |
 | E3  | ~~Recuperação lexical (BM25) sobre a base~~ — substituída em 15/10/2026: o modelo recebe a **base inteira** (ADR-007)                 |
 | E4  | ~~Decisão responder × recusar por limiar~~ — substituída: o código confere citações e fontes (ADR-007)                                |

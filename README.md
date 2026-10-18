@@ -1,8 +1,10 @@
 <p><img src="docs/marca/inciso-assinatura.svg" alt="Inciso" height="56"></p>
 
-# Inciso — tira-dúvidas da reforma tributária no WhatsApp
+# Inciso — chat com IA que tira dúvidas sobre a reforma tributária
 
-Agente de IA que responde, pelo WhatsApp, **dúvidas básicas sobre a reforma tributária brasileira** (EC 132/2023 e LC 214/2025). Toda resposta **cita o artigo de lei** de onde veio, com link para o texto oficial no Planalto; quando a lei não basta, o agente **completa com busca na web**, sempre com o link e separado do que é lei. Artigo inventado nunca chega ao usuário: o código confere.
+O Inciso é um **chat com inteligência artificial**: a pessoa escreve, no site, uma dúvida sobre a **reforma tributária brasileira** (EC 132/2023 e LC 214/2025) e recebe a resposta em linguagem simples, como numa conversa. Toda resposta **cita o artigo de lei** de onde veio, com link para o texto oficial no Planalto; quando a lei não basta, o agente **completa com busca na web**, sempre com o link e separado do que é lei. Artigo inventado nunca chega ao usuário: o código confere.
+
+**Experimente:** abra **https://inciso.lovable.app/simulador** e pergunte, por exemplo, _"O que é o split payment?"_ ou _"O ISS vai acabar?"_. A página de conversa se chama `/simulador` por razões históricas do projeto; é o chat.
 
 Mini-projeto do curso C4 — _Laboratório Introdutório: Construindo um Mini-projeto com IA Generativa_ — da Especialização em Engenharia de Software (UFG/AKCIT).
 
@@ -25,7 +27,7 @@ Mini-projeto do curso C4 — _Laboratório Introdutório: Construindo um Mini-pr
 
 ## Demonstração
 
-Site publicado: **https://inciso.lovable.app** (página inicial e simulador).
+Site publicado: **https://inciso.lovable.app** — página inicial e o **chat** em [`/simulador`](https://inciso.lovable.app/simulador).
 
 ![Página inicial do Inciso: título "Dúvidas sobre a reforma tributária, respondidas em um piscar de olhos" e, ao lado, o art. 157 da LC 214/2025 com o trecho "Fica isento do IBS e da CBS" marcado](docs/img/pagina-inicial.jpg)
 
@@ -37,22 +39,19 @@ Capturas de 16/10/2026, do servidor local. A resposta com o LLM (lei citada e co
 
 ```mermaid
 flowchart LR
-  U[Pessoa no WhatsApp] -->|mensagem| E[Evolution API<br/>Cloudfy]
-  E -->|webhook + segredo| W["/api/whatsapp/webhook"]
-  S["/simulador<br/>(navegador)"] --> A
-  W --> A[Serviço do agente]
+  S["Pessoa no site<br/>/simulador"] -->|pergunta| A[Serviço do agente]
   A -->|saudação| BV[Boas-vindas, sem modelo]
   A --> G[Gemini 3.8 Flash<br/>base inteira + busca Google]
   K[(Base: 96 trechos<br/>LC 214 e EC 132)] --> G
   G --> V[Código confere:<br/>artigo inexistente bloqueia<br/>complemento sem link sai]
-  V -->|lei citada + complemento com link + aviso| E
+  V -->|lei citada + complemento com link + aviso| S
 ```
 
 1. **Base de conhecimento** ([`knowledge/base.json`](knowledge/base.json)): 96 trechos copiados literalmente do Planalto, um por dispositivo legal, todos conferidos automaticamente contra o texto vigente (já com a LC 227/2026). Os 29 originais foram conferidos também por pessoa; os 67 da ampliação de 15/10/2026 aguardam essa conferência ([conferência](docs/conferencia-base.md)).
 2. **O Gemini lê a base inteira** em toda pergunta e raciocina sobre ela: entende paráfrase ("deixa de existir" = "ficam extintos") sem lista de sinônimos. Tudo o que vem da base cita o trecho pelo id (`[lc214-art31]`).
 3. **Busca no Google** completa o que a lei não cobre (prazos, notas fiscais, comunicados), num parágrafo "_Complemento:_" com os links das páginas, identificados como **não conferidos**.
 4. **O código confere antes de enviar** ([ADR-007](docs/decisoes.md)): artigo citado que não existe na base bloqueia a resposta; complemento sem fonte da web é removido; resposta sem fonte nenhuma vira mensagem fixa; assunto fora da reforma vira mensagem que explica o foco do agente. Saudação recebe boas-vindas sem chamar o modelo.
-5. **Canal**: o mesmo serviço atende o WhatsApp (webhook da Evolution API) e o **simulador web**, que permite avaliar o agente sem WhatsApp.
+5. **Canal**: o agente é entregue no **site** (página inicial e simulador). O repositório ainda contém um adaptador para WhatsApp (webhook da Evolution API), implementado e testado com dados simulados, mas **fora do escopo desta entrega e não ativado** (ver Limitações).
 
 ## Tecnologias
 
@@ -61,7 +60,7 @@ flowchart LR
 | Aplicação                        | TanStack Start (React 19, TypeScript estrito), gerada e sincronizada com o [Lovable](https://lovable.dev)                              |
 | Validação de entradas            | zod                                                                                                                                    |
 | Modelo de linguagem (no produto) | **Gemini 3.8 Flash** com busca no Google, pelo SDK oficial `@google/genai` ([ADR-003 e ADR-007](docs/decisoes.md))                     |
-| WhatsApp                         | **Evolution API v2**, hospedada na Cloudfy                                                                                             |
+| Canal WhatsApp (não ativado)     | Adaptador para a Evolution API v2 no código, fora do escopo desta entrega                                                              |
 | Interface                        | Tailwind CSS 4 e componentes Radix; fontes Schibsted Grotesk, Source Serif 4 e IBM Plex Mono servidas pelo próprio app (`@fontsource`) |
 | Testes                           | Vitest e Testing Library                                                                                                               |
 | IA no desenvolvimento            | **Claude Code (Claude Opus 5.5)** — planejamento, testes, código, revisão e documentação; **Lovable** — template e sincronização       |
@@ -82,19 +81,18 @@ npm run dev
 
 Abra `http://localhost:8080/simulador` (o terminal mostra a porta). Sem chaves no `.env`, o simulador já responde saudações; as demais perguntas mostram a mensagem de falha técnica até você preencher `GEMINI_API_KEY` e `GEMINI_MODEL` (a busca no Google exige o plano pago).
 
-| Variável                                                       | Para quê                                                         |
-| -------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `GEMINI_API_KEY`, `GEMINI_MODEL`                               | Geração das respostas (plano pago; `gemini-3.8-flash`)           |
-| `WEBHOOK_SECRET`                                               | Segredo que a Evolution envia no cabeçalho `x-webhook-secret`    |
-| `EVOLUTION_API_URL`, `EVOLUTION_API_KEY`, `EVOLUTION_INSTANCE` | Envio das respostas pelo WhatsApp (URL obrigatoriamente `https`) |
+| Variável                                                                         | Para quê                                                                       |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `GEMINI_API_KEY`, `GEMINI_MODEL`                                                 | Geração das respostas (plano pago; `gemini-3.8-flash`)                         |
+| `WEBHOOK_SECRET`, `EVOLUTION_API_URL`, `EVOLUTION_API_KEY`, `EVOLUTION_INSTANCE` | Só para o adaptador de WhatsApp, não ativado nesta entrega; podem ficar vazias |
 
-O `.env` é ignorado pelo Git. Em produção, os valores ficam nos segredos do Lovable. Passo a passo da implantação com WhatsApp: [docs/implantacao.md](docs/implantacao.md).
+O `.env` é ignorado pelo Git. Em produção, os valores ficam nos segredos do Lovable.
 
 ## Uso
 
 **Simulador** — `/simulador`: digite a pergunta; a resposta mostra as fontes da lei como links para o Planalto e, quando houver, as fontes da web à parte, como não conferidas.
 
-**WhatsApp** — mande a pergunta para o número do agente. Exemplos:
+Exemplos:
 
 | Pergunta                    | Comportamento                                                        |
 | --------------------------- | -------------------------------------------------------------------- |
@@ -103,7 +101,7 @@ O `.env` é ignorado pelo Git. Em produção, os valores ficam nos segredos do L
 | `O IPVA acaba?`             | Complemento com fonte da web, separado do que é lei                  |
 | `Qual a previsão do tempo?` | Mensagem que explica o foco do agente e sugere perguntas             |
 
-**Webhook** — `POST /api/whatsapp/webhook`, chamado pela Evolution API. Com `WEBHOOK_SECRET` vazio (como no `.env.example`), recusa tudo com **503**; com o segredo configurado, chamada sem o cabeçalho `x-webhook-secret` correto recebe **401**:
+**Webhook do adaptador de WhatsApp (não ativado)** — `POST /api/whatsapp/webhook`. Com `WEBHOOK_SECRET` vazio (como no `.env.example`), recusa tudo com **503**; com o segredo configurado, chamada sem o cabeçalho `x-webhook-secret` correto recebe **401**:
 
 ```bash
 curl -i -X POST http://localhost:8080/api/whatsapp/webhook -H "content-type: application/json" --data '{}'
@@ -112,11 +110,11 @@ curl -i -X POST http://localhost:8080/api/whatsapp/webhook -H "content-type: app
 ## Testes e avaliação
 
 ```bash
-npm test        # 244 testes, sem rede e sem chaves
+npm test        # 259 testes, sem rede e sem chaves
 npm run build   # build de produção
 ```
 
-**Testes.** Escritos **antes** do código e aprovados pelo autor antes de cada implementação (TDD). Nenhum teste chama o Gemini, a Evolution ou a internet: modelo, cliente HTTP e WhatsApp são falsos nos testes. As garantias do [ADR-007](docs/decisoes.md) (artigo inventado bloqueia, complemento sem link sai, resposta sem fonte não aparece) são testadas no núcleo.
+**Testes.** Escritos **antes** do código e aprovados pelo autor antes de cada implementação (TDD). Nenhum teste chama o Gemini ou a internet: modelo e cliente HTTP são falsos nos testes. As garantias do [ADR-007](docs/decisoes.md) (artigo inventado bloqueia, complemento sem link sai, resposta sem fonte não aparece) são testadas no núcleo.
 
 **Teste de mutação manual.** Depois de cada etapa, defeitos foram inseridos de propósito no código para confirmar que os testes os pegam: **48 defeitos, 46 detectados de primeira**; 1 era equivalente (não mudava o comportamento) e 1 revelou uma lacuna real, fechada com um teste novo.
 
@@ -128,7 +126,7 @@ npm run build   # build de produção
 knowledge/base.json        base de conhecimento (96 trechos literais do Planalto)
 src/core/                  regra de negócio pura e testável: saudação, prompt, conferência de fontes, divisão de mensagens
 src/core/prompts/          prompt de sistema do agente (versionado)
-src/adapters/              Gemini e Evolution API, atrás de interfaces
+src/adapters/              Gemini (e o adaptador de WhatsApp não ativado), atrás de interfaces
 src/server/                serviço do agente e webhook (só no servidor)
 src/routes/                páginas (/simulador) e rota do webhook
 eval/                      conjunto-ouro e relatório da avaliação anterior
@@ -175,7 +173,8 @@ O projeto usou IA em dois papéis, com controles diferentes (registro completo e
 - **Avaliação do método atual em andamento**: o relatório publicado é do método anterior.
 - **Custo e tempo maiores por pergunta**: a base inteira vai em cada chamada (~11 mil tokens de entrada, ≈ US$ 0,011 por resposta) e a busca deixa a resposta mais lenta (tempo limite de 25 s). A busca exige o **plano pago** do Gemini (5.000 buscas grátis por mês).
 - **Base manual**: 96 trechos; sem os anexos (listas por código NCM), regulamentos, legislação estadual ou municipal. Os 67 trechos da ampliação aguardam conferência humana.
-- Só mensagens de texto; sem memória entre mensagens; sem limitação de taxa por remetente.
+- **Canal WhatsApp fora desta entrega:** o adaptador da Evolution API está no código e testado com dados simulados, mas não foi ativado nem validado em produção.
+- Só perguntas de texto; sem memória entre perguntas; sem limitação de taxa por usuário.
 - Deduplicação de mensagens em memória: com várias instâncias do servidor, uma duplicata rara pode passar.
 - [A CONFERIR] Os links devolvidos pela busca podem ser endereços de redirecionamento do Google, e não o endereço final da página.
 
@@ -191,7 +190,7 @@ O projeto usou IA em dois papéis, com controles diferentes (registro completo e
 | [docs/estimativa.md](docs/estimativa.md)             | Esforço e custo                                          |
 | [docs/HISTORY-IA.md](docs/HISTORY-IA.md)             | Registro do uso de IA, etapa por etapa                   |
 | [docs/conferencia-base.md](docs/conferencia-base.md) | Conferência humana dos trechos e sinônimos               |
-| [docs/implantacao.md](docs/implantacao.md)           | Implantação com Lovable, Gemini e Evolution              |
+| [docs/implantacao.md](docs/implantacao.md)           | Roteiro do canal WhatsApp (não ativado nesta entrega)    |
 | [docs/marca/](docs/marca/cores-e-fontes.md)          | Marca Inciso: logotipo, ícones, cores e fontes           |
 
 ## Marca
