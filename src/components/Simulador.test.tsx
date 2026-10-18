@@ -346,3 +346,69 @@ describe("Simulador — estilo de conversa de mensageiro", () => {
     expect(await screen.findByText("online")).toBeInTheDocument();
   });
 });
+
+// Apresentação (prompt 04): roteiro ao lado do chat, para mostrar cada comportamento com um clique.
+describe("Simulador — roteiro da demonstração", () => {
+  const roteiro = [
+    { titulo: "Com a lei", perguntas: ["Quando o ISS deixa de existir?"] },
+    { titulo: "Fora do tema", perguntas: ["Qual a previsão do tempo amanhã?"] },
+  ];
+
+  it("mostra os grupos do roteiro e envia a pergunta escolhida", async () => {
+    const perguntar = vi.fn(async (): Promise<Resposta> => respostaComFonte);
+    render(<Simulador perguntar={perguntar} roteiro={roteiro} />);
+    const painel = screen.getByRole("complementary", { name: /roteiro da demonstração/i });
+
+    expect(within(painel).getByText("Com a lei")).toBeInTheDocument();
+    fireEvent.click(within(painel).getByRole("button", { name: "Quando o ISS deixa de existir?" }));
+
+    await screen.findByText(/separação do tributo/);
+    expect(perguntar).toHaveBeenCalledWith("Quando o ISS deixa de existir?");
+  });
+
+  it("o roteiro continua disponível depois que a conversa começa", async () => {
+    const perguntar = vi.fn(async (): Promise<Resposta> => respostaComFonte);
+    render(<Simulador perguntar={perguntar} roteiro={roteiro} />);
+    const painel = screen.getByRole("complementary", { name: /roteiro da demonstração/i });
+
+    fireEvent.click(within(painel).getByRole("button", { name: "Quando o ISS deixa de existir?" }));
+    await screen.findByText(/separação do tributo/);
+
+    fireEvent.click(
+      within(painel).getByRole("button", { name: "Qual a previsão do tempo amanhã?" }),
+    );
+    await waitFor(() => expect(perguntar).toHaveBeenCalledTimes(2));
+  });
+
+  it("sem roteiro, o simulador não mostra o painel", () => {
+    render(<Simulador perguntar={vi.fn()} />);
+    expect(screen.queryByRole("complementary", { name: /roteiro/i })).not.toBeInTheDocument();
+  });
+});
+
+// Redesenho com base na referência (prompt 07): o simulador vira um Consultor.
+describe("Simulador — Consultor", () => {
+  it("sem mensagens, mostra a saudação do Consultor", () => {
+    montar();
+    expect(screen.getByRole("heading", { name: /como posso te ajudar hoje/i })).toBeInTheDocument();
+  });
+
+  it("o campo aceita várias linhas: Enter envia e Shift+Enter não envia", async () => {
+    const { perguntar, campo } = montar();
+    fireEvent.change(campo, { target: { value: "O que é o IBS?" } });
+
+    fireEvent.keyDown(campo, { key: "Enter", shiftKey: true });
+    expect(perguntar).not.toHaveBeenCalled();
+
+    fireEvent.keyDown(campo, { key: "Enter" });
+    await waitFor(() => expect(perguntar).toHaveBeenCalledWith("O que é o IBS?"));
+  });
+
+  it("as fichas 'Explorar por tema' enviam a própria pergunta", async () => {
+    const { perguntar } = montar();
+    const fichas = screen.getByRole("group", { name: /explorar por tema/i });
+
+    fireEvent.click(within(fichas).getByRole("button", { name: "O que é o IBS?" }));
+    await waitFor(() => expect(perguntar).toHaveBeenCalledWith("O que é o IBS?"));
+  });
+});

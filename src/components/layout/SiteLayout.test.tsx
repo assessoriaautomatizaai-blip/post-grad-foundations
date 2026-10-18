@@ -1,4 +1,4 @@
-import { screen, within } from "@testing-library/react";
+import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { renderComRoteador } from "@/test/roteador";
@@ -55,5 +55,19 @@ describe("SiteLayout", () => {
     await montar();
     expect(screen.getByRole("button", { name: /ativar tema/i })).toBeInTheDocument();
     expect(screen.getByRole("contentinfo")).toHaveTextContent(/não substitui/i);
+  });
+
+  it("o cabeçalho marca quando a página rolou, para ganhar contorno", async () => {
+    await montar();
+    const cabecalho = screen.getByRole("banner");
+    expect(cabecalho).toHaveAttribute("data-rolado", "false");
+
+    Object.defineProperty(window, "scrollY", { value: 120, configurable: true });
+    fireEvent.scroll(window);
+    expect(cabecalho).toHaveAttribute("data-rolado", "true");
+
+    Object.defineProperty(window, "scrollY", { value: 0, configurable: true });
+    fireEvent.scroll(window);
+    expect(cabecalho).toHaveAttribute("data-rolado", "false");
   });
 });

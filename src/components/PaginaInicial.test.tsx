@@ -59,3 +59,52 @@ describe("PaginaInicial — lei comentada", () => {
     expect(within(passos).getAllByRole("listitem")).toHaveLength(4);
   });
 });
+
+// Apresentação (prompt 04): o topo demonstra o produto sem trocar de página.
+describe("PaginaInicial — demonstração no topo", () => {
+  it("a demonstração responde à pergunta citando o mesmo dispositivo do trecho mostrado", async () => {
+    await renderComRoteador(<PaginaInicial />);
+    const demo = screen.getByRole("complementary", { name: /demonstração/i });
+
+    expect(demo).toHaveTextContent("Ônibus e metrô vão pagar imposto?");
+    expect(demo).toHaveTextContent("LC 214/2025, art. 157, caput");
+    // Só afirma o que está no trecho literal da base.
+    expect(demo).toHaveTextContent(/isento do IBS e da CBS/);
+  });
+});
+
+// Robustez e nuance (prompt 05): efeitos que nunca escondem nem inventam conteúdo.
+describe("PaginaInicial — faixa de dispositivos e números", () => {
+  it("a faixa em movimento só mostra dispositivos que existem na base", async () => {
+    await renderComRoteador(<PaginaInicial />);
+    const faixa = screen.getByRole("list", { name: /dispositivos da base/i });
+    const naBase = new Set(base.map((t) => `${t.norma}, ${t.dispositivo}`));
+    const itens = within(faixa).getAllByRole("listitem");
+
+    expect(itens.length).toBeGreaterThanOrEqual(8);
+    for (const item of itens) expect(naBase).toContain(item.textContent?.trim());
+  });
+
+  it("os números das garantias ficam disponíveis com o valor final para leitor de tela", async () => {
+    await renderComRoteador(<PaginaInicial />);
+    const secao = screen
+      .getByRole("heading", { name: /fonte em toda resposta/i })
+      .closest("section");
+    if (!secao) throw new Error("seção não encontrada");
+
+    for (const valor of ["96", "0", "100%"]) {
+      expect(within(secao).getByText(valor, { selector: ".sr-only" })).toBeInTheDocument();
+    }
+  });
+});
+
+// Redesenho com base na referência (prompt 07): a caixa de pergunta do topo abre o Consultor.
+describe("PaginaInicial — caixa de pergunta", () => {
+  it("a caixa de pergunta do topo leva ao simulador", async () => {
+    await renderComRoteador(<PaginaInicial />);
+    expect(screen.getByRole("link", { name: /faça sua pergunta/i })).toHaveAttribute(
+      "href",
+      "/simulador",
+    );
+  });
+});
