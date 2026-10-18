@@ -25,7 +25,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={`Ativar tema ${proximo}`}
       title={`Ativar tema ${proximo}`}
       className={cn(
-        "inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground",
+        "vidro inline-flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground",
         className,
       )}
     >

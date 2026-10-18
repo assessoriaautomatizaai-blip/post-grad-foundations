@@ -1,16 +1,29 @@
 import {
   AlertTriangle,
+  ArrowUp,
   BookOpenCheck,
   CheckCheck,
+  Coins,
   Globe,
+  HandCoins,
   Info,
-  RotateCcw,
+  Landmark,
+  Plus,
   SendHorizontal,
+  Store,
+  type LucideIcon,
 } from "lucide-react";
-import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type FormEvent,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 
 import { LogoSimbolo } from "@/components/marca/Logo";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { MENSAGEM_FALHA, type FonteWeb, type Resposta } from "@/core/answer";
 import type { Trecho } from "@/core/knowledge";
@@ -32,12 +45,13 @@ interface Mensagem {
   lida?: boolean;
 }
 
-// Perguntas que a base responde (as mesmas das boas-vindas do WhatsApp).
-const EXEMPLOS = [
-  "O que é o IBS?",
-  "O que é o split payment?",
-  "Quem tem direito ao cashback?",
-  "Como fica o MEI na reforma?",
+// Perguntas que a base responde (as mesmas das boas-vindas do WhatsApp), com o ícone da
+// ficha "Explorar por tema".
+const EXEMPLOS: { pergunta: string; icone: LucideIcon }[] = [
+  { pergunta: "O que é o IBS?", icone: Landmark },
+  { pergunta: "O que é o split payment?", icone: Coins },
+  { pergunta: "Quem tem direito ao cashback?", icone: HandCoins },
+  { pergunta: "Como fica o MEI na reforma?", icone: Store },
 ];
 
 // *negrito* e _itálico_ do WhatsApp. O "_" só abre itálico no início de palavra, para
@@ -100,24 +114,42 @@ function Selo({ tipo }: { tipo?: Resposta["tipo"] | undefined }) {
   return null;
 }
 
+/** Grupo do roteiro da demonstração (ex.: "Com a lei"), com as perguntas que o mostram. */
+export interface GrupoRoteiro {
+  titulo: string;
+  descricao?: string;
+  perguntas: string[];
+}
+
+const INCISOS = ["I", "II", "III", "IV", "V"];
+
 /**
- * Simulador de conversa com o agente, para testar sem WhatsApp. Recebe a função que
- * pergunta ao servidor por parâmetro: o componente não conhece o modelo nem a chave.
+ * Simulador no formato de Consultor (prompt 07, com base na referência): barra lateral com o
+ * roteiro da demonstração, saudação, caixa de pergunta ampla e fichas por tema; na conversa,
+ * a caixa desce para o rodapé. Recebe a função que pergunta ao servidor por parâmetro: o
+ * componente não conhece o modelo nem a chave.
  */
-export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Promise<Resposta> }) {
+export function Simulador({
+  perguntar,
+  roteiro,
+}: {
+  perguntar: (pergunta: string) => Promise<Resposta>;
+  roteiro?: GrupoRoteiro[];
+}) {
   const campoId = useId();
   const contadorId = useId();
   const [texto, setTexto] = useState("");
   const [mensagens, setMensagens] = useState<Mensagem[]>([]);
   const [aguardando, setAguardando] = useState(false);
   const areaRef = useRef<HTMLDivElement>(null);
-  const campoRef = useRef<HTMLInputElement>(null);
+  const campoRef = useRef<HTMLTextAreaElement>(null);
 
   const pergunta = texto.trim();
   const podeEnviar = pergunta !== "" && !aguardando;
+  const vazio = mensagens.length === 0 && !aguardando;
 
   // Leva a última mensagem para a vista rolando só a área de mensagens (a página fica
-  // parada, como num mensageiro); sem animação se o usuário pediu menos movimento.
+  // parada); sem animação se o usuário pediu menos movimento.
   useEffect(() => {
     const area = areaRef.current;
     if (!area || typeof area.scrollTo !== "function") return;
@@ -175,191 +207,314 @@ export function Simulador({ perguntar }: { perguntar: (pergunta: string) => Prom
     if (podeEnviar) void enviarPergunta(pergunta);
   }
 
-  return (
-    <section className="mx-auto flex h-[min(78dvh,46rem)] w-full max-w-3xl flex-col overflow-hidden rounded-lg border shadow-sm">
-      <div className="flex items-center justify-between gap-3 bg-[var(--chat-barra)] px-4 py-2.5">
+  // Enter envia; Shift+Enter quebra a linha (e nada acontece durante a composição de acento).
+  function teclar(evento: KeyboardEvent<HTMLTextAreaElement>) {
+    if (evento.key !== "Enter" || evento.shiftKey || evento.nativeEvent.isComposing) return;
+    evento.preventDefault();
+    if (podeEnviar) void enviarPergunta(pergunta);
+  }
+
+  const caixa = (
+    <form
+      onSubmit={enviar}
+      className={cn("cartao-vidro w-full p-3", vazio ? "max-w-2xl" : "rounded-2xl")}
+    >
+      <Label htmlFor={campoId} className="sr-only">
+        Sua pergunta
+      </Label>
+      <textarea
+        ref={campoRef}
+        id={campoId}
+        value={texto}
+        onChange={(e) => setTexto(e.target.value)}
+        onKeyDown={teclar}
+        placeholder="Descreva sua dúvida sobre a reforma tributária…"
+        maxLength={MAX_PERGUNTA}
+        rows={vazio ? 3 : 1}
+        autoComplete="off"
+        aria-describedby={contadorId}
+        className="block w-full resize-none bg-transparent px-2 pt-1 text-[1.02rem] leading-relaxed text-foreground outline-none placeholder:text-muted-foreground"
+      />
+      <div className="mt-2 flex items-center justify-between gap-3 border-t border-[var(--cartao-borda)] px-2 pt-2.5">
+        <span
+          id={contadorId}
+          className={cn(
+            "font-mono text-[0.68rem] tabular-nums text-muted-foreground",
+            texto.length > MAX_PERGUNTA * 0.9 && "font-medium text-destructive",
+          )}
+        >
+          {texto.length}/{MAX_PERGUNTA}
+        </span>
+        <button
+          type="submit"
+          disabled={!podeEnviar}
+          aria-label="Enviar"
+          className="pilula-primaria flex size-9 items-center justify-center disabled:pointer-events-none disabled:opacity-40"
+        >
+          <ArrowUp className="size-4" aria-hidden="true" />
+        </button>
+      </div>
+    </form>
+  );
+
+  const saudacao = (
+    <div className="flex w-full flex-col items-center gap-6 text-center">
+      <LogoSimbolo decorativo className="size-12 opacity-80" />
+      <h2 className="text-[2rem] leading-[1.12] font-semibold tracking-[-0.03em] text-foreground sm:text-[2.6rem]">
+        Olá!
+        <br />
+        <span className="font-medium text-muted-foreground">como posso te ajudar hoje?</span>
+      </h2>
+      <p className="max-w-md text-muted-foreground">
+        Pergunte sobre a reforma tributária. Eu cito o artigo da lei de onde veio cada resposta e,
+        quando a lei não basta, completo com fontes da web.
+      </p>
+    </div>
+  );
+
+  const fichas = (
+    <div role="group" aria-label="Explorar por tema" className="flex flex-col items-center gap-3">
+      <p className="font-mono text-[0.68rem] tracking-[0.16em] text-muted-foreground uppercase">
+        Explorar por tema
+      </p>
+      <div className="flex flex-wrap justify-center gap-2">
+        {EXEMPLOS.map(({ pergunta: exemplo, icone: Icone }) => (
+          <button
+            key={exemplo}
+            type="button"
+            onClick={() => void enviarPergunta(exemplo)}
+            className="vidro inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[0.82rem] font-medium text-foreground"
+          >
+            <Icone className="size-3.5 text-muted-foreground" aria-hidden="true" />
+            {exemplo}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  const historico = (
+    <div role="log" aria-live="polite" aria-label="Conversa" className="flex flex-col gap-5">
+      {mensagens.map((m) =>
+        m.autor === "usuario" ? (
+          <article
+            key={m.id}
+            className="balao-usuario max-w-[80%] self-end rounded-2xl rounded-br-md px-4 pt-2.5 pb-1.5 text-[0.95rem] leading-relaxed [overflow-wrap:anywhere] animate-in fade-in slide-in-from-bottom-1 duration-200"
+          >
+            <span className="sr-only">Você: </span>
+            {formatar(m.texto)}
+            <span className="mt-1 flex items-center justify-end gap-1 text-[0.68rem] opacity-75">
+              <time dateTime={m.instante}>{m.hora}</time>
+              <CheckCheck
+                role="img"
+                aria-label={m.lida ? "Lida" : "Enviada"}
+                className={cn("size-4", m.lida && "text-[var(--tique-lido)]")}
+              />
+            </span>
+          </article>
+        ) : (
+          <article
+            key={m.id}
+            className={cn(
+              "cartao-vidro max-w-[88%] self-start rounded-2xl rounded-tl-md px-4 pt-3 pb-2 text-[0.95rem] leading-relaxed text-foreground [overflow-wrap:anywhere] animate-in fade-in slide-in-from-bottom-1 duration-200",
+              ESTILO_AGENTE[m.tipo ?? "resposta"],
+            )}
+          >
+            <span className="sr-only">Agente: </span>
+            <span
+              aria-hidden="true"
+              className="mb-1.5 flex items-center gap-2 text-xs font-semibold tracking-tight text-foreground"
+            >
+              <LogoSimbolo decorativo className="size-4" />
+              Inciso
+            </span>
+            <Selo tipo={m.tipo} />
+            {formatar(m.texto)}
+            {m.fontes.length > 0 && (
+              <ul
+                className="mt-3 flex flex-wrap gap-1.5 border-t border-[var(--cartao-borda)] pt-3"
+                aria-label="Fontes da lei"
+              >
+                {m.fontes.map((t) => (
+                  <li key={t.id}>
+                    <a
+                      href={t.url_fonte}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-citacao-borda bg-citacao px-2.5 py-0.5 font-mono text-xs font-medium text-citacao-foreground transition-colors hover:border-selo"
+                    >
+                      <BookOpenCheck className="size-3.5" aria-hidden="true" />
+                      {`${t.norma}, ${t.dispositivo}`}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {m.fontesWeb.length > 0 && (
+              <ul
+                className="mt-3 flex flex-wrap gap-1.5 border-t border-[var(--cartao-borda)] pt-3"
+                aria-label="Fontes da web, não conferidas"
+              >
+                <li className="w-full text-xs text-muted-foreground">Da web · não conferidas</li>
+                {nomearFontesWeb(m.fontesWeb).map((f) => (
+                  <li key={f.url} className="max-w-full">
+                    <a
+                      href={f.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="vidro inline-flex max-w-full items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs text-foreground"
+                    >
+                      <Globe
+                        className="size-3.5 shrink-0 text-muted-foreground"
+                        aria-hidden="true"
+                      />
+                      <span className="truncate">{f.nome}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <span className="mt-1.5 flex justify-end text-[0.68rem] text-muted-foreground">
+              <time dateTime={m.instante}>{m.hora}</time>
+            </span>
+          </article>
+        ),
+      )}
+      {aguardando && (
+        <div className="cartao-vidro flex items-center gap-3 self-start rounded-2xl rounded-tl-md px-4 py-3">
+          <LogoSimbolo decorativo className="size-4" />
+          <span className="flex gap-1" aria-hidden="true">
+            {[0, 150, 300].map((atraso) => (
+              <span
+                key={atraso}
+                className="pontinho size-1.5 rounded-full bg-muted-foreground"
+                style={{ animationDelay: `${atraso}ms` }}
+              />
+            ))}
+          </span>
+          <p role="status" className="sr-only">
+            Consultando a base de legislação…
+          </p>
+        </div>
+      )}
+    </div>
+  );
+
+  // A caixa fica sempre no mesmo lugar da árvore: entre o estado vazio e a conversa só muda o
+  // posicionamento, para o campo não ser recriado (e perder o foco) no meio da digitação.
+  const conversa = (
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex items-center justify-between gap-3 border-b border-[var(--cartao-borda)] px-5 py-3">
         <div className="flex items-center gap-3">
-          <span className="flex size-10 items-center justify-center rounded-full border bg-background">
-            <LogoSimbolo decorativo className="size-6" />
+          <span className="vidro flex size-9 items-center justify-center rounded-full">
+            <LogoSimbolo decorativo className="size-5" />
           </span>
           <div className="leading-tight">
-            <p className="text-[0.95rem] font-medium text-foreground">Inciso</p>
+            <p className="text-sm font-semibold tracking-tight text-foreground">
+              {vazio ? "Nova conversa" : "Inciso"}
+            </p>
             {/* O anúncio para leitor de tela é o role="status" da área de mensagens. */}
-            <p className="text-xs text-muted-foreground" aria-hidden="true">
+            <p
+              className="flex items-center gap-1.5 text-xs text-muted-foreground"
+              aria-hidden="true"
+            >
+              <span
+                className={cn(
+                  "size-1.5 rounded-full",
+                  aguardando ? "pontinho bg-primary" : "bg-emerald-500",
+                )}
+              />
               {aguardando ? "digitando…" : "online"}
             </p>
           </div>
         </div>
         {mensagens.length > 0 && (
-          <Button
+          <button
             type="button"
-            variant="ghost"
-            size="sm"
             onClick={() => setMensagens([])}
             disabled={aguardando}
+            className="pilula-primaria inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium disabled:opacity-50"
           >
-            <RotateCcw aria-hidden="true" />
+            <Plus className="size-3.5" aria-hidden="true" />
             Nova conversa
-          </Button>
+          </button>
         )}
       </div>
 
       <div
-        ref={areaRef}
-        className="chat-fundo flex flex-1 flex-col gap-2 overflow-y-auto px-4 py-4 sm:px-[6%]"
+        className={cn(
+          "flex min-h-0 flex-1 flex-col",
+          vazio && "justify-center gap-6 overflow-y-auto px-4 py-8 sm:px-8",
+        )}
       >
-        {mensagens.length === 0 && !aguardando ? (
-          <div className="m-auto flex max-w-md flex-col items-center gap-4 py-6 text-center">
-            <p className="rounded-md bg-[var(--chat-entrada)] px-4 py-2.5 text-xs leading-relaxed text-muted-foreground shadow-sm">
-              As respostas citam a lei e, quando preciso, completam com fontes da web. Comece por um
-              destes exemplos:
-            </p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {EXEMPLOS.map((exemplo) => (
-                <button
-                  key={exemplo}
-                  type="button"
-                  onClick={() => void enviarPergunta(exemplo)}
-                  className="rounded-full bg-[var(--chat-entrada)] px-3.5 py-1.5 text-sm text-[var(--chat-enviar)] shadow-sm transition-colors hover:bg-[var(--chat-saida)] dark:text-foreground"
-                >
-                  {exemplo}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <p className="mx-auto mb-1 rounded-md bg-[var(--chat-entrada)] px-3 py-1 text-[0.7rem] font-medium tracking-wide text-muted-foreground uppercase shadow-sm">
-            Hoje
-          </p>
-        )}
-
-        <div role="log" aria-live="polite" aria-label="Conversa" className="flex flex-col gap-2">
-          {mensagens.map((m) => (
-            <article
-              key={m.id}
-              className={cn(
-                "max-w-[85%] px-3 pt-2 pb-1.5 text-[0.93rem] leading-relaxed text-foreground shadow-sm [overflow-wrap:anywhere] animate-in fade-in slide-in-from-bottom-1 duration-200",
-                m.autor === "usuario"
-                  ? "balao-saida self-end rounded-lg rounded-tr-none bg-[var(--chat-saida)]"
-                  : cn(
-                      "balao-entrada self-start rounded-lg rounded-tl-none bg-[var(--chat-entrada)]",
-                      ESTILO_AGENTE[m.tipo ?? "resposta"],
-                    ),
-              )}
-            >
-              <span className="sr-only">{m.autor === "usuario" ? "Você: " : "Agente: "}</span>
-              {m.autor === "agente" && <Selo tipo={m.tipo} />}
-              {formatar(m.texto)}
-              {m.fontes.length > 0 && (
-                <ul
-                  className="mt-2 flex flex-wrap gap-1.5 border-t pt-2"
-                  aria-label="Fontes da lei"
-                >
-                  {m.fontes.map((t) => (
-                    <li key={t.id}>
-                      <a
-                        href={t.url_fonte}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-md border border-citacao-borda bg-citacao px-2 py-0.5 font-mono text-xs font-medium text-citacao-foreground transition-colors hover:border-selo"
-                      >
-                        <BookOpenCheck className="size-3.5" aria-hidden="true" />
-                        {`${t.norma}, ${t.dispositivo}`}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {m.fontesWeb.length > 0 && (
-                <ul
-                  className="mt-2 flex flex-wrap gap-1.5 border-t pt-2"
-                  aria-label="Fontes da web, não conferidas"
-                >
-                  <li className="w-full text-xs text-muted-foreground">Da web · não conferidas</li>
-                  {nomearFontesWeb(m.fontesWeb).map((f) => (
-                    <li key={f.url} className="max-w-full">
-                      <a
-                        href={f.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex max-w-full items-center gap-1.5 rounded-md border border-dashed px-2 py-0.5 text-xs text-[var(--chat-lido)] transition-colors hover:underline"
-                      >
-                        <Globe className="size-3.5 shrink-0" aria-hidden="true" />
-                        <span className="truncate">{f.nome}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <span className="mt-0.5 flex items-center justify-end gap-1 text-[0.68rem] text-muted-foreground">
-                <time dateTime={m.instante}>{m.hora}</time>
-                {m.autor === "usuario" && (
-                  <CheckCheck
-                    role="img"
-                    aria-label={m.lida ? "Lida" : "Enviada"}
-                    className={cn("size-4", m.lida && "text-[var(--chat-lido)]")}
-                  />
-                )}
-              </span>
-            </article>
-          ))}
+        <div
+          ref={areaRef}
+          className={cn(vazio ? "contents" : "flex-1 overflow-y-auto px-4 py-6 sm:px-8")}
+        >
+          {vazio && saudacao}
+          {historico}
         </div>
-
-        {aguardando && (
-          <div className="balao-entrada flex items-center gap-3 self-start rounded-lg rounded-tl-none bg-[var(--chat-entrada)] px-4 py-3 shadow-sm">
-            <span className="flex gap-1" aria-hidden="true">
-              {[0, 150, 300].map((atraso) => (
-                <span
-                  key={atraso}
-                  className="pontinho size-1.5 rounded-full bg-muted-foreground"
-                  style={{ animationDelay: `${atraso}ms` }}
-                />
-              ))}
-            </span>
-            <p role="status" className="sr-only">
-              Consultando a base de legislação…
-            </p>
-          </div>
-        )}
+        <div
+          className={cn(
+            vazio
+              ? "flex justify-center"
+              : "border-t border-[var(--cartao-borda)] px-4 py-3 sm:px-8",
+          )}
+        >
+          {caixa}
+        </div>
+        {vazio && fichas}
       </div>
+    </div>
+  );
 
-      <form onSubmit={enviar} className="bg-[var(--chat-barra)] px-3 py-2.5">
-        <Label htmlFor={campoId} className="sr-only">
-          Sua pergunta
-        </Label>
-        <div className="flex items-center gap-2">
-          <div className="relative flex-1">
-            <input
-              ref={campoRef}
-              id={campoId}
-              value={texto}
-              onChange={(e) => setTexto(e.target.value)}
-              placeholder="Digite sua pergunta"
-              maxLength={MAX_PERGUNTA}
-              autoComplete="off"
-              aria-describedby={contadorId}
-              className="h-11 w-full rounded-full border-0 bg-[var(--chat-entrada)] pr-16 pl-4 text-[0.95rem] text-foreground shadow-sm outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
-            />
-            <span
-              id={contadorId}
-              className={cn(
-                "absolute top-1/2 right-4 -translate-y-1/2 font-mono text-[0.68rem] tabular-nums text-muted-foreground",
-                texto.length > MAX_PERGUNTA * 0.9 && "font-medium text-destructive",
-              )}
-            >
-              {texto.length}/{MAX_PERGUNTA}
-            </span>
-          </div>
-          <button
-            type="submit"
-            disabled={!podeEnviar}
-            aria-label="Enviar"
-            className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[var(--chat-enviar)] text-[var(--chat-enviar-texto)] transition-[transform,opacity] hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
-          >
-            <SendHorizontal className="size-5" aria-hidden="true" />
-          </button>
-        </div>
-      </form>
+  return (
+    <section className="cartao-vidro mx-auto flex h-[min(84dvh,52rem)] w-full flex-col overflow-hidden rounded-[24px] lg:flex-row">
+      {roteiro?.length ? (
+        <aside
+          aria-label="Roteiro da demonstração"
+          className="max-h-56 shrink-0 overflow-y-auto border-b border-[var(--cartao-borda)] bg-[var(--cartao-fundo)] px-4 py-5 lg:max-h-none lg:w-64 lg:border-r lg:border-b-0"
+        >
+          <p className="px-2 font-mono text-[0.68rem] tracking-[0.16em] text-muted-foreground uppercase">
+            Roteiro da demonstração
+          </p>
+          <ol className="mt-4 space-y-5">
+            {roteiro.map((grupo, i) => (
+              <li key={grupo.titulo}>
+                <p className="flex items-baseline gap-2 px-2">
+                  <span className="font-mono text-xs text-primary" aria-hidden="true">
+                    {INCISOS[i]} –
+                  </span>
+                  <span className="text-sm font-semibold tracking-tight text-foreground">
+                    {grupo.titulo}
+                  </span>
+                </p>
+                {grupo.descricao && (
+                  <p className="mt-0.5 px-2 text-xs text-muted-foreground">{grupo.descricao}</p>
+                )}
+                <div className="mt-2 flex flex-col gap-1">
+                  {grupo.perguntas.map((exemplo) => (
+                    <button
+                      key={exemplo}
+                      type="button"
+                      disabled={aguardando}
+                      onClick={() => void enviarPergunta(exemplo)}
+                      className="group flex items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-left text-[0.82rem] text-foreground transition-colors hover:bg-[var(--vidro-borda)] disabled:opacity-50"
+                    >
+                      {exemplo}
+                      <SendHorizontal
+                        className="size-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+                        aria-hidden="true"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </aside>
+      ) : null}
+      {conversa}
     </section>
   );
 }

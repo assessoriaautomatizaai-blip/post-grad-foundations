@@ -124,15 +124,44 @@
   --sidebar-accent-foreground: oklch(0.37 0.16 267);
   --sidebar-border: oklch(0.895 0.01 266);
   --sidebar-ring: oklch(0.45 0.212 267);
-  /* Simulador no visual de conversa de mensageiro (fundo bege, saída verde, entrada clara). */
-  --chat-fundo: oklch(0.939 0.012 79.8);
-  --chat-trama: oklch(0.21 0.029 266.1 / 0.05);
-  --chat-saida: oklch(0.957 0.067 141.1);
-  --chat-entrada: oklch(0.995 0.002 90);
-  --chat-barra: oklch(0.96 0.005 258.3);
-  --chat-enviar: oklch(0.535 0.102 174.2);
-  --chat-enviar-texto: oklch(0.995 0.002 90);
-  --chat-lido: oklch(0.563 0.124 237.9);
+  /* Fundo vivo (prompt 06): manchas, grade de pontos e holofote. */
+  /* Acabamento (prompt 07, com base na referência): pílula com relevo, vidro e cartão. */
+  --pilula-fundo:
+    radial-gradient(
+      130% 120% at 28% -18%,
+      rgb(255 255 255 / 0.22),
+      rgb(255 255 255 / 0.05) 45%,
+      transparent 70%
+    ),
+    linear-gradient(180deg, rgb(44 56 84), rgb(18 24 38) 48%, rgb(8 12 22));
+  --pilula-borda: rgb(8 12 22 / 0.85);
+  --tique-lido: oklch(0.82 0.11 235);
+  --pilula-texto: oklch(0.985 0.003 264);
+  --pilula-sombra:
+    inset 0 1px 0 rgb(255 255 255 / 0.32), inset 0 0 0 1px rgb(255 255 255 / 0.06),
+    inset 0 -8px 14px rgb(8 12 22 / 0.32), 0 2px 6px rgb(18 24 38 / 0.22),
+    0 10px 26px rgb(18 24 38 / 0.26);
+  --vidro-fundo: linear-gradient(135deg, rgb(255 255 255 / 0.78), rgb(247 249 252 / 0.48));
+  --vidro-borda: rgb(18 24 38 / 0.1);
+  --vidro-sombra:
+    inset 0 1px 0 rgb(255 255 255 / 0.9), 0 2px 6px rgb(18 24 38 / 0.04),
+    0 8px 20px rgb(18 24 38 / 0.07);
+  --cartao-fundo: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 0.96),
+    rgb(255 255 255 / 0.84) 10%,
+    rgb(247 248 250 / 0.62)
+  );
+  --cartao-borda: rgb(18 24 38 / 0.06);
+  --cartao-sombra:
+    inset 0 1px 0 rgb(255 255 255 / 0.7), 0 4px 16px -6px rgb(18 24 38 / 0.1),
+    0 16px 40px -12px rgb(18 24 38 / 0.09);
+  --fundo-cor-1: oklch(0.45 0.212 267 / 0.08);
+  --fundo-cor-2: oklch(0.834 0.158 89 / 0.12);
+  --fundo-cor-3: oklch(0.709 0.152 271.7 / 0.08);
+  --fundo-linha: oklch(0.45 0.212 267 / 0.07);
+  --fundo-varredura: oklch(0.45 0.212 267 / 0.35);
+  --textura-papel: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.07 0 0 0 0 0.09 0 0 0 0 0.15 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 .dark {
@@ -176,14 +205,35 @@
   --sidebar-accent-foreground: oklch(0.88 0.06 270);
   --sidebar-border: oklch(0.33 0.03 266);
   --sidebar-ring: oklch(0.709 0.152 271.7);
-  --chat-fundo: oklch(0.185 0.018 238.2);
-  --chat-trama: oklch(0.969 0.004 121.6 / 0.04);
-  --chat-saida: oklch(0.424 0.08 174.4);
-  --chat-entrada: oklch(0.285 0.021 234.1);
-  --chat-barra: oklch(0.285 0.021 234.1);
-  --chat-enviar: oklch(0.651 0.128 170.4);
-  --chat-enviar-texto: oklch(0.185 0.018 238.2);
-  --chat-lido: oklch(0.755 0.117 229.7);
+  --pilula-fundo:
+    radial-gradient(
+      130% 120% at 28% -18%,
+      rgb(255 255 255 / 0.35),
+      rgb(255 255 255 / 0.08) 45%,
+      transparent 70%
+    ),
+    linear-gradient(180deg, rgb(160 178 255), rgb(128 153 255) 48%, rgb(98 122 232));
+  --pilula-borda: rgb(98 122 232 / 0.9);
+  --tique-lido: oklch(0.38 0.17 262);
+  --pilula-texto: oklch(0.21 0.029 266.1);
+  --pilula-sombra:
+    inset 0 1px 0 rgb(255 255 255 / 0.45), inset 0 -8px 14px rgb(60 80 190 / 0.25),
+    0 2px 6px rgb(0 0 0 / 0.3), 0 10px 26px rgb(64 92 230 / 0.25);
+  --vidro-fundo: linear-gradient(135deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.03));
+  --vidro-borda: rgb(255 255 255 / 0.1);
+  --vidro-sombra:
+    inset 0 1px 0 rgb(255 255 255 / 0.06), 0 2px 6px rgb(0 0 0 / 0.25), 0 8px 22px rgb(0 0 0 / 0.3);
+  --cartao-fundo: linear-gradient(180deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.03));
+  --cartao-borda: rgb(255 255 255 / 0.08);
+  --cartao-sombra:
+    inset 0 1px 0 rgb(255 255 255 / 0.06), 0 4px 16px -6px rgb(0 0 0 / 0.4),
+    0 16px 40px -12px rgb(0 0 0 / 0.45);
+  --fundo-cor-1: oklch(0.45 0.212 267 / 0.22);
+  --fundo-cor-2: oklch(0.834 0.158 89 / 0.05);
+  --fundo-cor-3: oklch(0.709 0.152 271.7 / 0.08);
+  --fundo-linha: oklch(0.709 0.152 271.7 / 0.08);
+  --fundo-varredura: oklch(0.709 0.152 271.7 / 0.5);
+  --textura-papel: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.96 0 0 0 0 0.96 0 0 0 0 0.95 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 @layer base {
@@ -201,6 +251,8 @@
   }
 
   body {
+    /* Textura de papel (ruído SVG, prompt 04): sutil, só para dar matéria ao fundo. */
+    background-image: var(--textura-papel);
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
@@ -372,35 +424,331 @@
   }
 }
 
-/* Simulador: fundo com trama discreta (padrão próprio) e "rabinho" dos balões. */
-.chat-fundo {
-  background-color: var(--chat-fundo);
-  background-image: radial-gradient(var(--chat-trama) 1.2px, transparent 1.2px);
-  background-size: 18px 18px;
+/*
+ * Demonstração do topo (prompt 04): pergunta → digitando → resposta citando o artigo.
+ * Sem html.anima (sem JavaScript ou com "reduzir movimento"), tudo aparece no estado final
+ * e os pontinhos de "digitando" nem aparecem.
+ */
+.demo-digitando {
+  display: none;
 }
 
-.balao-saida,
-.balao-entrada {
-  position: relative;
+.anima .demo-passo {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: demo-surgir 450ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation-delay: var(--atraso, 0s);
 }
 
-.balao-saida::after,
-.balao-entrada::after {
+.anima .demo-digitando {
+  display: inline-flex;
+  opacity: 0;
+  animation: demo-digitando 1.3s ease forwards;
+  animation-delay: 1.4s;
+}
+
+@keyframes demo-surgir {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes demo-digitando {
+  0% {
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* A citação da demonstração acende quando chega, como o marca-texto da folha. */
+.anima .demo-citacao {
+  animation: demo-citacao 900ms ease forwards;
+  animation-delay: var(--atraso, 0s);
+}
+
+@keyframes demo-citacao {
+  0% {
+    box-shadow: 0 0 0 0 var(--color-selo);
+  }
+  40% {
+    box-shadow: 0 0 0 4px color-mix(in oklch, var(--color-selo) 45%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/*
+ * Prompt 05 — robustez e nuance. Mesma regra dos anteriores: os estados escondidos só
+ * valem sob html.anima, e "reduzir movimento" desliga tudo.
+ */
+
+/* Faixa de dispositivos: rola devagar, para ao passar o mouse, some nas bordas. */
+.faixa {
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.anima .faixa-trilho {
+  animation: faixa-rolar 60s linear infinite;
+}
+
+.faixa:hover .faixa-trilho {
+  animation-play-state: paused;
+}
+
+@keyframes faixa-rolar {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Título que surge como tinta, da esquerda para a direita. */
+.anima .tinta {
+  transition: clip-path 900ms cubic-bezier(0.65, 0, 0.35, 1) 120ms;
+}
+
+.anima [data-visivel="false"] .tinta {
+  clip-path: inset(0 100% 0 0);
+}
+
+/* Linha de progresso que acompanha a leitura (só onde há animação guiada por rolagem). */
+.linha-progresso {
+  display: none;
+}
+
+@supports (animation-timeline: view()) {
+  .anima .linha-progresso {
+    display: block;
+    transform-origin: top;
+    animation: linha-progresso linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 55%;
+  }
+}
+
+@keyframes linha-progresso {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* Cabeçalho: ganha contorno e profundidade quando a página rola. */
+.cabecalho {
+  transition:
+    box-shadow 300ms ease,
+    background-color 300ms ease,
+    border-color 300ms ease;
+}
+
+.cabecalho[data-rolado="true"] {
+  box-shadow: 0 10px 30px -22px rgb(18 24 38 / 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .linha-progresso {
+    display: none !important;
+  }
+}
+
+/*
+ * Fundo vivo (prompt 06, src/components/layout/FundoVivo.tsx). Fica atrás do conteúdo e não
+ * recebe cliques. As manchas só derivam sob html.anima ("reduzir movimento" as deixa
+ * paradas); o holofote só aparece com mouse.
+ */
+.fundo-mancha {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  will-change: transform;
+}
+
+.fundo-mancha-1 {
+  top: -12vw;
+  left: -10vw;
+  width: 48vw;
+  height: 48vw;
+  background: var(--fundo-cor-1);
+}
+
+.fundo-mancha-2 {
+  top: 16vh;
+  right: -12vw;
+  width: 42vw;
+  height: 42vw;
+  background: var(--fundo-cor-2);
+}
+
+.fundo-mancha-3 {
+  bottom: -16vw;
+  left: 28vw;
+  width: 36vw;
+  height: 36vw;
+  background: var(--fundo-cor-3);
+}
+
+.anima .fundo-mancha-1 {
+  animation: fundo-deriva-1 26s ease-in-out infinite alternate;
+}
+
+.anima .fundo-mancha-2 {
+  animation: fundo-deriva-2 32s ease-in-out infinite alternate;
+}
+
+.anima .fundo-mancha-3 {
+  animation: fundo-deriva-3 38s ease-in-out infinite alternate;
+}
+
+@keyframes fundo-deriva-1 {
+  to {
+    transform: translate3d(16vw, 12vh, 0) scale(1.15);
+  }
+}
+
+@keyframes fundo-deriva-2 {
+  to {
+    transform: translate3d(-14vw, 18vh, 0) scale(0.9);
+  }
+}
+
+@keyframes fundo-deriva-3 {
+  to {
+    transform: translate3d(12vw, -16vh, 0) scale(1.12);
+  }
+}
+
+.fundo-grade,
+.fundo-varredura {
+  position: absolute;
+  inset: 0;
+}
+
+/*
+ * Grade técnica (blueprint): linhas finas a cada 48 px, visíveis só no alto e nas bordas —
+ * a máscara deixa a área do texto limpa.
+ */
+.fundo-grade {
+  background-image:
+    linear-gradient(var(--fundo-linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--fundo-linha) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 25%, transparent 80%);
+}
+
+/* Varredura: uma linha de luz fina desce pela grade de tempos em tempos, como um scanner. */
+.fundo-varredura {
+  display: none;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 25%, transparent 80%);
+}
+
+.fundo-varredura::before {
   content: "";
   position: absolute;
+  left: 0;
+  right: 0;
   top: 0;
-  width: 10px;
-  height: 12px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--fundo-varredura), transparent);
+  box-shadow: 0 0 12px 1px var(--fundo-varredura);
 }
 
-.balao-saida::after {
-  right: -8px;
-  background: var(--chat-saida);
-  clip-path: polygon(0 0, 100% 0, 0 100%);
+.anima .fundo-varredura {
+  display: block;
 }
 
-.balao-entrada::after {
-  left: -8px;
-  background: var(--chat-entrada);
-  clip-path: polygon(0 0, 100% 0, 100% 100%);
+.anima .fundo-varredura::before {
+  animation: fundo-varrer 9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes fundo-varrer {
+  0% {
+    transform: translateY(-2vh);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  55% {
+    transform: translateY(70vh);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(70vh);
+    opacity: 0;
+  }
+}
+
+/*
+ * Acabamento (prompt 07, com base na referência): pílula principal com relevo, superfícies
+ * de vidro e cartões com sombras em camadas. Cores pelos tokens --pilula-*, --vidro-* e
+ * --cartao-* (claro e escuro).
+ */
+.pilula-primaria {
+  color: var(--pilula-texto);
+  background-image: var(--pilula-fundo);
+  border: 1px solid var(--pilula-borda);
+  border-radius: 9999px;
+  box-shadow: var(--pilula-sombra);
+  transition:
+    transform 200ms ease,
+    filter 200ms ease;
+}
+
+.pilula-primaria:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.pilula-primaria:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.vidro {
+  background-image: var(--vidro-fundo);
+  border: 1px solid var(--vidro-borda);
+  box-shadow: var(--vidro-sombra);
+  backdrop-filter: blur(10px);
+  transition:
+    transform 200ms ease,
+    border-color 200ms ease;
+}
+
+button.vidro:hover:not(:disabled),
+a.vidro:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in oklch, var(--color-primary) 35%, transparent);
+}
+
+.cartao-vidro {
+  background-image: var(--cartao-fundo);
+  border: 1px solid var(--cartao-borda);
+  border-radius: 20px;
+  box-shadow: var(--cartao-sombra);
+  backdrop-filter: blur(12px);
+}
+
+/* Pergunta no Consultor: balão de tinta com o mesmo relevo da pílula principal. */
+.balao-usuario {
+  color: var(--pilula-texto);
+  background-image: var(--pilula-fundo);
+  border: 1px solid var(--pilula-borda);
+  box-shadow: var(--pilula-sombra);
+}
+
+/* Item ativo do menu: a mesma pílula de tinta com relevo da referência. */
+.nav-pilula[aria-current="page"] {
+  color: var(--pilula-texto);
+  background-image: var(--pilula-fundo);
+  border-color: var(--pilula-borda);
+  box-shadow: var(--pilula-sombra);
 }

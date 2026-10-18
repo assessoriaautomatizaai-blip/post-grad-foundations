@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
-import type { CSSProperties, ReactNode } from "react";
+import { ArrowRight, ArrowUp } from "lucide-react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 
 import { URL_REPOSITORIO } from "@/components/layout/SiteLayout";
-import { Button } from "@/components/ui/button";
-import { useRevelar } from "@/hooks/useRevelar";
+import { LogoSimbolo } from "@/components/marca/Logo";
+import { podeAnimar, useRevelar } from "@/hooks/useRevelar";
 
 // Linguagem de "lei comentada" (prompt 03): seções numeradas como dispositivos, incisos com
 // travessão, marca-texto e redação riscada, em vez de cards, ícones e gradientes.
@@ -143,41 +143,98 @@ function Secao({
     <section aria-labelledby={id} className="border-b">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <div className="lg:sticky lg:top-28">
+          <Revelar className="lg:sticky lg:top-28">
             <Dispositivo>{dispositivo}</Dispositivo>
-            <h2 id={id} className="mt-3 text-3xl font-semibold text-foreground">
+            <h2 id={id} className="tinta mt-3 text-3xl font-semibold text-foreground">
               {titulo}
             </h2>
             <p className="mt-4 max-w-sm font-serif text-lg text-muted-foreground">{resumo}</p>
-          </div>
+          </Revelar>
         </div>
-        <div className="lg:col-span-8">{children}</div>
+        <div className="cartao-vidro px-5 py-2 sm:px-7 lg:col-span-8">{children}</div>
       </div>
     </section>
   );
 }
 
 /**
- * Lista de incisos: a mesma linha em todas as seções. O marcador em algarismo romano é
- * decorativo; o marcador numérico (ex.: "96") é conteúdo e é lido pelo leitor de tela.
+ * Número que conta de 0 até o valor quando a lista aparece ("96", "100%"). Começa no valor
+ * final, para quem não tem animação; só conta quando a página pode animar.
  */
-function Lista({ linhas, marcadorLido = false }: { linhas: Linha[]; marcadorLido?: boolean }) {
+function Contador({ valor, ativo }: { valor: string; ativo: boolean }) {
+  const [, numero = "", sufixo = ""] = /^(\d+)(.*)$/.exec(valor) ?? [];
+  const alvo = Number(numero);
+  const [atual, setAtual] = useState(alvo);
+
+  useEffect(() => {
+    if (!ativo || alvo === 0 || !podeAnimar()) return;
+    const duracao = 1200;
+    const inicio = performance.now();
+    let quadro = 0;
+    const passo = (agora: number) => {
+      const t = Math.min(1, (agora - inicio) / duracao);
+      setAtual(Math.round(alvo * (1 - (1 - t) ** 3)));
+      if (t < 1) quadro = requestAnimationFrame(passo);
+    };
+    setAtual(0);
+    quadro = requestAnimationFrame(passo);
+    return () => cancelAnimationFrame(quadro);
+  }, [ativo, alvo]);
+
+  if (numero === "") return <>{valor}</>;
+  return (
+    <span className="tabular-nums">
+      {atual}
+      {sufixo}
+    </span>
+  );
+}
+
+/**
+ * Lista de incisos: a mesma linha em todas as seções. O marcador em algarismo romano é
+ * decorativo; o marcador numérico (ex.: "96") é conteúdo: conta na tela e fica com o valor
+ * final para o leitor de tela. Com `progresso`, uma linha acompanha a leitura.
+ */
+function Lista({
+  linhas,
+  marcadorLido = false,
+  progresso = false,
+}: {
+  linhas: Linha[];
+  marcadorLido?: boolean;
+  progresso?: boolean;
+}) {
   const [ref, visivel] = useRevelar<HTMLOListElement>();
   return (
-    <ol ref={ref} data-visivel={visivel}>
+    <ol ref={ref} data-visivel={visivel} className="relative">
+      {progresso && (
+        <span
+          aria-hidden="true"
+          className="linha-progresso absolute top-0 -left-4 h-full w-0.5 rounded-full bg-primary"
+        />
+      )}
       {linhas.map(({ marcador, titulo, texto, revogado }, i) => (
         <li
           key={titulo}
-          className="surgir relative grid grid-cols-[3.5rem_1fr] gap-4 py-6"
+          className="surgir group relative grid grid-cols-[3.5rem_1fr] gap-4 py-6"
           style={ordem(i)}
         >
           <span aria-hidden="true" className="filete absolute inset-x-0 top-0 h-px bg-border" />
-          <span
-            className="pt-0.5 font-mono text-sm text-primary"
-            aria-hidden={marcadorLido ? undefined : true}
-          >
-            {marcadorLido ? marcador : `${marcador} –`}
-          </span>
+          {marcadorLido ? (
+            <span className="pt-0.5 font-mono text-sm text-primary">
+              <span aria-hidden="true">
+                <Contador valor={marcador} ativo={visivel} />
+              </span>
+              <span className="sr-only">{marcador}</span>
+            </span>
+          ) : (
+            <span
+              className="pt-0.5 font-mono text-sm text-primary transition-transform duration-300 group-hover:translate-x-1"
+              aria-hidden="true"
+            >
+              {`${marcador} –`}
+            </span>
+          )}
           <div>
             <p
               className={
@@ -186,7 +243,7 @@ function Lista({ linhas, marcadorLido = false }: { linhas: Linha[]; marcadorLido
                   : "text-lg font-semibold text-foreground"
               }
             >
-              {titulo}
+              {revogado ? titulo : <span className="marcavel">{titulo}</span>}
             </p>
             {texto && <p className="mt-1.5 max-w-xl text-muted-foreground">{texto}</p>}
           </div>
@@ -196,59 +253,215 @@ function Lista({ linhas, marcadorLido = false }: { linhas: Linha[]; marcadorLido
   );
 }
 
+// Dispositivos que existem na base (knowledge/base.json), no formato "norma, dispositivo".
+// O teste confere cada um contra a base: a faixa nunca mostra artigo inventado.
+const DISPOSITIVOS_FAIXA = [
+  "EC 132/2023, art. 2º (ADCT, art. 129)",
+  "LC 214/2025, art. 1º",
+  "LC 214/2025, art. 31, caput",
+  "LC 214/2025, art. 157, caput",
+  "LC 214/2025, art. 125, caput",
+  "LC 214/2025, art. 112",
+  "EC 132/2023, art. 8º",
+  "LC 214/2025, art. 409, caput e § 1º",
+  "LC 214/2025, art. 41, caput",
+  "LC 214/2025, art. 251, caput e § 1º",
+  "LC 214/2025, art. 7º-A, parágrafo único",
+  "LC 214/2025, art. 172, caput",
+  "EC 132/2023, art. 2º (ADCT, art. 127)",
+  "LC 214/2025, art. 146, caput",
+  "LC 214/2025, art. 260, caput",
+];
+
+/** Faixa em movimento com dispositivos da base, como a margem de um Diário Oficial. */
+function FaixaDispositivos() {
+  const itens = (copia: boolean) =>
+    DISPOSITIVOS_FAIXA.map((d) => (
+      <li key={`${copia}-${d}`} className="flex items-center gap-6 whitespace-nowrap">
+        <span aria-hidden="true" className="size-1 rounded-full bg-selo" />
+        {d}
+      </li>
+    ));
+  return (
+    <div className="faixa overflow-hidden border-b py-4 font-mono text-xs tracking-wide text-muted-foreground">
+      <div className="faixa-trilho flex w-max gap-6">
+        <ul aria-label="Alguns dispositivos da base" className="flex gap-6">
+          {itens(false)}
+        </ul>
+        <ul aria-hidden="true" className="flex gap-6">
+          {itens(true)}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+const atraso = (segundos: number) => ({ "--atraso": `${segundos}s` }) as CSSProperties;
+
+/**
+ * Demonstração do formato, sobre a folha de lei: pergunta → digitando → resposta que cita o
+ * mesmo dispositivo marcado na folha. A resposta só afirma o que está no trecho literal
+ * (TRECHO_EXEMPLO); o teste confere. Sem animação, aparece no estado final.
+ */
+function DemoResposta() {
+  return (
+    <aside
+      aria-label="Demonstração de pergunta e resposta"
+      className="cartao-vidro relative z-10 flex flex-col gap-3 p-4"
+    >
+      <p className="font-mono text-[0.68rem] tracking-[0.16em] text-muted-foreground uppercase">
+        Consultor · demonstração
+      </p>
+      <div className="flex flex-col gap-3 text-[0.9rem] leading-snug">
+        <p
+          className="demo-passo balao-usuario max-w-[85%] self-end rounded-2xl rounded-br-md px-3.5 py-2"
+          style={atraso(0.9)}
+        >
+          Ônibus e metrô vão pagar imposto?
+        </p>
+        <div className="grid self-start">
+          <span
+            aria-hidden="true"
+            className="demo-digitando vidro [grid-area:1/1] items-center gap-1 self-start rounded-2xl rounded-tl-md px-3.5 py-3"
+          >
+            {[0, 150, 300].map((espera) => (
+              <span
+                key={espera}
+                className="pontinho size-1.5 rounded-full bg-muted-foreground"
+                style={{ animationDelay: `${espera}ms` }}
+              />
+            ))}
+          </span>
+          <div
+            className="demo-passo vidro [grid-area:1/1] rounded-2xl rounded-tl-md px-3.5 py-2.5 text-foreground"
+            style={atraso(2.7)}
+          >
+            <span
+              aria-hidden="true"
+              className="mb-1 flex items-center gap-1.5 text-xs font-semibold tracking-tight"
+            >
+              <LogoSimbolo decorativo className="size-3.5" />
+              Inciso
+            </span>
+            <p>
+              Não. O transporte público coletivo de passageiros rodoviário e metroviário de caráter
+              urbano é isento do IBS e da CBS.
+            </p>
+            <span
+              className="demo-citacao mt-2 inline-flex rounded-full border border-citacao-borda bg-citacao px-2.5 py-0.5 font-mono text-xs font-medium text-citacao-foreground"
+              style={atraso(3.2)}
+            >
+              {TRECHO_EXEMPLO.citacao}
+            </span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+const TEMAS = [
+  "O que é o IBS?",
+  "Quando o ISS deixa de existir?",
+  "Quem tem direito ao cashback?",
+  "Como fica o MEI na reforma?",
+];
+
 export function PaginaInicial() {
   return (
     <>
-      <section className="border-b">
-        <Revelar className="mx-auto grid max-w-6xl gap-16 px-4 pt-14 pb-20 sm:px-6 md:pt-20 lg:grid-cols-12 lg:gap-10">
-          <div className="lg:col-span-7">
-            <p className="flex items-center gap-3 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
-              <span aria-hidden="true" className="filete h-px w-10 bg-primary" />
-              EC 132/2023 — LC 214/2025
-            </p>
-            <h1 className="mt-8 text-[2.5rem] leading-[1.05] font-semibold tracking-[-0.03em] text-foreground sm:text-6xl">
-              Dúvidas sobre a reforma tributária, respondidas em um{" "}
-              <span className="realce-marca">piscar de olhos</span>.
-            </h1>
-            <p className="mt-6 max-w-xl font-serif text-lg leading-relaxed text-muted-foreground">
-              O Inciso é um Agente de IA que responde em português claro e cita o artigo de lei de
-              onde tirou cada informação. Quando a lei não basta, completa com fontes da web, sempre
-              com o link e separadas do que é lei.
-            </p>
-            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
-              <Button asChild size="lg" className="group h-12 rounded-sm px-6">
-                <Link to="/simulador">
-                  Abrir o simulador
-                  <ArrowRight
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                    aria-hidden="true"
-                  />
-                </Link>
-              </Button>
-            </div>
+      <section>
+        <Revelar className="mx-auto flex max-w-4xl flex-col items-center px-4 pt-16 pb-14 text-center sm:px-6 md:pt-24">
+          <p
+            className="surgir vidro inline-flex items-center gap-2 rounded-full px-3.5 py-1 font-mono text-[0.68rem] tracking-[0.14em] text-muted-foreground uppercase"
+            style={ordem(0)}
+          >
+            <span aria-hidden="true" className="size-1.5 rounded-full bg-selo" />
+            EC 132/2023 — LC 214/2025
+          </p>
+          <h1
+            className="surgir mt-8 text-[2.6rem] leading-[1.06] font-semibold tracking-[-0.035em] text-foreground sm:text-6xl md:text-7xl"
+            style={ordem(1)}
+          >
+            Dúvidas sobre a reforma tributária,{" "}
+            <span className="font-medium text-muted-foreground">
+              respondidas em um{" "}
+              <span className="realce-marca text-foreground">piscar de olhos</span>.
+            </span>
+          </h1>
+          <p
+            className="surgir mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground"
+            style={ordem(2)}
+          >
+            O Inciso é um Agente de IA que responde em português claro e cita o artigo de lei de
+            onde tirou cada informação. Quando a lei não basta, completa com fontes da web, sempre
+            com o link e separadas do que é lei.
+          </p>
+
+          <div className="surgir mt-10 w-full max-w-2xl" style={ordem(3)}>
+            <Link
+              to="/simulador"
+              aria-label="Faça sua pergunta no Consultor"
+              className="cartao-vidro group flex flex-col gap-6 p-4 text-left transition-transform duration-300 hover:-translate-y-0.5"
+            >
+              <span className="px-2 pt-1 text-[1.02rem] text-muted-foreground">
+                Faça sua pergunta sobre a reforma tributária…
+              </span>
+              <span className="flex items-center justify-between border-t border-[var(--cartao-borda)] px-2 pt-3">
+                <span className="font-mono text-[0.68rem] text-muted-foreground">
+                  cita a lei · fontes com link
+                </span>
+                <span className="pilula-primaria flex size-9 items-center justify-center">
+                  <ArrowUp className="size-4" aria-hidden="true" />
+                </span>
+              </span>
+            </Link>
           </div>
 
-          <figure aria-label="Trecho da lei citado como fonte" className="lg:col-span-5 lg:pt-16">
-            <div className="border-l-2 border-primary pl-6">
-              <p className="font-mono text-[0.7rem] tracking-[0.14em] text-muted-foreground uppercase">
-                Lei Complementar 214/2025
-              </p>
-              <blockquote className="mt-4 font-serif text-xl leading-relaxed text-foreground">
-                <span className="font-semibold">{TRECHO_EXEMPLO.artigo}</span>{" "}
-                <span className="realce-marca">{TRECHO_EXEMPLO.realce}</span> {TRECHO_EXEMPLO.resto}
-              </blockquote>
-            </div>
-            <div className="surgir mt-8 ml-6 grid grid-cols-[auto_1fr] gap-3" style={ordem(6)}>
-              <span aria-hidden="true" className="font-mono text-primary">
-                ↳
-              </span>
-              <p className="text-sm text-muted-foreground">
-                No chat:{" "}
-                <span className="text-foreground">“Ônibus e metrô vão pagar imposto?”</span> A
-                resposta cita este trecho, com o link oficial.
-              </p>
-            </div>
-            <figcaption className="mt-6 ml-6 text-xs text-muted-foreground">
+          <div className="surgir mt-7 flex flex-col items-center gap-3" style={ordem(4)}>
+            <p className="font-mono text-[0.68rem] tracking-[0.16em] text-muted-foreground uppercase">
+              Explorar por tema
+            </p>
+            <ul className="flex flex-wrap justify-center gap-2">
+              {TEMAS.map((tema) => (
+                <li key={tema}>
+                  <Link
+                    to="/simulador"
+                    className="vidro inline-flex rounded-full px-3.5 py-1.5 text-[0.82rem] font-medium text-foreground"
+                  >
+                    {tema}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="surgir mt-10" style={ordem(5)}>
+            <Link
+              to="/simulador"
+              className="pilula-primaria group inline-flex h-11 items-center gap-2 px-6 text-sm font-medium"
+            >
+              Abrir o simulador
+              <ArrowRight
+                className="size-4 transition-transform duration-300 group-hover:translate-x-1"
+                aria-hidden="true"
+              />
+            </Link>
+          </div>
+        </Revelar>
+      </section>
+
+      <section aria-label="Veja como o Inciso responde" className="px-4 pb-20 sm:px-6">
+        <Revelar className="cartao-vidro mx-auto grid max-w-5xl items-center gap-10 p-6 sm:p-10 lg:grid-cols-[1.1fr_1fr]">
+          <figure aria-label="Trecho da lei citado como fonte">
+            <p className="font-mono text-[0.68rem] tracking-[0.16em] text-muted-foreground uppercase">
+              A fonte · Lei Complementar 214/2025
+            </p>
+            <blockquote className="mt-5 border-l-2 border-primary pl-5 font-serif text-xl leading-relaxed text-foreground">
+              <span className="font-semibold">{TRECHO_EXEMPLO.artigo}</span>{" "}
+              <span className="realce-marca">{TRECHO_EXEMPLO.realce}</span> {TRECHO_EXEMPLO.resto}
+            </blockquote>
+            <figcaption className="mt-5 pl-5 text-xs text-muted-foreground">
               <a
                 href={TRECHO_EXEMPLO.url}
                 target="_blank"
@@ -260,8 +473,11 @@ export function PaginaInicial() {
               · texto oficial no Planalto
             </figcaption>
           </figure>
+          <DemoResposta />
         </Revelar>
       </section>
+
+      <FaixaDispositivos />
 
       <Secao
         id="como-funciona"
@@ -269,7 +485,7 @@ export function PaginaInicial() {
         titulo="Como funciona"
         resumo="O LLM raciocina; o código confere as fontes antes de a resposta sair."
       >
-        <Lista linhas={PASSOS} />
+        <Lista linhas={PASSOS} progresso />
       </Secao>
 
       <Secao
