@@ -40,13 +40,15 @@ describe("SiteLayout", () => {
     expect(simulador).toHaveAttribute("aria-current", "page");
   });
 
-  it("aponta para o código no GitHub em nova aba, com noopener", async () => {
+  // Pedido do autor (18/10/2026): o menu tem só as páginas do site; o link do código saiu.
+  it("o menu principal tem só Início e Simulador", async () => {
     await montar();
-    const codigo = screen.getByRole("link", { name: /código/i });
+    const nav = screen.getByRole("navigation", { name: "Principal" });
+    const nomes = within(nav)
+      .getAllByRole("link")
+      .map((link) => link.textContent?.trim());
 
-    expect(codigo.getAttribute("href")).toContain("github.com");
-    expect(codigo).toHaveAttribute("target", "_blank");
-    expect(codigo.getAttribute("rel")).toContain("noopener");
+    expect(nomes).toEqual(["Início", "Simulador"]);
   });
 
   it("tem botão de tema e rodapé com o aviso de que não substitui um profissional", async () => {
