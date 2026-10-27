@@ -62,7 +62,8 @@ export const MENSAGEM_FORA_DO_TEMA = [
   "• Quem tem direito ao cashback?",
 ].join("\n");
 
-const TIMEOUT_PADRAO_MS = 25_000;
+// Com a busca na web, algumas respostas passam de 25 s (medido no site publicado).
+const TIMEOUT_PADRAO_MS = 50_000;
 const CITACAO = /\[([a-z0-9]+(?:-[a-z0-9]+)*)\]/g;
 const FORA_DO_TEMA = "[fora-do-tema]";
 const COMPLEMENTO = /\*Complemento:\*/i;

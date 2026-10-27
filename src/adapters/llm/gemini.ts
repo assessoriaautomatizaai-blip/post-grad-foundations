@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 
 import type { FonteWeb, LlmAdapter } from "@/core/answer";
 
@@ -10,6 +10,8 @@ const MAX_OUTPUT_TOKENS = 2048;
 const TEMPERATURA = 0.2;
 // Busca no Google (ADR-007): o modelo completa o que a base não cobre, com fonte.
 const FERRAMENTAS = [{ googleSearch: {} }];
+// Raciocínio baixo: com a busca, o raciocínio longo fazia respostas passarem de 25 s.
+const RACIOCINIO = { thinkingLevel: ThinkingLevel.LOW };
 
 /** A parte do cliente do SDK `@google/genai` que o adaptador usa. */
 export interface GeminiClient {
@@ -22,6 +24,7 @@ export interface GeminiClient {
         maxOutputTokens?: number;
         temperature?: number;
         tools?: { googleSearch: Record<string, never> }[];
+        thinkingConfig?: { thinkingLevel?: ThinkingLevel };
         abortSignal?: AbortSignal;
       };
     }): Promise<{
@@ -55,6 +58,7 @@ export function createGeminiAdapter(opcoes: { client: GeminiClient; model: strin
           maxOutputTokens: MAX_OUTPUT_TOKENS,
           temperature: TEMPERATURA,
           tools: FERRAMENTAS,
+          thinkingConfig: RACIOCINIO,
           ...(signal ? { abortSignal: signal } : {}),
         },
       });
