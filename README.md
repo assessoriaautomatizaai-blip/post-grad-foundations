@@ -171,7 +171,7 @@ O projeto usou IA em dois papéis, com controles diferentes (registro completo e
 - **Complemento da web não é conferido por pessoa.** A página pode estar desatualizada ou ser fraca; por isso aparece separada da lei, com link e o rótulo "não conferida". O código não julga a qualidade da página.
 - **O código confere a existência da fonte, não a fidelidade do texto.** Ele garante que o artigo citado existe na base e que o complemento tem link, mas não que a frase resume corretamente o trecho. Isso depende do modelo e é o que a avaliação com o Gemini mede.
 - **Avaliação do método atual em andamento**: o relatório publicado é do método anterior.
-- **Custo e tempo maiores por pergunta**: a base inteira vai em cada chamada (~11 mil tokens de entrada, ≈ US$ 0,011 por resposta) e a busca deixa a resposta mais lenta (tempo limite de 25 s). A busca exige o **plano pago** do Gemini (5.000 buscas grátis por mês).
+- **Custo e tempo maiores por pergunta**: a base inteira vai em cada chamada (~11 mil tokens de entrada, ≈ US$ 0,011 por resposta) e a busca deixa a resposta mais lenta (tempo limite de 50 s, com raciocínio baixo no modelo). A busca exige o **plano pago** do Gemini (5.000 buscas grátis por mês).
 - **Base manual**: 96 trechos; sem os anexos (listas por código NCM), regulamentos, legislação estadual ou municipal. Os 67 trechos da ampliação aguardam conferência humana.
 - **Canal WhatsApp fora desta entrega:** o adaptador da Evolution API está no código e testado com dados simulados, mas não foi ativado nem validado em produção.
 - Só perguntas de texto; sem memória entre perguntas; sem limitação de taxa por usuário.

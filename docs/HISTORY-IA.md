@@ -302,3 +302,10 @@
 - **O que os testes pegaram:** a primeira versão recriava a caixa de pergunta ao passar do estado vazio para a conversa — o campo seria trocado no meio da digitação; 4 testes antigos falharam. A caixa passou a ficar sempre no mesmo lugar da árvore, mudando só o posicionamento.
 - **Testes primeiro:** 4 casos novos; os testes existentes (acessibilidade, fontes, hora, tiques, roteiro) passaram sem alteração.
 - **Tempo (estimado):** incluído no bloco de 18/10, manhã (~1,5 h) — ver [Tempo investido](#tempo-investido-estimado).
+
+### 27/10/2026 — Erro na chamada da API (tempo limite)
+
+- **Relato do autor:** "houve erro na chamada da API".
+- **Diagnóstico da IA no site publicado:** a pergunta do ônibus respondeu em 13 s; a do IPVA, que usa a busca na web, caiu na mensagem de falha técnica. A chamada durou 25.076 ms, exatamente o tempo limite do código (25 s). O limite tinha sido escolhido pelo reenvio da Evolution (WhatsApp), que saiu da entrega.
+- **Correção aprovada (testes primeiro):** raciocínio baixo no Gemini (`thinkingLevel: LOW`, conferido no SDK `@google/genai` 2.29.1 instalado) e tempo limite de 50 s. O teste antigo dos 25 s foi substituído pelo dos 50 s, com aprovação do autor.
+- **Não verificado localmente:** o `.env` local não tem a chave do Gemini; o tempo real só pode ser medido no site depois da publicação.

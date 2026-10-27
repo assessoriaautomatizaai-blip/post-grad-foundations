@@ -153,7 +153,7 @@
    - resposta sem nenhuma citação da base e sem nenhuma fonte da web não é mostrada: vira mensagem fixa pedindo para reformular ou procurar um contador;
    - assunto fora da reforma: o modelo devolve a marca `[fora-do-tema]` e o código troca por uma mensagem fixa que explica o foco do agente e dá exemplos.
 5. Saudação continua tratada no código, sem chamar o modelo.
-6. Tempo limite do modelo: **25 s** (a busca é mais lenta; a Evolution reenvia o webhook depois de 30 s — ADR-006 — e a deduplicação absorve o reenvio).
+6. Tempo limite do modelo: **50 s**, com raciocínio baixo no Gemini. Era 25 s, mas perguntas com busca na web passavam desse tempo no site publicado (27/10/2026). No WhatsApp, que saiu da entrega, a Evolution reenviaria o webhook depois de 30 s, e a deduplicação absorveria o reenvio.
 
 **Consequências.**
 
