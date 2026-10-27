@@ -304,13 +304,13 @@ describe("answerQuestion", () => {
     expect(resposta).toEqual({ tipo: "falha", texto: MENSAGEM_FALHA, fontes: [], fontesWeb: [] });
   });
 
-  it("espera o modelo por 25 s por padrão (a busca é lenta; a Evolution reenvia após 30 s)", async () => {
+  it("espera o modelo por 50 s por padrão (a busca na web passa de 25 s)", async () => {
     vi.useFakeTimers();
     const llm = modeloFalso(() => new Promise<Geracao>(() => {}));
     let resposta: Awaited<ReturnType<typeof answerQuestion>> | undefined;
     void answerQuestion("O que é o split payment?", { base, llm }).then((r) => (resposta = r));
 
-    await vi.advanceTimersByTimeAsync(24_900);
+    await vi.advanceTimersByTimeAsync(49_900);
     expect(resposta).toBeUndefined();
     await vi.advanceTimersByTimeAsync(200);
     expect(resposta?.tipo).toBe("falha");

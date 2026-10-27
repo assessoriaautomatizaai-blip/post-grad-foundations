@@ -50,6 +50,17 @@ describe("createGeminiAdapter", () => {
     expect(config.maxOutputTokens).toBeLessThanOrEqual(2048);
   });
 
+  it("pede raciocínio baixo ao modelo (resposta mais rápida com a busca na web)", async () => {
+    const { client, generateContent } = clienteFalso({ text: "ok" });
+    await createGeminiAdapter({ client, model: "m" }).gerar({ sistema: "s", usuario: "u" });
+
+    expect(generateContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        config: expect.objectContaining({ thinkingConfig: { thinkingLevel: "LOW" } }),
+      }),
+    );
+  });
+
   it("devolve o texto gerado, sem fontes da web quando a busca não foi usada", async () => {
     const { client } = clienteFalso({ text: "Resposta [fx-1]." });
     await expect(
